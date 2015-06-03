@@ -4,10 +4,180 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/img1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/pic_1" />
+    <LinearLayout
+        android:id="@+id/monitor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/monitor_smoke"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/monitor_smoke_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_moniter_smoke"
+                android:textSize="20sp"
+                android:textColor="@color/black" />
+
+            <LinearLayout
+                android:id="@+id/monitor_smoke_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/imageButton1"
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/blue" />
+
+                <TextView
+                    android:id="@+id/imageButton2"
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/green" />
+
+                <TextView
+                    android:id="@+id/imageButton3"
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/orange" />
+
+                <TextView
+                    android:id="@+id/imageButton4"
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/yellow" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/monitor_smoke_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/monitor_phenolic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/monitor_phenolic_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_moniter_phenolic"
+                android:textSize="20sp"
+                android:textColor="@color/black" />
+
+            <LinearLayout
+                android:id="@+id/monitor_phenolic_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tv5"
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/blue" />
+
+                <TextView
+                    android:id="@+id/tv6"
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/green" />
+
+                <TextView
+                    android:id="@+id/tv7"
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/orange" />
+
+                <TextView
+                    android:id="@+id/tv8"
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/yellow" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/monitor_phenolic_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/monitor_pm2.5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/monitor_pm2.5_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_moniter_pm2.5"
+                android:textSize="20sp"
+                android:textColor="@color/black" />
+
+            <LinearLayout
+                android:id="@+id/monitor_pm2.5_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tv9"
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/blue" />
+
+                <TextView
+                    android:id="@+id/tv10"
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/green" />
+
+                <TextView
+                    android:id="@+id/tv11"
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/orange" />
+
+                <TextView
+                    android:id="@+id/tv12"
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/yellow" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/monitor_pm2.5_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/black" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/control"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+    </LinearLayout>
 
 </LinearLayout>
