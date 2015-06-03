@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">smartVentilator</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- string in moniter page -->
+    <string name="moniter_smoke">烟雾浓度</string>
+    <string name="moniter_fenquan">酚醛浓度</string>
+    <string name="moniter_pm2.5">PM2.5</string>
+    <string name="control_ventilator_open">风机开</string>
+    <string name="control_ventilator_close">风机关</string>
+    <string name="control_ventilator_switch">档位选择</string>
+	<string name="control_ventilator_1">1档</string>
+	<string name="control_ventilator_2">2档</string>
+	<string name="control_ventilator_3">3档</string>
+	<string name="control_lamp_open">灯亮</string>
+	<string name="control_lamp_close">灯灭</string>
+	<string name="control_ultraviolet_open">紫外线设备开</string>
+	<string name="control_ultraviolet_close">紫外线设备关</string>
+	<string name="control_plasma_open">等离子设备开</string>
+	<string name="control_plasma_close">等离子设备关</string>
+</resources>
