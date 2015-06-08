@@ -217,7 +217,7 @@
                 android:textSize="20sp" />
 
             <ToggleButton
-                android:id="@+id/mTogBtn"
+                android:id="@+id/mTogBtn_ventilator"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -311,31 +311,53 @@
                 android:textOff=""
                 android:textOn="" />
         </LinearLayout>
-    </LinearLayout>
-    <!-- 档位控制 -->
+        <!-- 档位控制 -->
 
-    <LinearLayout
-        android:id="@+id/control_ventilator_gears"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/control_ventilator_gears_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:text="@string/str_control_ventilator_gears"
-            android:textColor="@color/black"
-            android:textSize="20sp"/>
-        <Button 
-            android:id="@+id/control_ventilator_gears_btn"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/control_ventilator_gears"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/yellow"
-            android:text="@string/str_control_ventilator_1"
-        />
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/control_ventilator_gears_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_control_ventilator_gears"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <AbsoluteLayout
+                android:id="@+id/control_ventilator_gears_btns"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <Button
+                    android:id="@+id/control_ventilator_gears_btn_1"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/yellow"
+                    android:text="@string/str_control_ventilator_1"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/control_ventilator_gears_btn_2"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/blue"
+                    android:text="@string/str_control_ventilator_2"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/control_ventilator_gears_btn_3"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/green"
+                    android:text="@string/str_control_ventilator_3"
+                    android:visibility="gone" />
+            </AbsoluteLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
