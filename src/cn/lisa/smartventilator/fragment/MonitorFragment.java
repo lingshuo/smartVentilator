@@ -18,48 +18,63 @@ import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import cn.lisa.smartventilator.R;
 
-public class MonitorFragment extends Fragment{
+public class MonitorFragment extends Fragment {
 	private ToggleButton tb_ventilator;
 	private TextView tv_smoke;
 	private TextView tv_phenolic;
 	private TextView tv_pm2_5;
 	private LinearLayout layout_gears_control;
+	private LinearLayout layout_gears_blank;
 	private Button mBtn1;
 	private Button mBtn2;
 	private Button mBtn3;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_monitor, null);
-		tv_smoke=(TextView)view.findViewById(R.id.monitor_smoke_result);
-		tv_phenolic=(TextView)view.findViewById(R.id.monitor_phenolic_result);
-		tv_pm2_5=(TextView)view.findViewById(R.id.monitor_pm2_5_result);		
+		tv_smoke = (TextView) view.findViewById(R.id.monitor_smoke_result);
+		tv_phenolic = (TextView) view
+				.findViewById(R.id.monitor_phenolic_result);
+		tv_pm2_5 = (TextView) view.findViewById(R.id.monitor_pm2_5_result);
 		tv_smoke.setText("良好");
 		tv_phenolic.setText("良好");
 		tv_pm2_5.setText("良好");
-		tb_ventilator = (ToggleButton) view.findViewById(R.id.mTogBtn_ventilator); // 获取到控件
-		layout_gears_control=(LinearLayout)view.findViewById(R.id.control_ventilator_gears);
-		if(!tb_ventilator.isChecked())layout_gears_control.setVisibility(View.GONE);
+		tb_ventilator = (ToggleButton) view
+				.findViewById(R.id.mTogBtn_ventilator); // 获取到控件
+		layout_gears_control = (LinearLayout) view
+				.findViewById(R.id.control_ventilator_gears);
+		layout_gears_blank = (LinearLayout) view
+				.findViewById(R.id.control_ventilator_blank);
+		if (!tb_ventilator.isChecked()) {
+			layout_gears_blank.setVisibility(View.VISIBLE);
+			layout_gears_control.setVisibility(View.GONE);
+		}else{
+			layout_gears_blank.setVisibility(View.GONE);
+			layout_gears_control.setVisibility(View.VISIBLE);
+		}
 		tb_ventilator.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			
+
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				if(isChecked){
-					//选中
+				if (isChecked) {
+					// 选中
+					layout_gears_blank.setVisibility(View.GONE);
 					layout_gears_control.setVisibility(View.VISIBLE);
-				}else{
-					//未选中
+				} else {
+					// 未选中
+					layout_gears_blank.setVisibility(View.VISIBLE);
 					layout_gears_control.setVisibility(View.GONE);
 				}
 			}
 		});// 添加监听事件
-		
-		mBtn1=(Button)view.findViewById(R.id.control_ventilator_gears_btn_1);
-		mBtn2=(Button)view.findViewById(R.id.control_ventilator_gears_btn_2);
-		mBtn3=(Button)view.findViewById(R.id.control_ventilator_gears_btn_3);
+
+		mBtn1 = (Button) view.findViewById(R.id.control_ventilator_gears_btn_1);
+		mBtn2 = (Button) view.findViewById(R.id.control_ventilator_gears_btn_2);
+		mBtn3 = (Button) view.findViewById(R.id.control_ventilator_gears_btn_3);
 		mBtn1.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				changeGear(2);
@@ -68,7 +83,7 @@ public class MonitorFragment extends Fragment{
 			}
 		});
 		mBtn2.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				changeGear(3);
@@ -77,7 +92,7 @@ public class MonitorFragment extends Fragment{
 			}
 		});
 		mBtn3.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				changeGear(1);
@@ -87,12 +102,12 @@ public class MonitorFragment extends Fragment{
 		});
 		return view;
 	}
+
 	/**/
-	private void changeGear(int gear){
-		Log.i("sv", "change gears to "+gear);
+	private void changeGear(int gear) {
+		Log.i("sv", "change gears to " + gear);
 	}
-	
-	
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();

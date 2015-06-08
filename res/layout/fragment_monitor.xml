@@ -197,43 +197,17 @@
         android:id="@+id/control"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_weight="1"
         android:orientation="horizontal" >
-
-        <LinearLayout
-            android:id="@+id/control_ventilator_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/control_ventilator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/str_control_ventilator"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
-            <ToggleButton
-                android:id="@+id/mTogBtn_ventilator"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/transparent"
-                android:button="@drawable/checkbox_iphone"
-                android:checked="false"
-                android:text=""
-                android:textOff=""
-                android:textOn="" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/control_lamp_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical" >
 
             <TextView
@@ -248,7 +222,7 @@
                 android:id="@+id/mTogBtn_lamp"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center"
                 android:background="@android:color/transparent"
                 android:button="@drawable/checkbox_iphone"
                 android:checked="false"
@@ -262,6 +236,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical" >
 
             <TextView
@@ -276,6 +251,7 @@
                 android:id="@+id/mTogBtn_ultraviolet"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:background="@android:color/transparent"
                 android:button="@drawable/checkbox_iphone"
                 android:checked="false"
@@ -289,6 +265,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical" >
 
             <TextView
@@ -303,13 +280,50 @@
                 android:id="@+id/mTogBtn_plasma"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center"
                 android:background="@android:color/transparent"
                 android:button="@drawable/checkbox_iphone"
                 android:checked="false"
                 android:text=""
                 android:textOff=""
                 android:textOn="" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/control_ventilator_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/control_ventilator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_control_ventilator"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <ToggleButton
+                android:id="@+id/mTogBtn_ventilator"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:button="@drawable/checkbox_iphone"
+                android:checked="false"
+                android:text=""
+                android:textOff=""
+                android:textOn="" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/control_ventilator_blank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
         </LinearLayout>
         <!-- 档位控制 -->
 
@@ -318,7 +332,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/control_ventilator_gears_tv"

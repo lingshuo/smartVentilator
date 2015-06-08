@@ -9,20 +9,20 @@
     <string name="str_moniter_smoke">烟雾浓度</string>
     <string name="str_moniter_phenolic">酚醛浓度</string>
     <string name="str_moniter_pm2.5">PM2.5指标</string>
-    <string name="str_control_ventilator">风机开关</string>
+    <string name="str_control_ventilator">风机</string>
     <string name="str_control_ventilator_on">风机开</string>
     <string name="str_control_ventilator_off">风机关</string>
     <string name="str_control_ventilator_gears">档位选择</string>
 	<string name="str_control_ventilator_1">1档</string>
 	<string name="str_control_ventilator_2">2档</string>
 	<string name="str_control_ventilator_3">3档</string>
-	<string name="str_control_lamp">照明灯开关</string>
+	<string name="str_control_lamp">照明灯</string>
 	<string name="str_control_lamp_on">灯亮</string>
 	<string name="str_control_lamp_off">灯灭</string>
-	<string name="str_control_ultraviolet">紫外线设备开关</string>
+	<string name="str_control_ultraviolet">紫外线设备</string>
 	<string name="str_control_ultraviolet_on">紫外线设备开</string>
 	<string name="str_control_ultraviolet_off">紫外线设备关</string>
-	<string name="str_control_plasma">等离子设备开关</string>
+	<string name="str_control_plasma">等离子设备</string>
 	<string name="str_control_plasma_on">等离子设备开</string>
 	<string name="str_control_plasma_off">等离子设备关</string>
 </resources>

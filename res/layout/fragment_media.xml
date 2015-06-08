@@ -2,12 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="horizontal" >
 
-    <ImageView
-        android:id="@+id/img2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/pic_2" />
-
+    <LinearLayout
+        android:id="@+id/media_play_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1" >
+    </LinearLayout>
+	<LinearLayout
+        android:id="@+id/media_video_list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1" >
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/media_mms_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1" >
+    </LinearLayout>
 </LinearLayout>

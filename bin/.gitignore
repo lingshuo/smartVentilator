@@ -1,7 +1,6 @@
-/res/
 /dexedLibs/
+/res/
 /AndroidManifest.xml
 /classes.dex
-/jarlist.cache
 /resources.ap_
 /smartVentilator.apk
