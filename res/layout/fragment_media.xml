@@ -28,9 +28,11 @@
 
         <ListView
             android:id="@+id/lv_video"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" >
+            android:layout_weight="1"
+            android:divider="@color/white"
+            android:dividerHeight="10dp" >
         </ListView>
     </LinearLayout>
     <LinearLayout
@@ -42,9 +44,11 @@
 
         <ListView
             android:id="@+id/lv_mms"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" >
+            android:layout_weight="1"
+            android:divider="@color/white"
+            android:dividerHeight="10dp">
         </ListView>
 
     </LinearLayout>
