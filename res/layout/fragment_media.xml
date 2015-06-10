@@ -36,14 +36,14 @@
         </ListView>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/media_mms_layout"
+        android:id="@+id/media_radio_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:layout_weight="1" >
 
         <ListView
-            android:id="@+id/lv_mms"
+            android:id="@+id/lv_radio"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

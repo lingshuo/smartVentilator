@@ -1,5 +1,8 @@
 package cn.lisa.smartventilator.fragment;
 
+import java.io.InputStream;
+import java.util.List;
+
 import android.app.Fragment;
 import android.opengl.Visibility;
 import android.os.Bundle;
@@ -17,6 +20,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import cn.lisa.smartventilator.R;
+import cn.lisa.smartventilator.bean.Radio;
+import cn.lisa.smartventilator.util.RadioXmlParser;
 
 public class MonitorFragment extends Fragment {
 	private ToggleButton tb_ventilator;
