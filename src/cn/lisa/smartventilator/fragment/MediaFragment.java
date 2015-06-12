@@ -8,7 +8,9 @@ import io.vov.vitamio.MediaPlayer.OnPreparedListener;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.adapter.RadioListAdapter;
@@ -35,6 +37,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -50,6 +53,9 @@ OnBufferingUpdateListener, OnPreparedListener, OnInfoListener{
 	private ListView mVideoList;
 	private ListView mRadioList;
 	private boolean isAudioPlaying=true;
+	private int currentRadioPlayItem;
+	//²¥·Å×´Ì¬
+	private	Map<Integer, Boolean> mPlayStatus;
 	// path of video
 	private String cur_path = "/sdcard/smartVentilator/";
 
@@ -61,6 +67,7 @@ OnBufferingUpdateListener, OnPreparedListener, OnInfoListener{
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
 				Radio data=(Radio)msg.getData().getSerializable(RadioListAdapter.BUNDLE_KEY);
+				
 				switch(msg.what){
 				case 0:
 					List<VideoInfo> videoInfoList = (List<VideoInfo>) msg.obj;
@@ -68,23 +75,29 @@ OnBufferingUpdateListener, OnPreparedListener, OnInfoListener{
 							videoInfoList);
 					mVideoList.setAdapter(mVideoListAdapter);
 				break;
-				case RadioListAdapter.CLICK_TEXT:					
-					Radio r=(Radio)data;
+				case RadioListAdapter.CLICK_BUTTON_PLAY:					
+					Radio r=(Radio)data;					
 					Log.e("sv","start "+r.getUrl());
-					playRadio(r.getUrl());
+					mPlayStatus=(Map<Integer, Boolean>) msg.obj;
+					playRadio(r.getUrl());						
+					currentRadioPlayItem=msg.arg1;
+					isAudioPlaying = true;
+					
 				break;
-				case RadioListAdapter.CLICK_BUTTON:
+				case RadioListAdapter.CLICK_BUTTON_STOP:
 					Radio r1=(Radio)data;
 					Log.e("sv","stop "+r1.getUrl());
-					// TODO Auto-generated method stub
-					if (mMediaPlayer.isPlaying()) {
-//						btn_play.setImageResource(R.drawable.play_play);
+					mPlayStatus=(Map<Integer, Boolean>) msg.obj;
+					if (mMediaPlayer.isPlaying()&&currentRadioPlayItem==r1.getId()-1) {
 						mMediaPlayer.pause();
 						isAudioPlaying = false;
-					} else {
-//						btn_play.setImageResource(R.drawable.play_pause);
-						mMediaPlayer.start();
-						isAudioPlaying = true;
+					}
+					for(int i=0;i<mPlayStatus.size();i++){
+						if(i==currentRadioPlayItem){
+							mPlayStatus.put(i, true);
+						}else{
+							mPlayStatus.put(i, false);
+						}
 					}
 				break;
 				}
@@ -96,6 +109,7 @@ OnBufferingUpdateListener, OnPreparedListener, OnInfoListener{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		Context context = getActivity();
+		mPlayStatus=new HashMap<Integer, Boolean>();
 		final PackageManager packageManager = context.getPackageManager();
 
 		View view = inflater.inflate(R.layout.fragment_media, null);
@@ -136,7 +150,12 @@ OnBufferingUpdateListener, OnPreparedListener, OnInfoListener{
 		//radio
 		mRadioList=(ListView)view.findViewById(R.id.lv_radio);
 		radios=getRadioList();
-		mradioListAdapter=new RadioListAdapter(getActivity(),handler,(ArrayList<Radio>)radios);
+		//init play status
+		for(int i=0;i<radios.size();i++)
+			mPlayStatus.put(i,false);
+		
+		
+		mradioListAdapter=new RadioListAdapter(getActivity(),handler,mPlayStatus,(ArrayList<Radio>)radios);
 		mRadioList.setAdapter(mradioListAdapter);
 //		mRadioList.setOnItemClickListener(new OnItemClickListener() {
 //

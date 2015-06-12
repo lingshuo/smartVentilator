@@ -27,10 +27,13 @@ public class RadioXmlParser {
             case XmlPullParser.START_TAG:  
             	if (parser.getName().equals("radio")) {  
                     Radio = new Radio();  
-                } else if (parser.getName().equals("name")) {  
+                } else if(parser.getName().equals("id")){
+                	eventType = parser.next();
+                	Radio.setId(Integer.parseInt(parser.getText()));
+                }else if (parser.getName().equals("name")) {  
                     eventType = parser.next();  
                     Radio.setName(parser.getText());  
-                } else if (parser.getName().equals("url")) {  
+                } else if (parser.getName().equals("url")) {
                     eventType = parser.next();  
                     Radio.setUrl(parser.getText());  
                 }  

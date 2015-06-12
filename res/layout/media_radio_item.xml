@@ -2,36 +2,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dip"
-    android:descendantFocusability="blocksDescendants">
+    android:descendantFocusability="blocksDescendants" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dip"
         android:layout_marginStart="20dip"
-        android:gravity="center_vertical"
-        android:descendantFocusability="blocksDescendants" >
+        android:descendantFocusability="blocksDescendants"
+        android:gravity="center_vertical" >
 
-        
-        <ImageButton
-            android:id="@+id/btn_play"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+        <AbsoluteLayout
+            android:id="@+id/media_control_btns"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/play_bt_bg"
-            android:src="@drawable/play_play"
-            android:textSize="20sp"
-            android:focusable="false" />
-	<TextView
+            android:layout_centerVertical="true" >
+
+            <ImageButton
+                android:id="@+id/btn_play"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/play_bt_bg"
+                android:focusable="false"
+                android:src="@drawable/play_play"
+                android:textSize="20sp"
+                android:visibility="visible" />
+
+            <ImageButton
+                android:id="@+id/btn_stop"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/play_bt_bg"
+                android:focusable="false"
+                android:src="@drawable/play_pause"
+                android:textSize="20sp"
+                android:visibility="invisible" />
+        </AbsoluteLayout>
+
+        <TextView
             android:id="@+id/radio_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/btn_play"
             android:layout_marginLeft="5dp"
-            android:textSize="20sp"
+            android:layout_toEndOf="@id/media_control_btns"
             android:text="radio"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="20sp" />
     </RelativeLayout>
 
 </LinearLayout>

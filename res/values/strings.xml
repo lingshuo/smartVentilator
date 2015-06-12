@@ -25,4 +25,12 @@
 	<string name="str_control_plasma">等离子设备</string>
 	<string name="str_control_plasma_on">等离子设备开</string>
 	<string name="str_control_plasma_off">等离子设备关</string>
+	<string name="str_device_id_label">设备号:</string>
+	<string name="str_device_username">用户名:</string>
+	<string name="str_device_password">密码:</string>
+	<string name="str_device_username_hint">用户名</string>
+	<string name="str_device_password_hint">密码</string>
+	<string name="str_device_cancel">取消</string>
+	<string name="str_device_confirm">确认</string>
+	<string name="str_contact">联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们</string>
 </resources>
