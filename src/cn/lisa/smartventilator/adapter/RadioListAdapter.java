@@ -41,6 +41,11 @@ public class RadioListAdapter extends BaseAdapter {
 		}
 		
 	}
+	
+	public void refresh(Map<Integer, Boolean> playStaus){
+		this.playStaus=playStaus;
+		notifyDataSetChanged();
+	}
 
 	@Override
 	public int getCount() {

@@ -44,76 +44,79 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MediaFragment extends Fragment implements
-OnBufferingUpdateListener, OnPreparedListener, OnInfoListener{
+		OnBufferingUpdateListener, OnPreparedListener, OnInfoListener {
 	private ImageView mPlayBtn;
 	private VideoListAdapter mVideoListAdapter = null;
-	private RadioListAdapter mradioListAdapter  =null;
+	private RadioListAdapter mradioListAdapter = null;
 	private List<VideoInfo> videoInfoList;
 	private List<Radio> radios;
 	private ListView mVideoList;
 	private ListView mRadioList;
-	private boolean isAudioPlaying=true;
+	private boolean isAudioPlaying = true;
 	private int currentRadioPlayItem;
-	//播放状态
-	private	Map<Integer, Boolean> mPlayStatus;
+	// 播放状态
+	private Map<Integer, Boolean> mPlayStatus;
 	// path of video
 	private String cur_path = "/sdcard/smartVentilator/";
 
 	private MediaPlayer mMediaPlayer;
-	
-	//后台处理
-		private Handler handler = new Handler() {
-			@Override
-			public void handleMessage(Message msg) {
-				super.handleMessage(msg);
-				Radio data=(Radio)msg.getData().getSerializable(RadioListAdapter.BUNDLE_KEY);
-				
-				switch(msg.what){
-				case 0:
-					List<VideoInfo> videoInfoList = (List<VideoInfo>) msg.obj;
-					mVideoListAdapter = new VideoListAdapter(getActivity(),
-							videoInfoList);
-					mVideoList.setAdapter(mVideoListAdapter);
-				break;
-				case RadioListAdapter.CLICK_BUTTON_PLAY:					
-					Radio r=(Radio)data;					
-					Log.e("sv","start "+r.getUrl());
-					mPlayStatus=(Map<Integer, Boolean>) msg.obj;
-					playRadio(r.getUrl());						
-					currentRadioPlayItem=msg.arg1;
-					isAudioPlaying = true;
-					
-				break;
-				case RadioListAdapter.CLICK_BUTTON_STOP:
-					Radio r1=(Radio)data;
-					Log.e("sv","stop "+r1.getUrl());
-					mPlayStatus=(Map<Integer, Boolean>) msg.obj;
-					if (mMediaPlayer.isPlaying()&&currentRadioPlayItem==r1.getId()-1) {
-						mMediaPlayer.pause();
-						isAudioPlaying = false;
-					}
-					for(int i=0;i<mPlayStatus.size();i++){
-						if(i==currentRadioPlayItem){
-							mPlayStatus.put(i, true);
-						}else{
-							mPlayStatus.put(i, false);
-						}
-					}
-				break;
-				}
-			}
 
-		};
+	// 后台处理
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			Radio data = (Radio) msg.getData().getSerializable(
+					RadioListAdapter.BUNDLE_KEY);
+
+			switch (msg.what) {
+			case 0:
+				List<VideoInfo> videoInfoList = (List<VideoInfo>) msg.obj;
+				mVideoListAdapter = new VideoListAdapter(getActivity(),
+						videoInfoList);
+				mVideoList.setAdapter(mVideoListAdapter);
+				break;
+			case RadioListAdapter.CLICK_BUTTON_PLAY:
+				Radio r = (Radio) data;
+				Log.e("sv", "start " + r.getUrl());
+				mPlayStatus = (Map<Integer, Boolean>) msg.obj;
+				playRadio(r.getUrl());
+				currentRadioPlayItem = msg.arg1;
+				isAudioPlaying = true;
+				mradioListAdapter.refresh(mPlayStatus);
+				break;
+			case RadioListAdapter.CLICK_BUTTON_STOP:
+				Radio r1 = (Radio) data;
+				Log.e("sv", "stop " + r1.getUrl());
+				mPlayStatus = (Map<Integer, Boolean>) msg.obj;
+				if (mMediaPlayer.isPlaying()
+						&& currentRadioPlayItem == r1.getId() - 1) {
+					mMediaPlayer.pause();
+					isAudioPlaying = false;
+				}
+				for (int i = 0; i < mPlayStatus.size(); i++) {
+					if (i == currentRadioPlayItem) {
+						mPlayStatus.put(i, true);
+					} else {
+						mPlayStatus.put(i, false);
+					}
+				}
+				break;
+			}
+		}
+
+	};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		
 		Context context = getActivity();
-		mPlayStatus=new HashMap<Integer, Boolean>();
+		mPlayStatus = new HashMap<Integer, Boolean>();
 		final PackageManager packageManager = context.getPackageManager();
 
 		View view = inflater.inflate(R.layout.fragment_media, null);
-		//play button
+		// play button
 		mPlayBtn = (ImageView) view.findViewById(R.id.media_play_button);
 		mPlayBtn.setOnClickListener(new OnClickListener() {
 
@@ -123,18 +126,19 @@ OnBufferingUpdateListener, OnPreparedListener, OnInfoListener{
 				Intent intent = packageManager
 						.getLaunchIntentForPackage("com.youku.phone");
 				if (intent == null) {
-//					System.out.println("APP not found!");
+					// System.out.println("APP not found!");
 					String str = "market://details?id=com.youku.phone";
-					 Intent localIntent = new Intent("android.intent.action.VIEW");  
-					 localIntent.setData(Uri.parse(str));  
-					 startActivity(localIntent);  
+					Intent localIntent = new Intent(
+							"android.intent.action.VIEW");
+					localIntent.setData(Uri.parse(str));
+					startActivity(localIntent);
 				} else {
 					startActivity(intent);
 				}
 			}
 		});
-		
-		//Video
+
+		// Video
 		mVideoList = (ListView) view.findViewById(R.id.lv_video);
 		mVideoList.setOnItemClickListener(new OnItemClickListener() {
 
@@ -144,45 +148,20 @@ OnBufferingUpdateListener, OnPreparedListener, OnInfoListener{
 				playVideo(videoInfoList.get(position).getPath());
 			}
 		});
-		//获取视频
+		// 获取视频
 		loadVaule();
-		
-		//radio
-		mRadioList=(ListView)view.findViewById(R.id.lv_radio);
-		radios=getRadioList();
-		//init play status
-		for(int i=0;i<radios.size();i++)
-			mPlayStatus.put(i,false);
-		
-		
-		mradioListAdapter=new RadioListAdapter(getActivity(),handler,mPlayStatus,(ArrayList<Radio>)radios);
+
+		// radio
+		mRadioList = (ListView) view.findViewById(R.id.lv_radio);
+		radios = getRadioList();
+		// init play status
+		for (int i = 0; i < radios.size(); i++)
+			mPlayStatus.put(i, false);
+
+		mradioListAdapter = new RadioListAdapter(getActivity(), handler,
+				mPlayStatus, (ArrayList<Radio>) radios);
 		mRadioList.setAdapter(mradioListAdapter);
-//		mRadioList.setOnItemClickListener(new OnItemClickListener() {
-//
-//			@Override
-//			public void onItemClick(AdapterView<?> parent, View view,
-//					int position, long id) {
-//				//play radio
-//				playRadio(radios.get(position).getUrl());
-				//change text
-				
-//				TextView tv=(TextView) view.findViewById(R.id.radio_name);
-//				tv.setText("[播放中]"+radios.get(position).getName());
-//				view.setTag(position);
-//				view.setOnClickListener(new OnClickListener() {
-//					
-//					@Override
-//					public void onClick(View v) {
-//						// TODO Auto-generated method stub
-//						TextView tv=(TextView) v.findViewById(R.id.radio_name);
-//						if(mMediaPlayer.isPlaying()){
-//							tv.setText(radios.get(Integer.parseInt(v.getTag().toString())).getName());
-//							mMediaPlayer.stop();
-//						}
-//					}
-//				});
-//			}
-//		});
+
 		return view;
 	}
 
@@ -204,15 +183,15 @@ OnBufferingUpdateListener, OnPreparedListener, OnInfoListener{
 	public void onResume() {
 		super.onResume();
 	}
-	
-	//main function of get video from folder
+
+	// main function of get video from folder
 	private void loadVaule() {
 		File file = new File(cur_path);
-		if(!file.exists()){
-			try{
+		if (!file.exists()) {
+			try {
 				file.mkdirs();
 				file = new File(cur_path);
-			}catch(Exception e){
+			} catch (Exception e) {
 				return;
 			}
 		}
@@ -234,8 +213,6 @@ OnBufferingUpdateListener, OnPreparedListener, OnInfoListener{
 
 		handler.sendMessage(msg);
 	}
-	
-	
 
 	// 获取视频的缩略图
 	private Bitmap getVideoThumbnail(String videoPath, int width, int height,
@@ -267,8 +244,8 @@ OnBufferingUpdateListener, OnPreparedListener, OnInfoListener{
 		intent.setDataAndType(Uri.parse(videoPath), "video/" + strend);
 		startActivity(intent);
 	}
-	
-	//从路径获取文件名
+
+	// 从路径获取文件名
 	public String getFileName(String pathandname) {
 		int start = pathandname.lastIndexOf("/");
 		int end = pathandname.lastIndexOf(".");
@@ -278,38 +255,38 @@ OnBufferingUpdateListener, OnPreparedListener, OnInfoListener{
 			return null;
 		}
 	}
-	
-	//获取Radio列表
-	private List<Radio> getRadioList(){
-		 List<Radio> radiolist = null;
-		 try {  
-            InputStream is = getActivity().getAssets().open("radio.xml");
-            RadioXmlParser parser = new RadioXmlParser();  
-            radiolist = parser.parse(is);  
-//            for (Radio book : radiolist) {  
-//                Log.i("sv", book.toString());  
-//            }  
-        } catch (Exception e) {
-            Log.e("sv", e.getLocalizedMessage());
-        }
-		return radiolist; 
+
+	// 获取Radio列表
+	private List<Radio> getRadioList() {
+		List<Radio> radiolist = null;
+		try {
+			InputStream is = getActivity().getAssets().open("radio.xml");
+			RadioXmlParser parser = new RadioXmlParser();
+			radiolist = parser.parse(is);
+			// for (Radio book : radiolist) {
+			// Log.i("sv", book.toString());
+			// }
+		} catch (Exception e) {
+			Log.e("sv", e.getLocalizedMessage());
+		}
+		return radiolist;
 	}
 
-	private void playRadio(final String url){
+	private void playRadio(final String url) {
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				try {
 					/**
-					 * Sets the data source (file-path or http/rtsp/mms URL)
-					 * to use.
+					 * Sets the data source (file-path or http/rtsp/mms URL) to
+					 * use.
 					 * 
 					 * @param path
-					 *            the path of the file, or the http/rtsp/mms
-					 *            URL of the stream you want to play
+					 *            the path of the file, or the http/rtsp/mms URL
+					 *            of the stream you want to play
 					 */
-					Activity mActivity=getActivity();
+					Activity mActivity = getActivity();
 					if (url == "") {
 						// Tell the user to provide an audio file URL.
 						Toast.makeText(mActivity, "请确定你要播放的地址不为空！",
@@ -324,8 +301,7 @@ OnBufferingUpdateListener, OnPreparedListener, OnInfoListener{
 					mMediaPlayer = new MediaPlayer(mActivity);
 					mMediaPlayer.setDataSource(url);
 					mMediaPlayer.prepare();
-					mMediaPlayer
-							.setVideoQuality(MediaPlayer.VIDEOQUALITY_LOW);// 设置播放的质量
+					mMediaPlayer.setVideoQuality(MediaPlayer.VIDEOQUALITY_LOW);// 设置播放的质量
 					mMediaPlayer.setOnInfoListener(MediaFragment.this);// 注册一个回调函数，在有警告或错误信息时调用。例如：开始缓冲、缓冲结束、下载速度变化
 					mMediaPlayer
 							.setOnBufferingUpdateListener(MediaFragment.this);// 注册一个回调函数，在网络流缓冲变化时调用
@@ -335,17 +311,20 @@ OnBufferingUpdateListener, OnPreparedListener, OnInfoListener{
 					// // mMediaPlayer.start();
 					// System.out.println(mMetadata.getString(Metadata.ARTIST)
 					// + mMetadata.getString(Metadata.BIT_RATE));
-				}catch (Exception e) {
+				} catch (Exception e) {
 					Log.e("sv", "error: " + e.getMessage(), e);
 				}
-				
-			}}).start();
-		
-	}@Override
+
+			}
+		}).start();
+
+	}
+
+	@Override
 	public void onPrepared(MediaPlayer mp) {
 		// TODO Auto-generated method stub
-//		btn_play.setClickable(true);
-//		txt_tip.setVisibility(View.GONE);
+		// btn_play.setClickable(true);
+		// txt_tip.setVisibility(View.GONE);
 		mMediaPlayer.start();
 	}
 
@@ -361,5 +340,5 @@ OnBufferingUpdateListener, OnPreparedListener, OnInfoListener{
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 }
