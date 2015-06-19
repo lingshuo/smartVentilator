@@ -14,15 +14,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class VideoListAdapter extends BaseAdapter {
-	
-	private List<VideoInfo> mVideoList;
-	
+
+	private List<Video> mVideoList;
+
 	LayoutInflater infater;
-	
-	public VideoListAdapter(Context context,List<VideoInfo> videoInfos) {
+
+	public VideoListAdapter(Context context, List<Video> videos) {
 		super();
-		infater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		mVideoList=videoInfos;
+		infater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		mVideoList = videos;
 	}
 
 	@Override
@@ -44,13 +45,13 @@ public class VideoListAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertview, ViewGroup parent) {
 		View view = infater.inflate(R.layout.media_video_item, null);
-		ImageView video_thumb=(ImageView) view.findViewById(R.id.video_thumb);
-		TextView video_name=(TextView)view.findViewById(R.id.video_name);
+		ImageView video_thumb = (ImageView) view.findViewById(R.id.video_thumb);
+		TextView video_name = (TextView) view.findViewById(R.id.video_name);
 
 		video_name.setText(mVideoList.get(position).getName());
 		video_thumb.setImageBitmap(mVideoList.get(position).getThumb());
-		
+
 		return view;
 	}
-	
+
 }

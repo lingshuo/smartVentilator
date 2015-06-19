@@ -6,14 +6,15 @@ public class Radio implements Serializable {
 	private int id;
 	private String name;
 	private String url;
-	
-	public Radio(){
+
+	public Radio() {
 
 	}
-	public void setId(int id){
-		this.id=id;
+
+	public void setId(int id) {
+		this.id = id;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -21,11 +22,11 @@ public class Radio implements Serializable {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
-	public int getId(){
+
+	public int getId() {
 		return id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -33,5 +34,5 @@ public class Radio implements Serializable {
 	public String getUrl() {
 		return url;
 	}
-	
+
 }

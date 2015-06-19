@@ -13,10 +13,12 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+
 public class MainActivity extends FragmentActivity {
 
 	private BottomTabView mBottomTabView;
 	private List<Drawable> tabDrawables = null;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,9 +51,9 @@ public class MainActivity extends FragmentActivity {
 		mBottomTabView.setTabTextColor(Color.BLACK);
 		// 选中后的字体的颜色
 		mBottomTabView.setTabSelectColor(Color.rgb(155, 190, 79));
-//		mBottomTabView.setTabBackgroundResource(R.drawable.tab_bg2);
+		// mBottomTabView.setTabBackgroundResource(R.drawable.tab_bg2);
 		mBottomTabView.setTabBackgroundColor(Color.WHITE);
-//		mBottomTabView.setTabLayoutBackgroundResource(R.drawable.tablayout_bg2);
+		// mBottomTabView.setTabLayoutBackgroundResource(R.drawable.tablayout_bg2);
 
 		// 注意图片的顺序
 		tabDrawables = new ArrayList<Drawable>();
@@ -75,8 +77,8 @@ public class MainActivity extends FragmentActivity {
 		// 演示增加一组
 		mBottomTabView.addItemViews(tabTexts, mFragments, tabDrawables);
 
-		 mBottomTabView.setTabPadding(2,2, 2, 2);
- 
+		mBottomTabView.setTabPadding(2, 2, 2, 2);
+
 	}
 
 }

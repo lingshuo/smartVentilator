@@ -6,10 +6,11 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 
-public class SvFragmentPagerAdapter extends FragmentPagerAdapter{
+public class SvFragmentPagerAdapter extends FragmentPagerAdapter {
 	private ArrayList<Fragment> mFragmentList = null;
 
-	public SvFragmentPagerAdapter(FragmentManager mFragmentManager,ArrayList<Fragment> fragmentList) {
+	public SvFragmentPagerAdapter(FragmentManager mFragmentManager,
+			ArrayList<Fragment> fragmentList) {
 		super(mFragmentManager);
 		mFragmentList = fragmentList;
 	}
@@ -23,9 +24,9 @@ public class SvFragmentPagerAdapter extends FragmentPagerAdapter{
 	public Fragment getItem(int position) {
 
 		Fragment fragment = null;
-		if (position < mFragmentList.size()){
+		if (position < mFragmentList.size()) {
 			fragment = mFragmentList.get(position);
-		}else{
+		} else {
 			fragment = mFragmentList.get(0);
 		}
 		return fragment;

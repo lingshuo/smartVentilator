@@ -2,22 +2,24 @@ package cn.lisa.smartventilator.bean;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+
 /**
  * Info of Video
+ * 
  * @author Administrator
  *
  */
-public class VideoInfo {
+public class Video {
 
 	private String name;
-	
+
 	private Bitmap thumb;
-	
+
 	private String path;
-	
-	public VideoInfo(){
-		this.name="myvideo";
-		this.thumb=null;
+
+	public Video() {
+		this.name = "myvideo";
+		this.thumb = null;
 	}
 
 	public String getName() {
@@ -43,5 +45,5 @@ public class VideoInfo {
 	public void setPath(String string) {
 		this.path = string;
 	}
-	
+
 }

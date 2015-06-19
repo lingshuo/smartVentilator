@@ -8,21 +8,21 @@
     <!-- 监控部分的显示控件 -->
 
     <LinearLayout
-        android:id="@+id/monitor"
+        android:id="@+id/monitor_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
         android:orientation="vertical" >
 
         <LinearLayout
-            android:id="@+id/monitor_smoke"
+            android:id="@+id/monitor_smoke_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/monitor_smoke_label"
+                android:id="@+id/monitor_smoke_tv"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -74,14 +74,14 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/monitor_phenolic"
+            android:id="@+id/monitor_phenolic_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/monitor_phenolic_label"
+                android:id="@+id/monitor_phenolic_tv"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -133,14 +133,14 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/monitor_pm2.5"
+            android:id="@+id/monitor_pm2.5_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/monitor_pm2.5_label"
+                android:id="@+id/monitor_pm2.5_tv"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -194,7 +194,7 @@
     <!-- 控制的控件 -->
 
     <LinearLayout
-        android:id="@+id/control"
+        android:id="@+id/control_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
@@ -211,7 +211,7 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/control_lamp"
+                android:id="@+id/control_lamp_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_control_lamp"
@@ -219,7 +219,7 @@
                 android:textSize="20sp" />
 
             <ToggleButton
-                android:id="@+id/mTogBtn_lamp"
+                android:id="@+id/control_lamp"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -240,7 +240,7 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/control_ultraviolet"
+                android:id="@+id/control_ultraviolet_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_control_ultraviolet"
@@ -248,7 +248,7 @@
                 android:textSize="20sp" />
 
             <ToggleButton
-                android:id="@+id/mTogBtn_ultraviolet"
+                android:id="@+id/control_ultraviolet"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -269,7 +269,7 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/control_plasma"
+                android:id="@+id/control_plasma_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_control_plasma"
@@ -277,7 +277,7 @@
                 android:textSize="20sp" />
 
             <ToggleButton
-                android:id="@+id/mTogBtn_plasma"
+                android:id="@+id/control_plasma"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -298,7 +298,7 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/control_ventilator"
+                android:id="@+id/control_ventilator_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_control_ventilator"
@@ -306,7 +306,7 @@
                 android:textSize="20sp" />
 
             <ToggleButton
-                android:id="@+id/mTogBtn_ventilator"
+                android:id="@+id/control_ventilator"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

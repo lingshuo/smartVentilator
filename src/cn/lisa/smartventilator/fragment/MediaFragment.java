@@ -5,31 +5,20 @@ import io.vov.vitamio.MediaPlayer.OnBufferingUpdateListener;
 import io.vov.vitamio.MediaPlayer.OnInfoListener;
 import io.vov.vitamio.MediaPlayer.OnPreparedListener;
 
-import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.lisa.smartventilator.R;
-import cn.lisa.smartventilator.adapter.RadioListAdapter;
-import cn.lisa.smartventilator.adapter.VideoListAdapter;
-import cn.lisa.smartventilator.bean.Radio;
-import cn.lisa.smartventilator.bean.VideoInfo;
-import cn.lisa.smartventilator.util.RadioXmlParser;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,31 +26,43 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+import cn.lisa.smartventilator.R;
+import cn.lisa.smartventilator.adapter.RadioListAdapter;
+import cn.lisa.smartventilator.adapter.VideoListAdapter;
+import cn.lisa.smartventilator.bean.Radio;
+import cn.lisa.smartventilator.bean.Video;
+import cn.lisa.smartventilator.util.RadioUtil;
+import cn.lisa.smartventilator.util.VideoUtil;
 
-public class MediaFragment extends Fragment implements
+public class MediaFragment extends Fragment implements OnClickListener,OnItemClickListener,
 		OnBufferingUpdateListener, OnPreparedListener, OnInfoListener {
+	
+	//控件
 	private ImageView mPlayBtn;
-	private VideoListAdapter mVideoListAdapter = null;
-	private RadioListAdapter mradioListAdapter = null;
-	private List<VideoInfo> videoInfoList;
-	private List<Radio> radios;
 	private ListView mVideoList;
 	private ListView mRadioList;
-	private boolean isAudioPlaying = true;
+	
+	//数据
+	private List<Video> videos;
+	private List<Radio> radios;
+	
+	//适配器
+	private VideoListAdapter mVideoListAdapter = null;
+	private RadioListAdapter mradioListAdapter = null;
+
+	// 目前播放
 	private int currentRadioPlayItem;
 	// 播放状态
 	private Map<Integer, Boolean> mPlayStatus;
-	// path of video
-	private String cur_path = "/sdcard/smartVentilator/";
-
+	// 电台播放器
 	private MediaPlayer mMediaPlayer;
-
-	// 后台处理
+	//包管理器
+	private PackageManager packageManager;
+	
+	// 后台处理handler
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -70,29 +71,30 @@ public class MediaFragment extends Fragment implements
 					RadioListAdapter.BUNDLE_KEY);
 
 			switch (msg.what) {
-			case 0:
-				List<VideoInfo> videoInfoList = (List<VideoInfo>) msg.obj;
+			
+			case VideoUtil.GET_VIDEO_FINISH:
+				List<Video> videoInfoList = (List<Video>) msg.obj;
 				mVideoListAdapter = new VideoListAdapter(getActivity(),
 						videoInfoList);
 				mVideoList.setAdapter(mVideoListAdapter);
-				break;
-			case RadioListAdapter.CLICK_BUTTON_PLAY:
+				
+				break;	
+			case RadioUtil.CLICK_BUTTON_PLAY:
 				Radio r = (Radio) data;
 				Log.e("sv", "start " + r.getUrl());
 				mPlayStatus = (Map<Integer, Boolean>) msg.obj;
 				playRadio(r.getUrl());
 				currentRadioPlayItem = msg.arg1;
-				isAudioPlaying = true;
 				mradioListAdapter.refresh(mPlayStatus);
+				
 				break;
-			case RadioListAdapter.CLICK_BUTTON_STOP:
+			case RadioUtil.CLICK_BUTTON_STOP:
 				Radio r1 = (Radio) data;
 				Log.e("sv", "stop " + r1.getUrl());
 				mPlayStatus = (Map<Integer, Boolean>) msg.obj;
 				if (mMediaPlayer.isPlaying()
 						&& currentRadioPlayItem == r1.getId() - 1) {
 					mMediaPlayer.pause();
-					isAudioPlaying = false;
 				}
 				for (int i = 0; i < mPlayStatus.size(); i++) {
 					if (i == currentRadioPlayItem) {
@@ -101,6 +103,9 @@ public class MediaFragment extends Fragment implements
 						mPlayStatus.put(i, false);
 					}
 				}
+				
+				break;
+			default:
 				break;
 			}
 		}
@@ -110,168 +115,112 @@ public class MediaFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
+
 		Context context = getActivity();
 		mPlayStatus = new HashMap<Integer, Boolean>();
-		final PackageManager packageManager = context.getPackageManager();
+		this.packageManager = context.getPackageManager();
 
 		View view = inflater.inflate(R.layout.fragment_media, null);
-		// play button
+		initview(view);
+		initListener();
+		initData();
+		return view;
+	}
+	
+	/***
+	 * 初始化界面
+	 * @param view
+	 */
+	private void initview(View view){
+		//播放按钮
 		mPlayBtn = (ImageView) view.findViewById(R.id.media_play_button);
-		mPlayBtn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = packageManager
-						.getLaunchIntentForPackage("com.youku.phone");
-				if (intent == null) {
-					// System.out.println("APP not found!");
-					String str = "market://details?id=com.youku.phone";
-					Intent localIntent = new Intent(
-							"android.intent.action.VIEW");
-					localIntent.setData(Uri.parse(str));
-					startActivity(localIntent);
-				} else {
-					startActivity(intent);
-				}
-			}
-		});
-
 		// Video
 		mVideoList = (ListView) view.findViewById(R.id.lv_video);
-		mVideoList.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				playVideo(videoInfoList.get(position).getPath());
-			}
-		});
-		// 获取视频
-		loadVaule();
-
-		// radio
+		//电台控件
 		mRadioList = (ListView) view.findViewById(R.id.lv_radio);
-		radios = getRadioList();
-		// init play status
+	}
+	
+	/***
+	 * 初始化监听器
+	 */
+	private void initListener(){
+		mPlayBtn.setOnClickListener(this);
+		mVideoList.setOnItemClickListener(this);
+	}
+	
+	/***
+	 * 初始化数据
+	 */
+	private void initData(){
+		//获取视频列表
+		videos=VideoUtil.getVideoList(handler);
+		//获取电台列表
+		radios = RadioUtil.getRadioList(this);
+		//初始化播放状态
 		for (int i = 0; i < radios.size(); i++)
 			mPlayStatus.put(i, false);
-
+		//绑定adapter
 		mradioListAdapter = new RadioListAdapter(getActivity(), handler,
 				mPlayStatus, (ArrayList<Radio>) radios);
 		mRadioList.setAdapter(mradioListAdapter);
-
-		return view;
 	}
-
+	
+	/**
+	 * 点击事件
+	 */
 	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		if (mMediaPlayer != null) {
-			mMediaPlayer.release();
-			mMediaPlayer = null;
-		}
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-	}
-
-	// main function of get video from folder
-	private void loadVaule() {
-		File file = new File(cur_path);
-		if (!file.exists()) {
-			try {
-				file.mkdirs();
-				file = new File(cur_path);
-			} catch (Exception e) {
-				return;
+	public void onClick(View v) {
+		switch(v.getId()){		
+		case R.id.media_play_button:
+			Intent intent = packageManager
+					.getLaunchIntentForPackage("com.youku.phone");
+			if (intent == null) {
+				String str = "http://dl.m.cc.youku.com/android/phone/Youku_Phone_youkuweb.apk";
+				Intent localIntent = new Intent(
+						"android.intent.action.VIEW");
+				localIntent.setData(Uri.parse(str));
+				startActivity(localIntent);
+			} else {
+				stopRadio();
+				startActivity(intent);
 			}
+			break;		
+			
+		default:
+			break;
 		}
-		File[] files = null;
-		files = file.listFiles();
-		videoInfoList = new ArrayList<VideoInfo>();
-		for (int i = 0; i < files.length; i++) {
-			VideoInfo video = new VideoInfo();
-			video.setName(getFileName(files[i].getPath()));
-			video.setThumb(getVideoThumbnail(files[i].getPath(), 200, 200,
-					MediaStore.Images.Thumbnails.MICRO_KIND));
-			video.setPath(files[i].getPath());
-			videoInfoList.add(video);
-
-		}
-		Message msg = new Message();
-		msg.what = 0;
-		msg.obj = videoInfoList;
-
-		handler.sendMessage(msg);
 	}
-
-	// 获取视频的缩略图
-	private Bitmap getVideoThumbnail(String videoPath, int width, int height,
-			int kind) {
-		Bitmap bitmap = null;
-		// 获取视频的缩略图
-		bitmap = ThumbnailUtils.createVideoThumbnail(videoPath, kind);
-		// System.out.println("w"+bitmap.getWidth());
-		// System.out.println("h"+bitmap.getHeight());
-		bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height,
-				ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
-		return bitmap;
-	}
-
-	// 调用系统播放器 播放视频
-	private void playVideo(String videoPath) {
-		Intent intent = new Intent(Intent.ACTION_VIEW);
-		String strend = "";
-		if (videoPath.toLowerCase().endsWith(".mp4")) {
-			strend = "mp4";
-		} else if (videoPath.toLowerCase().endsWith(".3gp")) {
-			strend = "3gp";
-		} else if (videoPath.toLowerCase().endsWith(".mov")) {
-			strend = "mov";
-		} else if (videoPath.toLowerCase().endsWith(".wmv")) {
-			strend = "wmv";
+	
+	/**
+	 * 列表点击事件
+	 */
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		switch(parent.getId()){
+		case R.id.lv_video:
+			stopRadio();
+			playVideo(position);
+			break;
+			
+		default:
+			break;
 		}
-
-		intent.setDataAndType(Uri.parse(videoPath), "video/" + strend);
+	}
+	
+	/***
+	 * 播放视频
+	 * @param position
+	 */
+	private void playVideo(int position){
+		Intent intent=VideoUtil.getVideoIntent(videos.get(position).getPath());
 		startActivity(intent);
 	}
-
-	// 从路径获取文件名
-	public String getFileName(String pathandname) {
-		int start = pathandname.lastIndexOf("/");
-		int end = pathandname.lastIndexOf(".");
-		if (start != -1 && end != -1) {
-			return pathandname.substring(start + 1, end);
-		} else {
-			return null;
-		}
-	}
-
-	// 获取Radio列表
-	private List<Radio> getRadioList() {
-		List<Radio> radiolist = null;
-		try {
-			InputStream is = getActivity().getAssets().open("radio.xml");
-			RadioXmlParser parser = new RadioXmlParser();
-			radiolist = parser.parse(is);
-			// for (Radio book : radiolist) {
-			// Log.i("sv", book.toString());
-			// }
-		} catch (Exception e) {
-			Log.e("sv", e.getLocalizedMessage());
-		}
-		return radiolist;
-	}
-
+	
+	/**
+	 * 播放电台音频
+	 * @param url
+	 */
 	private void playRadio(final String url) {
 		new Thread(new Runnable() {
 
@@ -319,26 +268,51 @@ public class MediaFragment extends Fragment implements
 		}).start();
 
 	}
+	/**
+	 * 停止播放电台
+	 */
+	private void stopRadio(){
+		if (mMediaPlayer != null && mradioListAdapter != null) {
+			mMediaPlayer.stop();
+			for (int i = 0; i < mPlayStatus.size(); i++)
+				mPlayStatus.put(i, false);
+			mradioListAdapter.refresh(mPlayStatus);
+		}
+	}
 
 	@Override
 	public void onPrepared(MediaPlayer mp) {
-		// TODO Auto-generated method stub
-		// btn_play.setClickable(true);
-		// txt_tip.setVisibility(View.GONE);
 		mMediaPlayer.start();
 	}
 
 	@Override
 	public void onBufferingUpdate(MediaPlayer mp, int percent) {
 		// TODO Auto-generated method stub
-		// txt_tip.setVisibility(View.VISIBLE);
-		// txt_tip.setText("正在缓冲"+percent+"%");
+
 	}
 
 	@Override
 	public boolean onInfo(MediaPlayer mp, int what, int extra) {
-		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		if (mMediaPlayer != null) {
+			mMediaPlayer.release();
+			mMediaPlayer = null;
+		}
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 	}
 
 }
