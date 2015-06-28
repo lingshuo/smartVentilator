@@ -7,8 +7,11 @@ import java.util.List;
 
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.fragment.*;
+import cn.lisa.smartventilator.service.MonitorService;
 import cn.lisa.smartventilator.view.BottomTabView;
 import android.app.Fragment;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -78,7 +81,33 @@ public class MainActivity extends FragmentActivity {
 		mBottomTabView.addItemViews(tabTexts, mFragments, tabDrawables);
 
 		mBottomTabView.setTabPadding(2, 2, 2, 2);
-
+		
+		//Æô¶¯¼à¿Ø·þÎñ
+		Intent intent = new Intent();
+		intent.setClass(this,MonitorService.class);
+		startService(intent);
+		
 	}
 
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		try {    
+	        super.onConfigurationChanged(newConfig);    
+	        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {    
+	            // land    
+	        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {    
+	            // port    
+	        }    
+	    } catch (Exception ex) {
+	    	ex.printStackTrace();
+	    }
+	}
+	
+	@Override
+	protected void onDestroy() {
+		Intent intent = new Intent();  
+        intent.setClass(this, MonitorService.class);
+        stopService(intent);  
+        super.onDestroy();
+	}
 }

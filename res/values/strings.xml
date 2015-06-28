@@ -6,8 +6,8 @@
     <string name="action_settings">Settings</string>
 
     <!-- string in moniter page -->
-    <string name="str_moniter_smoke">烟雾浓度</string>
-    <string name="str_moniter_phenolic">酚醛浓度</string>
+    <string name="str_moniter_smog">烟雾浓度</string>
+    <string name="str_moniter_aldehyde">酚醛浓度</string>
     <string name="str_moniter_pm2.5">PM2.5指标</string>
     <string name="str_control_ventilator">风机</string>
     <string name="str_control_ventilator_on">风机开</string>

@@ -212,57 +212,31 @@
         android:id="@+id/monitor_layout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="4"
         android:orientation="vertical" >
 
         <LinearLayout
-            android:id="@+id/monitor_smoke_layout"
+            android:id="@+id/monitor_smog_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
-            <RelativeLayout
-                android:id="@+id/monitor_smoke_info_layout"
+            <TextView
+                android:id="@+id/monitor_smog_tv"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" >
-
-                <TextView
-                    android:id="@+id/monitor_smoke_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:text="@string/str_moniter_smoke"
-                    android:textColor="@color/black"
-                    android:textSize="30sp" />
-
-                <TextView
-                    android:id="@+id/monitor_smoke_result"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/monitor_smoke_tv"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:text="@string/str_moniter_smoke"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <RatingBar
-                    android:id="@+id/ratingBar1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true" />
-            </RelativeLayout>
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/str_moniter_smog"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
             <LinearLayout
-                android:id="@+id/monitor_smoke_bar"
-                android:layout_width="0dp"
+                android:id="@+id/monitor_smog_bar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="2"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -289,27 +263,36 @@
                     android:layout_height="20dp"
                     android:background="@drawable/yellow" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/monitor_smog_result"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/monitor_phenolic_layout"
+            android:id="@+id/monitor_aldehyde_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/monitor_phenolic_tv"
+                android:id="@+id/monitor_aldehyde_tv"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/str_moniter_phenolic"
+                android:text="@string/str_moniter_aldehyde"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
             <LinearLayout
-                android:id="@+id/monitor_phenolic_bar"
+                android:id="@+id/monitor_aldehyde_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -341,7 +324,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/monitor_phenolic_result"
+                android:id="@+id/monitor_aldehyde_result"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

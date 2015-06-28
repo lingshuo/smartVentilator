@@ -1,7 +1,13 @@
 package cn.lisa.smartventilator.fragment;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +16,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import cn.lisa.smartventilator.R;
+import cn.lisa.smartventilator.bean.Ventilator;
+import cn.lisa.smartventilator.service.MonitorService;
+import cn.lisa.smartventilator.util.VentilatorUtil;
 
 public class MonitorFragment extends Fragment implements OnClickListener,
 		OnCheckedChangeListener {
@@ -21,20 +31,25 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 	private ToggleButton tb_lamp;
 	private ToggleButton tb_ultraviolet;
 	private ToggleButton tb_plasma;
-	private TextView tv_smoke;
-	private TextView tv_phenolic;
+	private TextView tv_smog;
+	private TextView tv_aldehyde;
 	private TextView tv_pm2_5;
-	private LinearLayout layout_gears_control;
-	private LinearLayout layout_gears_blank;
+	private RelativeLayout layout_gears_control;
+	private RelativeLayout layout_gears_blank;
 	private Button mBtn1;
 	private Button mBtn2;
 	private Button mBtn3;
-
+	private BroadcastMain broadcastMain;
+	private Context context;
+	public static VentilatorUtil ventilatorUtil;
+	private Ventilator ventilator;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_monitor, null);
 		view = initView(view);
+		this.context=getActivity();
+		ventilatorUtil=new VentilatorUtil();
 		initData();
 		initListener();
 		return view;
@@ -45,9 +60,9 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 	 */
 	private View initView(View view) {
 		// 显示结果
-		tv_smoke = (TextView) view.findViewById(R.id.monitor_smoke_result);
-		tv_phenolic = (TextView) view
-				.findViewById(R.id.monitor_phenolic_result);
+		tv_smog = (TextView) view.findViewById(R.id.monitor_smog_result);
+		tv_aldehyde = (TextView) view
+				.findViewById(R.id.monitor_aldehyde_result);
 		tv_pm2_5 = (TextView) view.findViewById(R.id.monitor_pm2_5_result);
 
 		// 控制
@@ -59,9 +74,9 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 				.findViewById(R.id.control_ultraviolet);
 
 		// 档位
-		layout_gears_control = (LinearLayout) view
+		layout_gears_control = (RelativeLayout) view
 				.findViewById(R.id.control_ventilator_gears);
-		layout_gears_blank = (LinearLayout) view
+		layout_gears_blank = (RelativeLayout) view
 				.findViewById(R.id.control_ventilator_blank);
 		if (!tb_ventilator.isChecked()) {
 			layout_gears_blank.setVisibility(View.VISIBLE);
@@ -98,9 +113,10 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 	 * 初始化监控显示数据
 	 */
 	private void initData() {
-		tv_smoke.setText("良好");
-		tv_phenolic.setText("良好");
-		tv_pm2_5.setText("良好");
+		broadcastMain = new BroadcastMain();  
+        IntentFilter filter = new IntentFilter();  
+        filter.addAction(MonitorService.BROADCASTACTION);
+        context.registerReceiver( broadcastMain, filter );
 	}
 
 	/**
@@ -189,4 +205,40 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 	public void onResume() {
 		super.onResume();
 	}
+	 public class BroadcastMain extends BroadcastReceiver{
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String jsonString = intent.getExtras().getString("jsonstr");
+			ventilatorUtil.setVentilator(jsonString);
+			 Message msg = handler.obtainMessage();
+			 msg.what = 01;
+			 msg.obj=ventilatorUtil.getVentilator();
+	         handler.sendMessage(msg);
+		} 
+		
+	}
+	 Handler handler = new Handler()  
+	    {  
+	        public void handleMessage(Message msg)  
+	        {  
+	        	if(msg.obj!=null)
+	            switch (msg.what)  
+	            {  
+	                case 01:  
+	                    ventilator = (Ventilator)msg.obj; 
+	            		tv_smog.setText(ventilator.getSmog());
+	            		tv_aldehyde.setText(ventilator.getAldehyde());
+	            		tv_pm2_5.setText(ventilator.getPm2_5()); 
+	                    break;  
+	  
+	                default:  
+	                    break;  
+	            }else{
+	            	Log.e("sv", "null");
+	            }  
+	              
+	        };  
+	  
+	    }; 
 }

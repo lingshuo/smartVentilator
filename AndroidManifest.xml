@@ -48,6 +48,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </receiver>
+        <service	android:enabled="true"
+					android:name=".service.MonitorService"
+					/>
     </application>
 
 </manifest>
