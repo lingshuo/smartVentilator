@@ -14,7 +14,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dip"
         android:textColor="@color/white"
-        android:text="@string/fw_lock"
+        android:text="@string/fw_lock_btn"
         />
     <Button 
         android:id="@+id/close"

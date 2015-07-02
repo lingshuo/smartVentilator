@@ -4,7 +4,8 @@
     <string name="app_name">smartVentilator</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-	<string name="fw_lock">锁屏</string>
+	<string name="fw_lock">点击锁屏</string>
+	<string name="fw_lock_btn">锁屏</string>
 	<string name="fw_close">关闭悬浮框</string>
 	<string name="fw_back">返回</string>
     <!-- string in moniter page -->

@@ -12,5 +12,6 @@
         android:layout_height="fill_parent"
         android:gravity="center"
         android:textColor="@color/white"
+        android:text="@string/fw_lock"
         />
 </LinearLayout>
