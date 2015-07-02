@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.lisa.smartventilator.hardware.UartAgent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -18,6 +19,7 @@ public class MonitorService extends Service {
 
 	public static final String BROADCASTACTION = "getinfo";
 	Timer timer;
+	UartAgent uartagent;
 	@Override
 	
 	public void onCreate() {
@@ -32,22 +34,32 @@ public class MonitorService extends Service {
 	}
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		timer=new Timer();
-		timer.schedule(new TimerTask() {
+		//baudrate:115200, data:8,stop:1, parity:N
+		uartagent=new UartAgent("/dev/ttyO1", 115200, 8, 1, (byte)'N', true);
+		uartagent.init();
+		
+		new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
-				String jsonString=getVentilator();
-				Intent intent = new Intent();  
-                intent.setAction( BROADCASTACTION );  
-                intent.putExtra( "jsonstr", jsonString );  
-                sendBroadcast(intent);
+				
+				while(true) {
+					String jsonString=uartagent.getStatusBlock();
+					Log.i("sv", "load_data:"+jsonString);
+					if(jsonString==null || "".equals(jsonString))
+						continue;
+					
+					Intent intent = new Intent();  
+		            intent.setAction( BROADCASTACTION );  
+		            intent.putExtra( "jsonstr", jsonString );  
+		            sendBroadcast(intent);
+				}					
 			}
-		},0, 10*1000);
+		}).start();
 		return super.onStartCommand(intent, flags, startId);
 	}
 	
-	private String getVentilator() {
+	public String getVentilator() {
 		String srsString = "";  
         try  
         {  

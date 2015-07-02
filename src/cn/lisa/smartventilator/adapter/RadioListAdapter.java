@@ -6,7 +6,7 @@ import java.util.Map;
 
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.bean.*;
-import cn.lisa.smartventilator.util.RadioUtil;
+import cn.lisa.smartventilator.manager.RadioManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -78,13 +78,13 @@ public class RadioListAdapter extends BaseAdapter {
 
 		ImageButton btn_play = (ImageButton) view.findViewById(R.id.btn_play);
 		btn_play.setOnClickListener(new OnItemChildClickListener(
-				RadioUtil.CLICK_BUTTON_PLAY, position));
-		btn_play.setTag(RadioUtil.CLICK_BUTTON_PLAY);
+				RadioManager.CLICK_BUTTON_PLAY, position));
+		btn_play.setTag(RadioManager.CLICK_BUTTON_PLAY);
 
 		ImageButton btn_stop = (ImageButton) view.findViewById(R.id.btn_stop);
 		btn_stop.setOnClickListener(new OnItemChildClickListener(
-				RadioUtil.CLICK_BUTTON_STOP, position));
-		btn_stop.setTag(RadioUtil.CLICK_BUTTON_STOP);
+				RadioManager.CLICK_BUTTON_STOP, position));
+		btn_stop.setTag(RadioManager.CLICK_BUTTON_STOP);
 
 		if (playStaus.get(position)) {
 			btn_play.setVisibility(View.INVISIBLE);
@@ -114,7 +114,7 @@ public class RadioListAdapter extends BaseAdapter {
 			TextView tv = (TextView) vp.findViewById(R.id.radio_name);
 			String title = tv.getText().toString();
 			// 创建Message并填充数据，通过mHandle联系Activity接收处理
-			if (v.getTag().equals(RadioUtil.CLICK_BUTTON_PLAY)) {
+			if (v.getTag().equals(RadioManager.CLICK_BUTTON_PLAY)) {
 				v.setVisibility(View.INVISIBLE);
 				ImageButton ib = (ImageButton) vp.findViewById(R.id.btn_stop);
 				ib.setVisibility(View.VISIBLE);
@@ -125,7 +125,7 @@ public class RadioListAdapter extends BaseAdapter {
 						playStaus.put(i, false);
 				}
 
-			} else if (v.getTag().equals(RadioUtil.CLICK_BUTTON_STOP)) {
+			} else if (v.getTag().equals(RadioManager.CLICK_BUTTON_STOP)) {
 				v.setVisibility(View.INVISIBLE);
 				ImageButton ib = (ImageButton) vp.findViewById(R.id.btn_play);
 				ib.setVisibility(View.VISIBLE);

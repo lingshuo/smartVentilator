@@ -1,4 +1,4 @@
-package cn.lisa.smartventilator.util;
+package cn.lisa.smartventilator.manager;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -6,22 +6,24 @@ import java.util.List;
 
 import org.xmlpull.v1.XmlPullParser;
 
+import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.util.Log;
 import android.util.Xml;
 import cn.lisa.smartventilator.bean.Radio;
 
-public class RadioUtil {
+public class RadioManager {
 	public final static int CLICK_BUTTON_PLAY = 1;
 	public final static int CLICK_BUTTON_STOP = 2;
 	/**
 	 *  获取Radio列表
 	 * @return List<Radio>
 	 */
-	public static List<Radio> getRadioList(Fragment mFragment) {
+	public static List<Radio> getRadioList(Context context) {
 		List<Radio> radiolist = null;
 		try {
-			InputStream is = mFragment.getActivity().getAssets().open("radio.xml");
+			InputStream is = context.getAssets().open("radio.xml");
 			RadioXmlParser parser = new RadioXmlParser();
 			radiolist = parser.parse(is);
 

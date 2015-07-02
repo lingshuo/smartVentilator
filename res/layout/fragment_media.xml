@@ -24,15 +24,13 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:layout_weight="1" >
-
-        <ListView
-            android:id="@+id/lv_video"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:divider="@color/white"
-            android:dividerHeight="10dp" >
-        </ListView>
+        
+		<ImageView
+            android:id="@+id/video_play_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/media_play_btn" />
+        
     </LinearLayout>
     <LinearLayout
         android:id="@+id/media_radio_layout"
@@ -40,15 +38,13 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:layout_weight="1" >
+		
+		<ImageView
+            android:id="@+id/radio_play_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/media_play_btn" />
 
-        <ListView
-            android:id="@+id/lv_radio"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:divider="@color/white"
-            android:dividerHeight="10dp">
-        </ListView>
 
     </LinearLayout>
 </LinearLayout>

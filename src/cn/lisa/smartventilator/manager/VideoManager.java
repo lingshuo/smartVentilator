@@ -1,4 +1,4 @@
-package cn.lisa.smartventilator.util;
+package cn.lisa.smartventilator.manager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import android.provider.MediaStore;
  * @author LingShuo
  *
  */
-public class VideoUtil {
+public class VideoManager {
 	public final static int GET_VIDEO_FINISH = 0;
 	// ÊÓÆµÂ·¾¶
 	private final static String cur_path = "/sdcard/smartVentilator/";
@@ -43,8 +43,8 @@ public class VideoUtil {
 		List<Video> videoList = new ArrayList<Video>();
 		for (int i = 0; i < files.length; i++) {
 			Video video = new Video();
-			video.setName(VideoUtil.getFileName(files[i].getPath()));
-			video.setThumb(VideoUtil.getVideoThumbnail(files[i].getPath(), 100,
+			video.setName(VideoManager.getFileName(files[i].getPath()));
+			video.setThumb(VideoManager.getVideoThumbnail(files[i].getPath(), 100,
 					50, MediaStore.Images.Thumbnails.MICRO_KIND));
 			video.setPath(files[i].getPath());
 			videoList.add(video);

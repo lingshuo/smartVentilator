@@ -8,10 +8,13 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.EventLog.Event;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -22,11 +25,11 @@ import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.bean.Ventilator;
+import cn.lisa.smartventilator.manager.VentilatorManager;
 import cn.lisa.smartventilator.service.MonitorService;
-import cn.lisa.smartventilator.util.VentilatorUtil;
 
 public class MonitorFragment extends Fragment implements OnClickListener,
-		OnCheckedChangeListener {
+		OnCheckedChangeListener ,OnTouchListener{
 	private ToggleButton tb_ventilator;
 	private ToggleButton tb_lamp;
 	private ToggleButton tb_ultraviolet;
@@ -41,16 +44,42 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 	private Button mBtn3;
 	private BroadcastMain broadcastMain;
 	private Context context;
-	public static VentilatorUtil ventilatorUtil;
+	public static VentilatorManager ventilatorManager;
 	private Ventilator ventilator;
+	/***
+	 * 处理界面数据显示的handler
+	 */
+	Handler handler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.obj != null)
+				switch (msg.what) {
+				case VentilatorManager.SHOW_DATA:
+					Ventilator ventilator = (Ventilator) msg.obj;
+					if(ventilator!=null){
+						Log.i("sv", ventilator.toString());
+						initdata(ventilator);
+					}
+					break;
+
+				default:
+					break;
+				}
+			else {
+				Log.e("sv", "null");
+			}
+
+		};
+
+	};
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_monitor, null);
 		view = initView(view);
-		this.context=getActivity();
-		ventilatorUtil=new VentilatorUtil();
-		initData();
+		this.context = getActivity();
+		ventilatorManager = new VentilatorManager();
+		initReceiver();
 		initListener();
 		return view;
 	}
@@ -98,11 +127,16 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 	 * 初始化监听器
 	 */
 	private void initListener() {
-		// 开关按钮监听事件
-		tb_ventilator.setOnCheckedChangeListener(this);
+		//状态改变时的监听器
 		tb_lamp.setOnCheckedChangeListener(this);
 		tb_plasma.setOnCheckedChangeListener(this);
 		tb_ultraviolet.setOnCheckedChangeListener(this);
+		tb_ventilator.setOnCheckedChangeListener(this);
+		//点击，发送
+		tb_lamp.setOnTouchListener(this);
+		tb_plasma.setOnTouchListener(this);
+		tb_ultraviolet.setOnTouchListener(this);
+		tb_ventilator.setOnTouchListener(this);
 		// 档位切换监听事件
 		mBtn1.setOnClickListener(this);
 		mBtn2.setOnClickListener(this);
@@ -110,15 +144,29 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 	}
 
 	/**
-	 * 初始化监控显示数据
+	 * 初始化广播接收器
 	 */
-	private void initData() {
-		broadcastMain = new BroadcastMain();  
-        IntentFilter filter = new IntentFilter();  
-        filter.addAction(MonitorService.BROADCASTACTION);
-        context.registerReceiver( broadcastMain, filter );
+	private void initReceiver() {
+		broadcastMain = new BroadcastMain();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(MonitorService.BROADCASTACTION);
+		context.registerReceiver(broadcastMain, filter);
 	}
-
+	/***
+	 * 初始化显示数据
+	 * @param ventilator
+	 */
+	private void initdata(Ventilator ventilator){
+		this.ventilator=ventilator;
+		tv_smog.setText(ventilator.getSmog());
+		tv_aldehyde.setText(ventilator.getAldehyde());
+		tv_pm2_5.setText(ventilator.getPm2_5());
+		tb_lamp.setChecked(ventilator.getState_lamp());
+		tb_plasma.setChecked(ventilator.getState_plasma());
+		tb_ultraviolet.setChecked(ventilator.getState_ultraviolet());
+		tb_ventilator.setChecked(ventilator.getState_ventilator());
+		displayGear(ventilator.getGear_ventilator());
+	}
 	/**
 	 * 切换档位
 	 * 
@@ -127,6 +175,39 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 	 */
 	private void changeGear(int gear) {
 		Log.i("sv", "change gears to " + gear);
+	}
+	/***
+	 * 显示档位
+	 * @param gear
+	 */
+	private void displayGear(int gear){
+		switch (gear) {
+		case 1:
+			layout_gears_blank.setVisibility(View.GONE);
+			layout_gears_control.setVisibility(View.VISIBLE);
+			mBtn1.setVisibility(View.VISIBLE);
+			mBtn2.setVisibility(View.GONE);
+			mBtn3.setVisibility(View.GONE);
+			break;
+		case 2:
+			layout_gears_blank.setVisibility(View.GONE);
+			layout_gears_control.setVisibility(View.VISIBLE);
+			mBtn1.setVisibility(View.GONE);
+			mBtn2.setVisibility(View.VISIBLE);
+			mBtn3.setVisibility(View.GONE);
+			break;
+		case 3:
+			layout_gears_blank.setVisibility(View.GONE);
+			layout_gears_control.setVisibility(View.VISIBLE);
+			mBtn1.setVisibility(View.GONE);
+			mBtn2.setVisibility(View.GONE);
+			mBtn3.setVisibility(View.VISIBLE);
+			break;
+		default:
+			layout_gears_blank.setVisibility(View.VISIBLE);
+			layout_gears_control.setVisibility(View.GONE);
+			break;
+		}
 	}
 
 	/***
@@ -146,6 +227,7 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 			break;
 		// 风机开关
 		case R.id.control_ventilator:
+			Log.i("sv", "ventilator check changed");
 			if (isChecked) {
 				// 选中
 				layout_gears_blank.setVisibility(View.GONE);
@@ -190,7 +272,43 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 			break;
 		}
 	}
-
+	/***
+	 * 点击开关，发送指令
+	 */
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		if(event.getAction()==MotionEvent.ACTION_DOWN){
+			return true;
+		}
+		else if(event.getAction()==MotionEvent.ACTION_UP){
+			switch (v.getId()) {
+			// 照明灯开关
+			case R.id.control_lamp:
+				Log.i("sv", "lamp touched");
+//				ventilatorManager.forceUpdate(context);
+				return true;
+			// 紫外线设备开关
+			case R.id.control_ultraviolet:
+				Log.i("sv", "ultraviolet touched");
+//				ventilatorManager.forceUpdate(context);
+				return true;
+			// 等离子设备开关
+			case R.id.control_plasma:
+				Log.i("sv", "plasma touched");
+//				ventilatorManager.forceUpdate(context);
+				return true;
+			// 风机开关
+			case R.id.control_ventilator:
+				Log.i("sv", "ventilator touched");
+//				ventilatorManager.forceUpdate(context);
+				return true;
+			default:
+				break;		
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -205,40 +323,30 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 	public void onResume() {
 		super.onResume();
 	}
-	 public class BroadcastMain extends BroadcastReceiver{
+
+	@Override
+	public void onStop() {
+		try{
+			context.unregisterReceiver(broadcastMain);
+		}catch(Exception e){
+			Log.i("sv", e.getLocalizedMessage());
+		}
+		super.onStop();
+	}
+	public class BroadcastMain extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String jsonString = intent.getExtras().getString("jsonstr");
-			ventilatorUtil.setVentilator(jsonString);
-			 Message msg = handler.obtainMessage();
-			 msg.what = 01;
-			 msg.obj=ventilatorUtil.getVentilator();
-	         handler.sendMessage(msg);
-		} 
-		
+			ventilatorManager.setVentilator(jsonString);
+			Message msg = handler.obtainMessage();
+			msg.what =VentilatorManager.SHOW_DATA;
+			msg.obj = ventilatorManager.getVentilator();
+			handler.sendMessage(msg);
+		}
+
 	}
-	 Handler handler = new Handler()  
-	    {  
-	        public void handleMessage(Message msg)  
-	        {  
-	        	if(msg.obj!=null)
-	            switch (msg.what)  
-	            {  
-	                case 01:  
-	                    ventilator = (Ventilator)msg.obj; 
-	            		tv_smog.setText(ventilator.getSmog());
-	            		tv_aldehyde.setText(ventilator.getAldehyde());
-	            		tv_pm2_5.setText(ventilator.getPm2_5()); 
-	                    break;  
-	  
-	                default:  
-	                    break;  
-	            }else{
-	            	Log.e("sv", "null");
-	            }  
-	              
-	        };  
-	  
-	    }; 
+
+
+	
 }

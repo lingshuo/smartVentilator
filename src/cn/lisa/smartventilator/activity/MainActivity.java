@@ -7,6 +7,7 @@ import java.util.List;
 
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.fragment.*;
+import cn.lisa.smartventilator.service.FloatWindowService;
 import cn.lisa.smartventilator.service.MonitorService;
 import cn.lisa.smartventilator.view.BottomTabView;
 import android.app.Fragment;
@@ -83,10 +84,14 @@ public class MainActivity extends FragmentActivity {
 		mBottomTabView.setTabPadding(2, 2, 2, 2);
 		
 		//启动监控服务
-		Intent intent = new Intent();
-		intent.setClass(this,MonitorService.class);
-		startService(intent);
+		Intent intent1 = new Intent();
+		intent1.setClass(this,MonitorService.class);
+		startService(intent1);
 		
+		//启动桌面悬浮球
+		Intent intent2=new Intent();
+		intent2.setClass(this, FloatWindowService.class);
+		startService(intent2);
 	}
 
 	@Override
