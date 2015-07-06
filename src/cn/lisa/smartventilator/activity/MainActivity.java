@@ -7,10 +7,13 @@ import java.util.List;
 
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.fragment.*;
+import cn.lisa.smartventilator.receiver.LockReceiver;
 import cn.lisa.smartventilator.service.FloatWindowService;
 import cn.lisa.smartventilator.service.MonitorService;
 import cn.lisa.smartventilator.view.BottomTabView;
 import android.app.Fragment;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -22,7 +25,9 @@ public class MainActivity extends FragmentActivity {
 
 	private BottomTabView mBottomTabView;
 	private List<Drawable> tabDrawables = null;
-
+	public DevicePolicyManager policyManager;
+	public ComponentName componentName;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -92,6 +97,17 @@ public class MainActivity extends FragmentActivity {
 		Intent intent2=new Intent();
 		intent2.setClass(this, FloatWindowService.class);
 		startService(intent2);
+		
+		//启动设备管理器
+		policyManager = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
+
+		componentName = new ComponentName(this,LockReceiver.class);
+
+		if (!policyManager.isAdminActive(componentName)) {
+			Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+			intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
+			startActivity(intent);
+		}
 	}
 
 	@Override

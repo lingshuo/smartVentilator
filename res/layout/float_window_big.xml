@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/big_window_layout"
 	android:layout_width="200dip"
-	android:layout_height="200dip"
+	android:layout_height="140dip"
 	android:background="@drawable/bg_big"
 	android:orientation="vertical"
     >
@@ -12,24 +12,15 @@
         android:layout_width="120dip"
         android:layout_height="40dip"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dip"
+        android:layout_marginTop="0dip"
         android:textColor="@color/white"
         android:text="@string/fw_lock_btn"
-        />
-    <Button 
-        android:id="@+id/close"
-        android:layout_width="120dip"
-        android:layout_height="40dip"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dip"
-        android:textColor="@color/white"
-        android:text="@string/fw_close"
         />
     <Button 
         android:id="@+id/back"
         android:layout_width="120dip"
         android:layout_height="40dip"
-        android:layout_marginTop="5dip"
+        android:layout_marginTop="0dip"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/white"
         android:text="@string/fw_back"
