@@ -1,396 +1,427 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/monitor_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="20dp"
-    android:orientation="horizontal" >
+    android:background="@color/monitor_bg"
+    android:orientation="vertical" >
 
-    <!-- 控制的控件 -->
-
-    <LinearLayout
-        android:id="@+id/control_layout"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:orientation="vertical" >
-
-        <RelativeLayout
-            android:id="@+id/control_lamp_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/control_lamp_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:text="@string/str_control_lamp"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
-            <ToggleButton
-                android:id="@+id/control_lamp"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
-                android:button="@drawable/checkbox_iphone"
-                android:checked="false"
-                android:gravity="end|center_vertical"
-                android:text=""
-                android:textOff=""
-                android:textOn="" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/control_ultraviolet_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/control_ultraviolet_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:text="@string/str_control_ultraviolet"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
-            <ToggleButton
-                android:id="@+id/control_ultraviolet"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
-                android:button="@drawable/checkbox_iphone"
-                android:checked="false"
-                android:text=""
-                android:textOff=""
-                android:textOn="" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/control_plasma_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/control_plasma_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:text="@string/str_control_plasma"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
-            <ToggleButton
-                android:id="@+id/control_plasma"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
-                android:button="@drawable/checkbox_iphone"
-                android:checked="false"
-                android:text=""
-                android:textOff=""
-                android:textOn="" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/control_ventilator_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/control_ventilator_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:text="@string/str_control_ventilator"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
-            <ToggleButton
-                android:id="@+id/control_ventilator"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
-                android:button="@drawable/checkbox_iphone"
-                android:checked="false"
-                android:text=""
-                android:textOff=""
-                android:textOn="" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/control_ventilator_blank"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:visibility="visible" >
-        </RelativeLayout>
-        <!-- 档位控制 -->
-
-        <RelativeLayout
-            android:id="@+id/control_ventilator_gears"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:visibility="gone" >
-
-            <TextView
-                android:id="@+id/control_ventilator_gears_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:text="@string/str_control_ventilator_gears"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
-            <AbsoluteLayout
-                android:id="@+id/control_ventilator_gears_btns"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true" >
-
-                <Button
-                    android:id="@+id/control_ventilator_gears_btn_1"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/yellow"
-                    android:text="@string/str_control_ventilator_1"
-                    android:visibility="visible" />
-
-                <Button
-                    android:id="@+id/control_ventilator_gears_btn_2"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/blue"
-                    android:text="@string/str_control_ventilator_2"
-                    android:visibility="gone" />
-
-                <Button
-                    android:id="@+id/control_ventilator_gears_btn_3"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/green"
-                    android:text="@string/str_control_ventilator_3"
-                    android:visibility="gone" />
-            </AbsoluteLayout>
-        </RelativeLayout>
-    </LinearLayout>
     <!-- 监控部分的显示控件 -->
 
     <LinearLayout
-        android:id="@+id/monitor_layout"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="4"
-        android:orientation="vertical" >
+        android:id="@+id/monitor_smog_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
 
         <LinearLayout
-            android:id="@+id/monitor_smog_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:id="@+id/monitor_smog_info_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center|start"
+            android:orientation="vertical"
+            android:paddingEnd="0dp"
+            android:paddingStart="140dp" >
 
             <TextView
                 android:id="@+id/monitor_smog_tv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/str_moniter_smog"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
-            <LinearLayout
-                android:id="@+id/monitor_smog_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal" >
+                android:text="@string/str_monitor_smog"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
 
                 <TextView
-                    android:id="@+id/imageButton1"
-                    android:layout_width="100dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/blue" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/str_monitor_level"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/imageButton2"
-                    android:layout_width="100dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/green" />
-
-                <TextView
-                    android:id="@+id/imageButton3"
-                    android:layout_width="100dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/orange" />
-
-                <TextView
-                    android:id="@+id/imageButton4"
-                    android:layout_width="100dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/yellow" />
+                    android:id="@+id/monitor_smog_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="较低"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/monitor_smog_result"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
+            <RatingBar
+                android:id="@+id/monitor_smog_ratingBar"
+                style="@style/star_rating_bar_style"
+                android:layout_width="wrap_content"
+                android:layout_height="15dip"
+                android:isIndicator="true"
+                android:numStars="4"
+                android:rating="3" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/monitor_aldehyde_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:id="@+id/monitor_smog_bar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:gravity="center|start"
             android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/monitor_aldehyde_tv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/str_moniter_aldehyde"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
-            <LinearLayout
-                android:id="@+id/monitor_aldehyde_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:id="@+id/tv5"
-                    android:layout_width="100dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/blue" />
-
-                <TextView
-                    android:id="@+id/tv6"
-                    android:layout_width="100dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/green" />
-
-                <TextView
-                    android:id="@+id/tv7"
-                    android:layout_width="100dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/orange" />
-
-                <TextView
-                    android:id="@+id/tv8"
-                    android:layout_width="100dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/yellow" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/monitor_aldehyde_result"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
+            <ImageView
+                android:id="@+id/monitor_smog_bar_image"
+                android:layout_width="510dp"
+                android:layout_height="40dp"
+                android:src="@drawable/green" />
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divide"
+        android:orientation="horizontal" />
+
+    <LinearLayout
+        android:id="@+id/monitor_pm2.5_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
 
         <LinearLayout
-            android:id="@+id/monitor_pm2.5_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal" >
+            android:id="@+id/monitor_pm2.5_info_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center|start"
+            android:orientation="vertical"
+            android:paddingEnd="0dp"
+            android:paddingStart="140dp" >
 
             <TextView
                 android:id="@+id/monitor_pm2.5_tv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/str_moniter_pm2.5"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
-            <LinearLayout
-                android:id="@+id/monitor_pm2.5_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal" >
+                android:text="@string/str_monitor_pm2.5"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
 
                 <TextView
-                    android:id="@+id/tv9"
-                    android:layout_width="100dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/blue" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/str_monitor_level"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/tv10"
-                    android:layout_width="100dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/green" />
-
-                <TextView
-                    android:id="@+id/tv11"
-                    android:layout_width="100dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/orange" />
-
-                <TextView
-                    android:id="@+id/tv12"
-                    android:layout_width="100dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/yellow" />
+                    android:id="@+id/monitor_pm2.5_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="很低"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
             </LinearLayout>
 
+            <RatingBar
+                android:id="@+id/monitor_pm2.5_ratingBar"
+                style="@style/star_rating_bar_style"
+                android:layout_width="wrap_content"
+                android:layout_height="15dip"
+                android:isIndicator="true"
+                android:numStars="4"
+                android:rating="4" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/monitor_pm2.5_bar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:gravity="center|start"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/monitor_pm2.5_bar_image"
+                android:layout_width="510dp"
+                android:layout_height="40dp"
+                android:src="@drawable/blue" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divide"
+        android:orientation="horizontal" />
+
+    <LinearLayout
+        android:id="@+id/monitor_aldehyde_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/monitor_aldehyde_info_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center|start"
+            android:orientation="vertical"
+            android:paddingEnd="0dp"
+            android:paddingStart="140dp" >
+
             <TextView
-                android:id="@+id/monitor_pm2.5_result"
+                android:id="@+id/monitor_aldehyde_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_monitor_aldehyde"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/str_monitor_level"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/monitor_aldehyde_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="较高"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <RatingBar
+                android:id="@+id/monitor_aldehyde_ratingBar"
+                style="@style/star_rating_bar_style"
+                android:layout_width="wrap_content"
+                android:layout_height="15dip"
+                android:isIndicator="true"
+                android:numStars="4"
+                android:rating="2" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/monitor_aldehyde_bar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:gravity="center|start"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/monitor_aldehyde_bar_image"
+                android:layout_width="510dp"
+                android:layout_height="40dp"
+                android:src="@drawable/yellow" />
+        </LinearLayout>
+    </LinearLayout>
+    <!-- 控制的控件 -->
+
+    <RelativeLayout
+        android:id="@+id/control_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingBottom="10dp"
+        android:layout_weight="1" >
+
+       <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="560dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@color/control_bg"
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:id="@+id/control_lamp_layout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <ToggleButton
+                    android:id="@+id/control_lamp"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/checkbox_iphone"
+                    android:checked="false"
+                    android:gravity="center_vertical"
+                    android:text=""
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:id="@+id/control_lamp_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/control_lamp"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/str_control_lamp"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/control_ultraviolet_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <ToggleButton
+                    android:id="@+id/control_ultraviolet"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/checkbox_iphone"
+                    android:checked="false"
+                    android:text=""
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:id="@+id/control_ultraviolet_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/control_ultraviolet"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/str_control_ultraviolet"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/control_plasma_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <ToggleButton
+                    android:id="@+id/control_plasma"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/checkbox_iphone"
+                    android:checked="false"
+                    android:text=""
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:id="@+id/control_plasma_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/control_plasma"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/str_control_plasma"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/control_ventilator_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <ToggleButton
+                    android:id="@+id/control_ventilator"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/checkbox_iphone"
+                    android:checked="false"
+                    android:text=""
+                    android:textOff=""
+                    android:textOn="" />
+
+                <TextView
+                    android:id="@+id/control_ventilator_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/control_ventilator"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/str_control_ventilator"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+
         </LinearLayout>
-    </LinearLayout>
+
+        <!-- 档位控制 -->
+
+        <RelativeLayout
+            android:id="@+id/control_ventilator_gears_btns"
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="12dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/linearLayout1"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/control_ventilator_gears_btn_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/yellow"
+                android:text="@string/str_control_ventilator_1"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/control_ventilator_gears_btn_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/blue"
+                android:text="@string/str_control_ventilator_2"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/control_ventilator_gears_btn_3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/green"
+                android:text="@string/str_control_ventilator_3"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divide"
+        android:orientation="horizontal" />
 
 </LinearLayout>

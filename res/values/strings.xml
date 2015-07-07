@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">smartVentilator</string>
+    <string name="app_name">智能烟机</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 	<string name="fw_lock">点击锁屏</string>
@@ -9,9 +9,10 @@
 	<string name="fw_close">关闭悬浮框</string>
 	<string name="fw_back">返回</string>
     <!-- string in moniter page -->
-    <string name="str_moniter_smog">烟雾浓度</string>
-    <string name="str_moniter_aldehyde">酚醛浓度</string>
-    <string name="str_moniter_pm2.5">PM2.5指标</string>
+    <string name="str_monitor_smog">烟雾浓度</string>
+    <string name="str_monitor_level">浓度指数：</string>
+    <string name="str_monitor_aldehyde">酚醛浓度</string>
+    <string name="str_monitor_pm2.5">PM2.5</string>
     <string name="str_control_ventilator">风机</string>
     <string name="str_control_ventilator_on">风机开</string>
     <string name="str_control_ventilator_off">风机关</string>

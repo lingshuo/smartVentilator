@@ -11,6 +11,7 @@ import cn.lisa.smartventilator.receiver.LockReceiver;
 import cn.lisa.smartventilator.service.FloatWindowService;
 import cn.lisa.smartventilator.service.MonitorService;
 import cn.lisa.smartventilator.view.BottomTabView;
+import cn.lisa.smartventilator.view.CustomTitleBar;
 import android.app.Fragment;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
@@ -20,6 +21,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Window;
 
 public class MainActivity extends FragmentActivity {
 
@@ -33,6 +35,8 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		if (!LibsChecker.checkVitamioLibs(this))
 			return;
+		CustomTitleBar ct = new CustomTitleBar();
+		ct.getTitleBar(this, "");
 		setContentView(R.layout.activity_main);
 
 		mBottomTabView = (BottomTabView) findViewById(R.id.mBottomTabView);

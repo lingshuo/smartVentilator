@@ -38,7 +38,6 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 	private TextView tv_aldehyde;
 	private TextView tv_pm2_5;
 	private RelativeLayout layout_gears_control;
-	private RelativeLayout layout_gears_blank;
 	private Button mBtn1;
 	private Button mBtn2;
 	private Button mBtn3;
@@ -104,16 +103,12 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 
 		// 档位
 		layout_gears_control = (RelativeLayout) view
-				.findViewById(R.id.control_ventilator_gears);
-		layout_gears_blank = (RelativeLayout) view
-				.findViewById(R.id.control_ventilator_blank);
-		if (!tb_ventilator.isChecked()) {
-			layout_gears_blank.setVisibility(View.VISIBLE);
-			layout_gears_control.setVisibility(View.GONE);
-		} else {
-			layout_gears_blank.setVisibility(View.GONE);
-			layout_gears_control.setVisibility(View.VISIBLE);
-		}
+				.findViewById(R.id.control_ventilator_gears_btns);
+//		if (!tb_ventilator.isChecked()) {
+//			layout_gears_control.setVisibility(View.GONE);
+//		} else {
+//			layout_gears_control.setVisibility(View.VISIBLE);
+//		}
 
 		// 三个档位的按钮
 		mBtn1 = (Button) view.findViewById(R.id.control_ventilator_gears_btn_1);
@@ -183,28 +178,24 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 	private void displayGear(int gear){
 		switch (gear) {
 		case 1:
-			layout_gears_blank.setVisibility(View.GONE);
 			layout_gears_control.setVisibility(View.VISIBLE);
 			mBtn1.setVisibility(View.VISIBLE);
 			mBtn2.setVisibility(View.GONE);
 			mBtn3.setVisibility(View.GONE);
 			break;
 		case 2:
-			layout_gears_blank.setVisibility(View.GONE);
 			layout_gears_control.setVisibility(View.VISIBLE);
 			mBtn1.setVisibility(View.GONE);
 			mBtn2.setVisibility(View.VISIBLE);
 			mBtn3.setVisibility(View.GONE);
 			break;
 		case 3:
-			layout_gears_blank.setVisibility(View.GONE);
 			layout_gears_control.setVisibility(View.VISIBLE);
 			mBtn1.setVisibility(View.GONE);
 			mBtn2.setVisibility(View.GONE);
 			mBtn3.setVisibility(View.VISIBLE);
 			break;
 		default:
-			layout_gears_blank.setVisibility(View.VISIBLE);
 			layout_gears_control.setVisibility(View.GONE);
 			break;
 		}
@@ -230,11 +221,9 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 			Log.i("sv", "ventilator check changed");
 			if (isChecked) {
 				// 选中
-				layout_gears_blank.setVisibility(View.GONE);
 				layout_gears_control.setVisibility(View.VISIBLE);
 			} else {
 				// 未选中
-				layout_gears_blank.setVisibility(View.VISIBLE);
 				layout_gears_control.setVisibility(View.GONE);
 			}
 			break;
