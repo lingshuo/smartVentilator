@@ -11,7 +11,6 @@ import cn.lisa.smartventilator.receiver.LockReceiver;
 import cn.lisa.smartventilator.service.FloatWindowService;
 import cn.lisa.smartventilator.service.MonitorService;
 import cn.lisa.smartventilator.view.BottomTabView;
-import cn.lisa.smartventilator.view.CustomTitleBar;
 import android.app.Fragment;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
@@ -35,8 +34,8 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		if (!LibsChecker.checkVitamioLibs(this))
 			return;
-		CustomTitleBar ct = new CustomTitleBar();
-		ct.getTitleBar(this, "");
+//		CustomTitleBar ct = new CustomTitleBar();
+//		ct.getTitleBar(this, "");
 		setContentView(R.layout.activity_main);
 
 		mBottomTabView = (BottomTabView) findViewById(R.id.mBottomTabView);
@@ -61,9 +60,10 @@ public class MainActivity extends FragmentActivity {
 		tabTexts.add("联系我们");
 
 		// 设置样式
-		mBottomTabView.setTabTextColor(Color.BLACK);
+		mBottomTabView.setTabTextColor(Color.rgb(100,100,100));
+		mBottomTabView.setTabTextSize(18);
 		// 选中后的字体的颜色
-		mBottomTabView.setTabSelectColor(Color.rgb(155, 190, 79));
+		mBottomTabView.setTabSelectColor(Color.rgb(0, 85, 166));
 		// mBottomTabView.setTabBackgroundResource(R.drawable.tab_bg2);
 		mBottomTabView.setTabBackgroundColor(Color.WHITE);
 		// mBottomTabView.setTabLayoutBackgroundResource(R.drawable.tablayout_bg2);
@@ -71,21 +71,21 @@ public class MainActivity extends FragmentActivity {
 		// 注意图片的顺序
 		tabDrawables = new ArrayList<Drawable>();
 		tabDrawables.add(this.getResources().getDrawable(
-				R.drawable.collect_normal));
+				R.drawable.monitor_normal));
 		tabDrawables.add(this.getResources().getDrawable(
-				R.drawable.collect_pressed));
+				R.drawable.monitor_pressed));
 		tabDrawables.add(this.getResources()
-				.getDrawable(R.drawable.find_normal));
+				.getDrawable(R.drawable.media_normal));
 		tabDrawables.add(this.getResources().getDrawable(
-				R.drawable.find_pressed));
+				R.drawable.media_pressed));
 		tabDrawables.add(this.getResources().getDrawable(
-				R.drawable.group_normal));
+				R.drawable.setting_normal));
 		tabDrawables.add(this.getResources().getDrawable(
-				R.drawable.group_pressed));
+				R.drawable.setting_pressed));
 		tabDrawables.add(this.getResources()
-				.getDrawable(R.drawable.mine_normal));
+				.getDrawable(R.drawable.contact_normal));
 		tabDrawables.add(this.getResources().getDrawable(
-				R.drawable.mine_pressed));
+				R.drawable.contact_pressed));
 
 		// 演示增加一组
 		mBottomTabView.addItemViews(tabTexts, mFragments, tabDrawables);

@@ -3,7 +3,7 @@
     android:id="@+id/monitor_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/monitor_bg"
+    android:background="@drawable/background_monitor"
     android:orientation="vertical" >
 
     <!-- 监控部分的显示控件 -->
@@ -31,8 +31,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_monitor_smog"
-                android:textColor="@color/black"
-                android:textSize="25sp" />
+                android:textColor="@color/monitor_tv"
+                android:textSize="26sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_monitor_level"
-                    android:textColor="@color/black"
+                    android:textColor="@color/monitor_tv_result"
                     android:textSize="18sp" />
 
                 <TextView
@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="较低"
-                    android:textColor="@color/black"
+                    android:textColor="@color/monitor_tv_result"
                     android:textSize="18sp" />
             </LinearLayout>
 
@@ -76,14 +76,14 @@
                 android:id="@+id/monitor_smog_bar_image"
                 android:layout_width="510dp"
                 android:layout_height="40dp"
-                android:src="@drawable/green" />
+                android:src="@drawable/monitor_bar_2" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/divide"
+        android:background="@drawable/line"
         android:orientation="horizontal" />
 
     <LinearLayout
@@ -109,8 +109,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_monitor_pm2.5"
-                android:textColor="@color/black"
-                android:textSize="25sp" />
+                android:textColor="@color/monitor_tv"
+                android:textSize="26sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -120,7 +120,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_monitor_level"
-                    android:textColor="@color/black"
+                    android:textColor="@color/monitor_tv_result"
                     android:textSize="18sp" />
 
                 <TextView
@@ -128,7 +128,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="很低"
-                    android:textColor="@color/black"
+                    android:textColor="@color/monitor_tv_result"
                     android:textSize="18sp" />
             </LinearLayout>
 
@@ -154,14 +154,14 @@
                 android:id="@+id/monitor_pm2.5_bar_image"
                 android:layout_width="510dp"
                 android:layout_height="40dp"
-                android:src="@drawable/blue" />
+                android:src="@drawable/monitor_bar_1" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/divide"
+        android:background="@drawable/line"
         android:orientation="horizontal" />
 
     <LinearLayout
@@ -187,8 +187,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_monitor_aldehyde"
-                android:textColor="@color/black"
-                android:textSize="25sp" />
+                android:textColor="@color/monitor_tv"
+                android:textSize="26sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -198,7 +198,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_monitor_level"
-                    android:textColor="@color/black"
+                    android:textColor="@color/monitor_tv_result"
                     android:textSize="18sp" />
 
                 <TextView
@@ -206,7 +206,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="较高"
-                    android:textColor="@color/black"
+                    android:textColor="@color/monitor_tv_result"
                     android:textSize="18sp" />
             </LinearLayout>
 
@@ -219,7 +219,6 @@
                 android:numStars="4"
                 android:rating="2" />
         </LinearLayout>
-
         <LinearLayout
             android:id="@+id/monitor_aldehyde_bar"
             android:layout_width="0dp"
@@ -232,7 +231,7 @@
                 android:id="@+id/monitor_aldehyde_bar_image"
                 android:layout_width="510dp"
                 android:layout_height="40dp"
-                android:src="@drawable/yellow" />
+                android:src="@drawable/monitor_bar_3" />
         </LinearLayout>
     </LinearLayout>
     <!-- 控制的控件 -->
@@ -241,34 +240,34 @@
         android:id="@+id/control_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingBottom="10dp"
-        android:layout_weight="1" >
+        android:layout_weight="1">
 
        <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="560dp"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:background="@color/control_bg"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_control"
             android:baselineAligned="false"
             android:orientation="horizontal" >
 
             <RelativeLayout
                 android:id="@+id/control_lamp_layout"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center_horizontal"
+                android:layout_marginStart="15dp"
                 android:orientation="vertical" >
 
                 <ToggleButton
                     android:id="@+id/control_lamp"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="@android:color/transparent"
-                    android:button="@drawable/checkbox_iphone"
-                    android:checked="false"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/checkbox"
+                    android:checked="true"
                     android:gravity="center_vertical"
                     android:text=""
                     android:textOff=""
@@ -281,26 +280,27 @@
                     android:layout_below="@+id/control_lamp"
                     android:layout_centerHorizontal="true"
                     android:text="@string/str_control_lamp"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textColor="@color/control_tv"
+                    android:textSize="22sp" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/control_ultraviolet_layout"
-                android:layout_width="0dp"
+				android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center_horizontal"
+                android:layout_marginStart="60dp"
                 android:orientation="vertical" >
 
                 <ToggleButton
                     android:id="@+id/control_ultraviolet"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="@android:color/transparent"
-                    android:button="@drawable/checkbox_iphone"
-                    android:checked="false"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/checkbox"
+                    android:checked="true"
                     android:text=""
                     android:textOff=""
                     android:textOn="" />
@@ -312,25 +312,26 @@
                     android:layout_below="@+id/control_ultraviolet"
                     android:layout_centerHorizontal="true"
                     android:text="@string/str_control_ultraviolet"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textColor="@color/control_tv"
+                    android:textSize="22sp" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/control_plasma_layout"
-                android:layout_width="0dp"
+				android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center_horizontal"
+                android:layout_marginStart="60dp"
                 android:orientation="vertical" >
 
                 <ToggleButton
                     android:id="@+id/control_plasma"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="@android:color/transparent"
-                    android:button="@drawable/checkbox_iphone"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/checkbox"
                     android:checked="false"
                     android:text=""
                     android:textOff=""
@@ -343,26 +344,27 @@
                     android:layout_below="@+id/control_plasma"
                     android:layout_centerHorizontal="true"
                     android:text="@string/str_control_plasma"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textColor="@color/control_tv"
+                    android:textSize="22sp" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/control_ventilator_layout"
-                android:layout_width="0dp"
+				android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_marginStart="60dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical" >
 
                 <ToggleButton
                     android:id="@+id/control_ventilator"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="@android:color/transparent"
-                    android:button="@drawable/checkbox_iphone"
-                    android:checked="false"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/checkbox"
+                    android:checked="true"
                     android:text=""
                     android:textOff=""
                     android:textOn="" />
@@ -374,8 +376,8 @@
                     android:layout_below="@+id/control_ventilator"
                     android:layout_centerHorizontal="true"
                     android:text="@string/str_control_ventilator"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textColor="@color/control_tv"
+                    android:textSize="22sp" />
             </RelativeLayout>
 
 
@@ -385,34 +387,33 @@
 
         <RelativeLayout
             android:id="@+id/control_ventilator_gears_btns"
-            android:layout_width="170dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="12dp"
-            android:layout_alignParentBottom="true"
+            android:layout_width="169dp"
+            android:layout_height="46dp"            
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp"
             android:layout_toEndOf="@+id/linearLayout1"
+            android:layout_marginStart="5dp"
             android:visibility="visible">
 
             <Button
                 android:id="@+id/control_ventilator_gears_btn_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/yellow"
-                android:text="@string/str_control_ventilator_1"
+                android:background="@drawable/ventilator_gears_btn_1"
                 android:visibility="visible" />
 
             <Button
                 android:id="@+id/control_ventilator_gears_btn_2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/blue"
-                android:text="@string/str_control_ventilator_2"
+                android:background="@drawable/ventilator_gears_btn_2"
                 android:visibility="gone" />
 
             <Button
                 android:id="@+id/control_ventilator_gears_btn_3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/green"
+                android:background="@drawable/ventilator_gears_btn_3"
                 android:text="@string/str_control_ventilator_3"
                 android:visibility="gone" />
         </RelativeLayout>
@@ -421,7 +422,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/divide"
+        android:background="@drawable/line"
         android:orientation="horizontal" />
 
 </LinearLayout>

@@ -3,14 +3,30 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#ffffff"
-    android:orientation="vertical" 
-    >
+    android:orientation="vertical" >
 
-      <cn.lisa.smartventilator.view.BottomTabView
+    <RelativeLayout
+        android:id="@+id/re_title"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/background_monitor"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/company_logo"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="18dp"
+            android:src="@drawable/logo" />
+    </RelativeLayout>
+
+    <cn.lisa.smartventilator.view.BottomTabView
         android:id="@+id/mBottomTabView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
-      
-      
-</RelativeLayout>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/re_title" />
 
+</RelativeLayout>

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.dialog.RadioDialog;
 import cn.lisa.smartventilator.dialog.VideoDialog;
@@ -18,9 +19,9 @@ import cn.lisa.smartventilator.dialog.VideoDialog;
 public class MediaFragment extends Fragment implements OnClickListener{
 	private Context context;
 	//控件
-	private ImageView mYoukuPlayBtn;
-	private ImageView mVideoPlaybtn;
-	private ImageView mRadioPlayBtn;
+	private RelativeLayout mYoukuPlayLayout;
+	private RelativeLayout mVideoPlayLayout;
+	private RelativeLayout mRadioPlayLayout;
 	
 	private VideoDialog mVideoDialog;
 	private RadioDialog mRadioDialog;
@@ -48,11 +49,11 @@ public class MediaFragment extends Fragment implements OnClickListener{
 	 */
 	private void initview(View view){
 		//播放按钮
-		mYoukuPlayBtn = (ImageView) view.findViewById(R.id.media_play_button);
+		mYoukuPlayLayout = (RelativeLayout) view.findViewById(R.id.media_play_layout);
 		//视频
-		mVideoPlaybtn=(ImageView)view.findViewById(R.id.video_play_button);
+		mVideoPlayLayout=(RelativeLayout)view.findViewById(R.id.video_play_layout);
 		//广播
-		mRadioPlayBtn=(ImageView)view.findViewById(R.id.radio_play_button);
+		mRadioPlayLayout=(RelativeLayout)view.findViewById(R.id.radio_play_layout);
 		
 		mVideoDialog=new VideoDialog(context);
 		mRadioDialog=new RadioDialog(context);
@@ -62,9 +63,9 @@ public class MediaFragment extends Fragment implements OnClickListener{
 	 * 初始化监听器
 	 */
 	private void initListener(){
-		mYoukuPlayBtn.setOnClickListener(this);
-		mVideoPlaybtn.setOnClickListener(this);
-		mRadioPlayBtn.setOnClickListener(this);
+		mYoukuPlayLayout.setOnClickListener(this);
+		mVideoPlayLayout.setOnClickListener(this);
+		mRadioPlayLayout.setOnClickListener(this);
 	}
 	
 
@@ -75,7 +76,7 @@ public class MediaFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()){		
-		case R.id.media_play_button:
+		case R.id.media_play_layout:
 			mRadioDialog.stopRadio();
 			Intent intent = packageManager
 					.getLaunchIntentForPackage("com.youku.phone");
@@ -90,12 +91,12 @@ public class MediaFragment extends Fragment implements OnClickListener{
 				startActivity(intent);
 			}
 			break;		
-		case R.id.video_play_button:
+		case R.id.video_play_layout:
 			mRadioDialog.dismiss();
 			mRadioDialog.stopRadio();
 			mVideoDialog.show();
 			break;
-		case R.id.radio_play_button:
+		case R.id.radio_play_layout:
 			mVideoDialog.dismiss();
 			mRadioDialog.show();
 			break;

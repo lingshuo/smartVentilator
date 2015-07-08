@@ -1,8 +1,14 @@
 <resources>
-    <color name="divide">#CFD1D2</color>
-    <color name="title">#EAF7FF</color>
+    <color name="title">#D9EDF8</color>
     <color name="control_bg">#8FBCE6</color>
-    <color name="monitor_bg">#E9F8FF</color>
+    <color name="monitor_tv">#323232</color>
+    <color name="monitor_tv_result">#646464</color>
+    <color name="control_tv">#323232</color>
+    <color name="media_tv">#f0f0f0</color>
+    <color name="setting_id_font">#f0f0f0</color>
+    <color name="setting_tv_display">#009944</color>
+    <color name="setting_tv_input">#559270</color>
+    <color name="setting_tv_font">#fafafa</color>
 	<color name="pink">#ffc0cb</color><!--粉红色 -->
 	<color name="lightpink">#ffb6c1</color><!--亮粉红色 -->
 	<color name="white">#ffffff</color><!--白色 -->

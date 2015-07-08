@@ -2,14 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_setting"
     android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/setting_deviceid_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp"
         android:orientation="horizontal" >
 
         <TextView
@@ -18,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/str_device_id_label"
-            android:textColor="@color/black"
+            android:textColor="@color/setting_id_font"
             android:textSize="30sp" />
 
         <TextView
@@ -26,113 +28,150 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/tv_device_id_label"
-            android:text="123456655"
-            android:textColor="@color/black"
+            android:text="123456789"
+            android:textColor="@color/setting_id_font"
             android:textSize="30sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/setting_user_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"        
-        android:orientation="horizontal" >
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/tv_device_username_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:gravity="right"
-            android:text="@string/str_device_username"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-        <TextView
-            android:id="@+id/tv_device_username"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:gravity="left"
-            android:text="hhhhhh"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+        <RelativeLayout
+            android:layout_width="310dp"
+            android:layout_height="40dp"
+            android:background="@drawable/setting_tv_bg_green" >
 
-        <TextView
-            android:id="@+id/tv_device_password_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:gravity="right"
-            android:text="@string/str_device_password"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-        <TextView
-            android:id="@+id/tv_device_password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:gravity="left"
-            android:text="233333"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/username" />
+
+            <TextView
+                android:id="@+id/tv_device_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toRightOf="@+id/imageView1"
+                android:text="ELIN"
+                android:textColor="@color/setting_tv_font"
+                android:textSize="20sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="310dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/setting_tv_bg_green" >
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/password" />
+
+            <TextView
+                android:id="@+id/tv_device_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toRightOf="@+id/imageView2"
+                android:text="1234"
+                android:textColor="@color/setting_tv_font"
+                android:textSize="20sp" />
+        </RelativeLayout>
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp" >
 
-        
-	<LinearLayout 
-	    android:id="@+id/setting_input_layout"
-    	android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-	    <EditText
-            android:id="@+id/editText_username"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/setting_input_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:ems="10"
-            android:hint="@string/str_device_username_hint" />
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/editText_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:ems="10"
-            android:hint="@string/str_device_password_hint"
-            android:inputType="textPassword" />
-	</LinearLayout>
-    <LinearLayout 
-	    android:id="@+id/setting_btn_layout"
-    	android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+            <EditText
+                android:id="@+id/editText_username"
+                android:layout_width="310dp"
+                android:layout_height="40dp"
+                android:background="@drawable/setting_tv_bg_dark"
+                android:ems="10"
+                android:gravity="center_vertical|start"
+                android:hint="@string/str_device_username_hint"
+                android:inputType="textPassword"
+                android:paddingStart="20dp"
+                android:singleLine="false"
+                android:textColor="@color/setting_tv_font"
+                android:textColorHint="@color/setting_tv_font" >
 
-        <Button
-            android:id="@+id/btn_confirm"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@color/gray"
-            android:text="取消" />
+                <requestFocus />
+            </EditText>
 
-        <Button
-            android:id="@+id/btn_cancel"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@color/green"
-            android:text="确认" />
-</LinearLayout>
+            <EditText
+                android:id="@+id/editText_password"
+                android:layout_width="310dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="21dp"
+                android:background="@drawable/setting_tv_bg_dark"
+                android:ems="10"
+                android:gravity="center_vertical|start"
+                android:hint="@string/str_device_password_hint"
+                android:inputType="textPassword"
+                android:paddingStart="20dp"
+                android:singleLine="false"
+                android:textColor="@color/setting_tv_font"
+                android:textColorHint="@color/setting_tv_font" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/setting_btn_layout"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/setting_input_layout"
+            android:layout_marginEnd="353dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/setting_btn"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="69dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:textSize="20sp"
+                android:textColor="@color/setting_tv_font"
+                android:text="确认" />
+			<LinearLayout 
+			    android:layout_width="2dp"
+			    android:layout_height="match_parent"
+			    android:background="@drawable/btn_line"/>
+            <Button
+                android:id="@+id/btn_confirm"
+                android:layout_width="69dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:textSize="20sp"
+                android:textColor="@color/setting_tv_font"
+                android:text="取消" />
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>
