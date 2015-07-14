@@ -14,22 +14,23 @@
 
         <ImageView
             android:id="@+id/media_play_button"
-            android:layout_width="240dp"
-            android:layout_height="240dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginStart="110dp"
-            android:src="@drawable/youku" />
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            android:layout_marginTop="66dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/youku" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/media_play_button"
             android:layout_below="@+id/media_play_button"
-            android:layout_marginStart="92dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="60dp"
             android:text="@string/str_media_youku"
             android:textColor="@color/media_tv"
-            android:textSize="30sp" />
+            android:textSize="36sp" />
 
     </RelativeLayout>
 
@@ -42,12 +43,12 @@
 
 		<ImageView
 		    android:id="@+id/radio_play_button"
-		    android:layout_width="240dp"
-		    android:layout_height="240dp"
+		    android:layout_width="320dp"
+		    android:layout_height="320dp"
 		    android:layout_alignParentTop="true"
 		    android:layout_centerHorizontal="true"
-		    android:layout_marginTop="50dp"
-		    android:src="@drawable/radio" />
+		    android:layout_marginTop="66dp"
+		    android:background="@drawable/radio" />
 
 		<TextView
 		    android:layout_width="wrap_content"
@@ -55,11 +56,11 @@
 		    android:layout_alignStart="@+id/radio_play_button"
 		    android:layout_below="@+id/radio_play_button"
 		    android:layout_centerHorizontal="true"
-		    android:layout_marginStart="60dp"
-		    android:layout_marginTop="40dp"
+		    android:layout_marginStart="100dp"
+		    android:layout_marginTop="60dp"
 		    android:text="@string/str_media_radio_list"
 		    android:textColor="@color/media_tv"
-		    android:textSize="30sp" />
+		    android:textSize="36sp" />
         
     </RelativeLayout>
     
@@ -72,21 +73,23 @@
 		
 		<ImageView
             android:id="@+id/video_play_button"
-            android:layout_width="240dp"
-            android:layout_height="240dp"
-            android:layout_marginTop="50dp"
-            android:src="@drawable/video" />
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            android:layout_marginTop="66dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/video" />
 
 		<TextView
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_alignStart="@+id/video_play_button"
 		    android:layout_below="@+id/video_play_button"
-		    android:layout_marginStart="63dp"
-		    android:layout_marginTop="40dp"
+		    android:layout_marginStart="100dp"
+		    android:layout_marginTop="60dp"
 		    android:text="@string/str_media_video_list"
 		    android:textColor="@color/media_tv"
-		    android:textSize="30sp" />
+		    android:textSize="36sp" />
 
     </RelativeLayout>
 </LinearLayout>

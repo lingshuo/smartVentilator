@@ -5,15 +5,15 @@ import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Intent;
-
 import android.os.Bundle;
-
+import android.os.PowerManager;
 import android.view.Window;
 import android.view.WindowManager;
 
 public class LockActivity extends Activity {
 
 	DevicePolicyManager policyManager;
+	PowerManager pm;
 	ComponentName componentName;
 
 	@Override
@@ -21,7 +21,7 @@ public class LockActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		policyManager = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
-
+	
 		componentName = new ComponentName(this, LockReceiver.class);
 
 		if (!policyManager.isAdminActive(componentName)) {
@@ -47,9 +47,9 @@ public class LockActivity extends Activity {
 			Window localWindow = getWindow();
 			WindowManager.LayoutParams localLayoutParams = localWindow
 					.getAttributes();
-			localLayoutParams.screenBrightness = 0.05F;
+			localLayoutParams.screenBrightness = 0f;
 			localWindow.setAttributes(localLayoutParams);
-			this.policyManager.lockNow();
+//			this.policyManager.lockNow();
 		}
 		finish();
 	}

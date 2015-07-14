@@ -59,6 +59,10 @@ bool UartConfig(int baudrate, int databits, int stopbits, char parity, int inter
 		cfsetispeed(&options, B9600);
 		cfsetospeed(&options, B9600);
 		break;
+	case 38400:
+			cfsetispeed(&options, B38400);
+			cfsetospeed(&options, B38400);
+			break;
 	case 57600:
 		cfsetispeed(&options, B57600);
 		cfsetospeed(&options, B57600);

@@ -91,16 +91,16 @@ public class Ventilator {
 		return Switch;
 	}
 
-	public String getPm2_5() {
-		return String.valueOf(pm2_5);
+	public int getPm2_5() {
+		return pm2_5;
 	}
 
-	public String getAldehyde() {
-		return String.valueOf(aldehyde);
+	public int getAldehyde() {
+		return aldehyde;
 	}
 
-	public String getSmog() {
-		return String.valueOf(smog);
+	public int getSmog() {
+		return smog;
 	}
 
 	public int getGear_ventilator() {

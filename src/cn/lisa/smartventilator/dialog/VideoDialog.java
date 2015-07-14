@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class VideoDialog extends Dialog implements OnItemClickListener{
 
@@ -92,8 +93,13 @@ public class VideoDialog extends Dialog implements OnItemClickListener{
 	 * @param position
 	 */
 	private void playVideo(int position){
-		Intent intent=VideoManager.getVideoIntent(videos.get(position).getPath());
-		mContext.startActivity(intent);
+		try{
+			Intent intent=VideoManager.getVideoIntent(videos.get(position).getPath());
+			mContext.startActivity(intent);
+		}catch(Exception e){
+			Toast.makeText(mContext, R.string.str_media_no_player, Toast.LENGTH_SHORT).show();
+		}
+		
 	}
 
 }

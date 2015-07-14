@@ -19,6 +19,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
@@ -28,7 +29,7 @@ public class MainActivity extends FragmentActivity {
 	private List<Drawable> tabDrawables = null;
 	public DevicePolicyManager policyManager;
 	public ComponentName componentName;
-	
+	public PowerManager.WakeLock mWakeLock;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -112,6 +113,9 @@ public class MainActivity extends FragmentActivity {
 			intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
 			startActivity(intent);
 		}
+		//±£³ÖÆÁÄ»³£ÁÁ
+		PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+		mWakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "My Tag"); 
 	}
 
 	@Override
@@ -127,7 +131,16 @@ public class MainActivity extends FragmentActivity {
 	    	ex.printStackTrace();
 	    }
 	}
-	
+	@Override
+	protected void onResume() {
+		mWakeLock.acquire(); 
+		super.onResume();
+	}
+	@Override
+	protected void onPause() {
+		mWakeLock.release();
+		super.onPause();
+	}
 	@Override
 	protected void onDestroy() {
 		Intent intent = new Intent();  
