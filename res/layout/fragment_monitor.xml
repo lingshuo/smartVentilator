@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:gravity="center|start"
             android:orientation="vertical"
-            android:paddingEnd="60dp"
+            android:paddingEnd="0dp"
             android:paddingStart="220dp" >
 
             <TextView
@@ -48,7 +48,7 @@
                     android:id="@+id/monitor_smog_result"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="较低"
+                    android:text="@string/stat_loading"
                     android:textColor="@color/monitor_tv_result"
                     android:textSize="20sp" />
             </LinearLayout>
@@ -124,7 +124,7 @@
                     android:id="@+id/monitor_pm2.5_result"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/stat_low"
+                    android:text="@string/stat_loading"
                     android:textColor="@color/monitor_tv_result"
                     android:textSize="20sp" />
             </LinearLayout>
@@ -200,7 +200,7 @@
                     android:id="@+id/monitor_aldehyde_result"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/stat_low"
+                    android:text="@string/stat_loading"
                     android:textColor="@color/monitor_tv_result"
                     android:textSize="20sp" />
             </LinearLayout>

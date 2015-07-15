@@ -1,14 +1,14 @@
 package cn.lisa.smartventilator.service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Timer;
-import java.util.TimerTask;
+import org.json.JSONObject;
 
 import cn.lisa.smartventilator.hardware.UartAgent;
 import cn.lisa.smartventilator.manager.VentilatorManager;
+import cn.lisa.smartventilator.network.DevDefine;
+import cn.lisa.smartventilator.network.DevMonitor;
+import cn.lisa.smartventilator.network.HostDefine;
+import cn.lisa.smartventilator.network.JSONDefine;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -29,20 +29,29 @@ public class MonitorService extends Service {
 	Timer timer;
 	public UartAgent uartagent;
 	SendReciever sendReciever;
-
+	/***
+	 * handle to send switch info to hardware
+	 */
 	Handler handler=new Handler(){
 		public void handleMessage(Message msg) {
-			byte[] buf = new byte[2];
-			buf[0] = (byte) 0x01;
-			buf[1] = (byte)msg.arg1;
-//			Log.i("switch", "handle:" + buf[1]);
-			uartagent.frame.send(buf, buf.length);
+			switch(msg.what){
+			case VentilatorManager.SEND_DATA:
+				byte[] buf = new byte[2];
+				buf[0] = (byte) 0x01;
+				buf[1] = (byte)msg.arg1;
+//				Log.i("switch", "handle:" + buf[1]);
+				uartagent.frame.send(buf, buf.length);
+				break;
+			default:
+				break;
+			}			
 		};
 	};
 	
 	@Override
 	public void onCreate() {
 		initSendReceiver();
+
 		super.onCreate();
 	}
 
@@ -60,6 +69,7 @@ public class MonitorService extends Service {
 		// baudrate:ttyS6, 38400, data:8,stop:1, parity:N
 		uartagent = new UartAgent("/dev/ttyS6", 38400, 8, 1, (byte) 'N', true);
 		uartagent.init();
+		//thread to get info from hardware and report info to network
 		new Thread(new Runnable() {
 
 			@Override
@@ -75,9 +85,42 @@ public class MonitorService extends Service {
 					intent.setAction(BROADCASTACTION);
 					intent.putExtra("jsonstr", jsonString);
 					sendBroadcast(intent);
+					
+					VentilatorManager manager=new VentilatorManager(getBaseContext());
+					manager.reportData(jsonString);
+					manager=null;
 				}
 			}
 		}).start();
+		
+		//Thread to send switch to network
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				DevMonitor monitor = new DevMonitor(HostDefine.HOSTID_LTCP, DevDefine.FAKE_ID);
+				boolean ok = monitor.open(HostDefine.HOST_LTCP, HostDefine.PORT_LTCP_listen);
+				if(!ok) {
+					Log.e("monitor","monitor:open failed");
+					return;
+				}
+				while(true) {
+					String jstring = monitor.watch();
+					Log.i("monitor","devMonitor:jString="+jstring);
+					try{
+						JSONObject json = new JSONObject(jstring);
+						byte mSwitch=(byte) json.getInt(JSONDefine.KEY_switch);
+						Log.i("monitor","sw="+mSwitch);
+						VentilatorManager manager=new VentilatorManager(getBaseContext());
+						manager.sendSwitch(mSwitch);
+						manager=null;
+					}catch(Exception e){
+						Log.e("monitor","monitor:error");
+					}
+				}
+			}
+		}).start();
+		
 		return super.onStartCommand(intent, flags, startId);
 	}
 
@@ -86,7 +129,6 @@ public class MonitorService extends Service {
 		IntentFilter filter = new IntentFilter(SENDACTION);
 		registerReceiver(sendReciever, filter);
 	}
-
 	
 	@Override
 	public void onDestroy() {

@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.EventLog.Event;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,14 +16,11 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.bean.Ventilator;
 import cn.lisa.smartventilator.manager.VentilatorManager;
@@ -60,7 +56,7 @@ public class MonitorFragment extends Fragment implements OnClickListener,OnTouch
 			if (msg.obj != null)
 				switch (msg.what) {
 				case VentilatorManager.SHOW_DATA:
-					Ventilator ventilator = (Ventilator) msg.obj;
+					ventilator = (Ventilator) msg.obj;
 					if(ventilator!=null){
 						Log.i("ventilator", ventilator.toString());
 						initdata(ventilator);
@@ -77,6 +73,7 @@ public class MonitorFragment extends Fragment implements OnClickListener,OnTouch
 		};
 
 	};
+	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -115,11 +112,6 @@ public class MonitorFragment extends Fragment implements OnClickListener,OnTouch
 		// 档位
 		layout_gears_control = (RelativeLayout) view
 				.findViewById(R.id.control_ventilator_gears_btns);
-//		if (!tb_ventilator.isChecked()) {
-//			layout_gears_control.setVisibility(View.GONE);
-//		} else {
-//			layout_gears_control.setVisibility(View.VISIBLE);
-//		}
 
 		// 三个档位的按钮
 		mBtn1 = (Button) view.findViewById(R.id.control_ventilator_gears_btn_1);
@@ -306,15 +298,15 @@ public class MonitorFragment extends Fragment implements OnClickListener,OnTouch
 		switch (v.getId()) {
 		// 1档
 		case R.id.control_ventilator_gears_btn_1:
-			ventilatorManager.sendVentilator(VentilatorManager.VENTILATOR,VentilatorManager.VENTILATOR_1,ventilator);
+			ventilatorManager.sendVentilatorCommand(VentilatorManager.VENTILATOR,VentilatorManager.VENTILATOR_1,ventilator);
 			break;
 		// 2档
 		case R.id.control_ventilator_gears_btn_2:
-			ventilatorManager.sendVentilator(VentilatorManager.VENTILATOR,VentilatorManager.VENTILATOR_2,ventilator);
+			ventilatorManager.sendVentilatorCommand(VentilatorManager.VENTILATOR,VentilatorManager.VENTILATOR_2,ventilator);
 			break;
 		// 3档
 		case R.id.control_ventilator_gears_btn_3:
-			ventilatorManager.sendVentilator(VentilatorManager.VENTILATOR,VentilatorManager.VENTILATOR_3,ventilator);
+			ventilatorManager.sendVentilatorCommand(VentilatorManager.VENTILATOR,VentilatorManager.VENTILATOR_3,ventilator);
 			break;
 		default:
 			break;
@@ -335,10 +327,10 @@ public class MonitorFragment extends Fragment implements OnClickListener,OnTouch
 				Log.i("ventilator", "lamp touched");
 				if(!ventilator.getState_lamp()){
 					//开灯
-					ventilatorManager.sendVentilator(VentilatorManager.LAMP, VentilatorManager.DEVICE_ON, ventilator);
+					ventilatorManager.sendVentilatorCommand(VentilatorManager.LAMP, VentilatorManager.DEVICE_ON, ventilator);
 				}else{
 					//关灯
-					ventilatorManager.sendVentilator(VentilatorManager.LAMP, VentilatorManager.DEVICE_OFF, ventilator);
+					ventilatorManager.sendVentilatorCommand(VentilatorManager.LAMP, VentilatorManager.DEVICE_OFF, ventilator);
 				}
 				return true;
 			// 紫外线设备开关
@@ -346,10 +338,10 @@ public class MonitorFragment extends Fragment implements OnClickListener,OnTouch
 				Log.i("ventilator", "ultraviolet touched");
 				if(!ventilator.getState_ultraviolet()){
 					//开
-					ventilatorManager.sendVentilator(VentilatorManager.ULTRAVIOLET, VentilatorManager.DEVICE_ON, ventilator);
+					ventilatorManager.sendVentilatorCommand(VentilatorManager.ULTRAVIOLET, VentilatorManager.DEVICE_ON, ventilator);
 				}else{
 					//关
-					ventilatorManager.sendVentilator(VentilatorManager.ULTRAVIOLET, VentilatorManager.DEVICE_OFF, ventilator);
+					ventilatorManager.sendVentilatorCommand(VentilatorManager.ULTRAVIOLET, VentilatorManager.DEVICE_OFF, ventilator);
 				}
 				return true;
 			// 等离子设备开关
@@ -357,10 +349,10 @@ public class MonitorFragment extends Fragment implements OnClickListener,OnTouch
 				Log.i("ventilator", "plasma touched");
 				if(!ventilator.getState_plasma()){
 					//开
-					ventilatorManager.sendVentilator(VentilatorManager.PLASMA, VentilatorManager.DEVICE_ON, ventilator);
+					ventilatorManager.sendVentilatorCommand(VentilatorManager.PLASMA, VentilatorManager.DEVICE_ON, ventilator);
 				}else{
 					//关
-					ventilatorManager.sendVentilator(VentilatorManager.PLASMA, VentilatorManager.DEVICE_OFF, ventilator);
+					ventilatorManager.sendVentilatorCommand(VentilatorManager.PLASMA, VentilatorManager.DEVICE_OFF, ventilator);
 				}
 				return true;
 			// 风机开关
@@ -368,11 +360,11 @@ public class MonitorFragment extends Fragment implements OnClickListener,OnTouch
 				Log.i("ventilator", "ventilator touched");
 				if(!ventilator.getState_ventilator()){
 					//打开
-					ventilatorManager.sendVentilator(VentilatorManager.VENTILATOR, VentilatorManager.VENTILATOR_3, ventilator);
+					ventilatorManager.sendVentilatorCommand(VentilatorManager.VENTILATOR, VentilatorManager.VENTILATOR_3, ventilator);
 					layout_gears_control.setVisibility(View.VISIBLE);
 				}else{
 					//关
-					ventilatorManager.sendVentilator(VentilatorManager.VENTILATOR, VentilatorManager.DEVICE_OFF, ventilator);
+					ventilatorManager.sendVentilatorCommand(VentilatorManager.VENTILATOR, VentilatorManager.DEVICE_OFF, ventilator);
 					layout_gears_control.setVisibility(View.GONE);
 				}
 				return true;

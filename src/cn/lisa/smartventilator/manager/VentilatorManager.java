@@ -1,21 +1,17 @@
 package cn.lisa.smartventilator.manager;
-import java.util.Map;
-
 import org.json.*;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import cn.lisa.smartventilator.bean.Ventilator;
-import cn.lisa.smartventilator.hardware.UartAgent;
-import cn.lisa.smartventilator.hardware.UartFrame;
+import cn.lisa.smartventilator.network.DevDefine;
+import cn.lisa.smartventilator.network.DevReporter;
+import cn.lisa.smartventilator.network.HostDefine;
+import cn.lisa.smartventilator.network.JSONDefine;
 import cn.lisa.smartventilator.service.MonitorService;
 public class VentilatorManager {
 	Ventilator ventilator;
-	private UartAgent uartagent;
 	public final static int SHOW_DATA=3;
 	public final static int SEND_DATA=4;
 	public final static int DEVICE_ON=1;
@@ -28,11 +24,17 @@ public class VentilatorManager {
 	public final static int VENTILATOR_2=0x02;
 	public final static int VENTILATOR_3=0x03;
 	private Context context;
-	
+	/***
+	 * init manager by context
+	 * @param context
+	 */
 	public VentilatorManager(Context context) {
 		this.context=context;
 	}
-	
+	/****
+	 * set up a ventilator entity
+	 * @param jsonString
+	 */
 	public void setVentilator(String jsonString){
 		try{
 			JSONObject jsonObject=new JSONObject(jsonString);
@@ -47,12 +49,20 @@ public class VentilatorManager {
 			e.printStackTrace();
 		}
 	}
-	
+	/****
+	 * get info of ventilator
+	 * @return
+	 */
 	public Ventilator getVentilator(){
 		return ventilator;
 	}
-	
-	public void sendVentilator(int device,int command,Ventilator ventilator){
+	/***
+	 * send command from android ui to hardware
+	 * @param device which device to open or close
+	 * @param command open close or gears
+	 * @param ventilator the original info of ventilator switch 
+	 */
+	public void sendVentilatorCommand(int device,int command,Ventilator ventilator){
 		
 		byte Switch=ventilator.getSwitch();
 		Log.i("switch", "old:"+Switch);
@@ -136,47 +146,47 @@ public class VentilatorManager {
 		}
 		Log.i("switch", "new:"+mSwitch);
 		
+		sendSwitch(mSwitch);
+	}
+	/***
+	 * report data to network
+	 * @param ventilator
+	 */
+	public void reportData(String jsonString){
+		setVentilator(jsonString);
+		
+		DevReporter reporter=new DevReporter(HostDefine.HOSTID_LDAT);
+		boolean ok = reporter.open(HostDefine.HOST_LDAT, HostDefine.PORT_LDAT_speak);
+		if(!ok) {
+			Log.e("report","setter:connnect server failed");
+			return;
+		}
+		JSONObject json = new JSONObject();
+		try{
+			json.put(JSONDefine.KEY_switch, ventilator.getSwitch());
+			json.put(JSONDefine.KEY_pm25, ventilator.getPm2_5());
+			json.put(JSONDefine.KEY_smog, ventilator.getSmog());
+			json.put(JSONDefine.KEY_hcho, ventilator.getAldehyde());
+			json.put(JSONDefine.KEY_hwError, ventilator.getHwError());
+			ok = reporter.report(DevDefine.FAKE_ID, json.toString());
+			Log.i("report","report:"+json);
+			reporter.close();
+			if(!ok) {
+				Log.e("report","setter:set failed\n");
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	/***
+	 * send switch info to service
+	 * @param mSwitch
+	 */
+	public void sendSwitch(byte mSwitch) {
 		Intent intent=new Intent();
 		intent.setAction(MonitorService.SENDACTION);
 		intent.putExtra("send", mSwitch);
-		context.sendBroadcast(intent);
+		context.sendBroadcast(intent);		
 	}
-	
-
-//	public void forceUpdate(Context context){
-//		uartagent=new UartAgent("/dev/ttyO1", 115200, 8, 1, (byte)'N', true);
-////		MonitorService s=new MonitorService();
-//		Object[] ob = new Object[2];
-////		ob[0]=s;
-//		ob[0]=uartagent;
-//		ob[1]=context;
-//		new UpdateTask().execute(ob);
-//		
-//	}
-//	
-//	class UpdateTask extends AsyncTask<Object, Integer, String>{
-//		String result;
-//		Context c;
-//		@Override
-//		protected String doInBackground(Object... ob) {
-////			MonitorService s=(MonitorService)ob[0];
-//			UartAgent u=(UartAgent)ob[0];
-//			this.c=(Context)ob[1];
-////			result=s.getVentilator();
-//			this.result=u.getStatusBlock();
-//			return result;
-//		}
-//		
-//		@Override
-//		protected void onPostExecute(String result) {
-//			Intent intent = new Intent();  
-//            intent.setAction( MonitorService.BROADCASTACTION );  
-//            intent.putExtra( "jsonstr", result );  
-//            Log.i("sv", "force update data:"+result);
-//            c.sendBroadcast(intent);
-//			super.onPostExecute(result);
-//		}
-//		
-//	}
 
 }

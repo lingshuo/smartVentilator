@@ -33,6 +33,7 @@
 	<string name="stat_normal">较低</string>
 	<string name="stat_high">较高</string>
 	<string name="stat_very_high">很高</string>
+	<string name="stat_loading">加载中</string>
 	<!-- string in the media page -->
 	<string name="str_media_youku">优酷</string>
 	<string name="str_media_video_list">本地视频</string>

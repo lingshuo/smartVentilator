@@ -114,7 +114,7 @@
                 android:ems="10"
                 android:gravity="center_vertical|start"
                 android:hint="@string/str_device_username_hint"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:paddingStart="26dp"
                 android:textSize="25sp"
                 android:singleLine="false"
