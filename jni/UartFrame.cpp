@@ -8,11 +8,11 @@
 static int recvBytes = 0;
 static char recvBuf[BUF_SIZE];
 /*
- * Class:     Java_cn_lisa_smartventilator_hardware_UartFrame
+ * Class:     Java_cn_lisa_smartventilator_utility_hardware_UartFrame
  * Method:    init
  * Signature: (Ljava/lang/String;IIII)Z
  */
-JNIEXPORT jboolean JNICALL Java_cn_lisa_smartventilator_hardware_UartFrame_init
+JNIEXPORT jboolean JNICALL Java_cn_lisa_smartventilator_utility_hardware_UartFrame_init
   (JNIEnv *env, jobject, jstring device, jint baudrate, jint databits, jint stopbits, jbyte parity)
 {
 	bool ok = false;
@@ -32,18 +32,18 @@ JNIEXPORT jboolean JNICALL Java_cn_lisa_smartventilator_hardware_UartFrame_init
 }
 
 /*
- * Class:     Java_cn_lisa_smartventilator_hardware_UartFrame
+ * Class:     Java_cn_lisa_smartventilator_utility_hardware_UartFrame
  * Method:    destroy
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_cn_lisa_smartventilator_hardware_UartFrame_destroy
+JNIEXPORT void JNICALL Java_cn_lisa_smartventilator_utility_hardware_UartFrame_destroy
   (JNIEnv *, jobject)
 {
 	UartClose();
 }
 
 /*
- * Class:     Java_cn_lisa_smartventilator_hardware_UartFrame
+ * Class:     Java_cn_lisa_smartventilator_utility_hardware_UartFrame
  * Method:    recv
  * Signature: ([BI)I
  */
@@ -60,7 +60,7 @@ static char sumOf(const char* msg, int len);
 static int decode(char* dst, char* src, int len);
 static int encode(char* dst, char* src, int len);
 
-JNIEXPORT jint JNICALL Java_cn_lisa_smartventilator_hardware_UartFrame_recv
+JNIEXPORT jint JNICALL Java_cn_lisa_smartventilator_utility_hardware_UartFrame_recv
   (JNIEnv *env, jobject, jbyteArray buf, jint len)
 {
 	if(len<0)
@@ -147,11 +147,11 @@ fetchFrame:
 }
 
 /*
- * Class:     Java_cn_lisa_smartventilator_hardware_UartFrame
+ * Class:     Java_cn_lisa_smartventilator_utility_hardware_UartFrame
  * Method:    send
  * Signature: ([BI)I
  */
-JNIEXPORT jint JNICALL Java_cn_lisa_smartventilator_hardware_UartFrame_send
+JNIEXPORT jint JNICALL Java_cn_lisa_smartventilator_utility_hardware_UartFrame_send
   (JNIEnv *env, jobject, jbyteArray buf, jint len)
 {
 	if(len<0)

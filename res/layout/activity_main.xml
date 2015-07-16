@@ -23,7 +23,7 @@
             android:src="@drawable/logo" />
     </RelativeLayout>
 
-    <cn.lisa.smartventilator.view.BottomTabView
+    <cn.lisa.smartventilator.view.view.BottomTabView
         android:id="@+id/mBottomTabView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

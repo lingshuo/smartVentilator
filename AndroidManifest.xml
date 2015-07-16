@@ -14,6 +14,7 @@
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.WRITE_SETTINGS"/> 
 	<uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
+	<uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
     <uses-sdk
         android:minSdkVersion="17"
         android:targetSdkVersion="17" />
@@ -24,7 +25,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="cn.lisa.smartventilator.activity.MainActivity"
+            android:name="cn.lisa.smartventilator.view.activity.MainActivity"
             android:configChanges="orientation|keyboardHidden"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="landscape" >
@@ -35,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity 
-            android:name="cn.lisa.smartventilator.activity.LockActivity"
+            android:name="cn.lisa.smartventilator.view.activity.LockActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:configChanges="orientation|keyboardHidden"
@@ -50,7 +51,7 @@
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
-        <receiver android:name="cn.lisa.smartventilator.receiver.BootBroadcastReceiver" >
+        <receiver android:name="cn.lisa.smartventilator.controller.receiver.BootBroadcastReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" >
                 </action>
@@ -59,10 +60,10 @@
             </intent-filter>
         </receiver>
         <service
-            android:name=".service.MonitorService"
+            android:name="cn.lisa.smartventilator.controller.service.MonitorService"
             android:enabled="true" />
         <service
-            android:name=".service.FloatWindowService"
+            android:name="cn.lisa.smartventilator.controller.service.FloatWindowService"
             android:enabled="true" >
         </service>
     </application>
