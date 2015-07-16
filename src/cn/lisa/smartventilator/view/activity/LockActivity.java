@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 public class LockActivity extends Activity implements OnClickListener{
