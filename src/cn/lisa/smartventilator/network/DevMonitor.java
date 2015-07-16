@@ -35,6 +35,9 @@ public class DevMonitor {
 	
 	public String watch() {
 		byte[] bmsg = listener.listen();
+		if(bmsg==null)
+			return null;
+		
 		TMsg tmsg = Converter.toTMsgFromPBytes(bmsg);
 		return new String(tmsg.getContent());
 	}

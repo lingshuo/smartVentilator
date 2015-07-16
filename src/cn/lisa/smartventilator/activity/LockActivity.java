@@ -1,65 +1,58 @@
 package cn.lisa.smartventilator.activity;
 
-import cn.lisa.smartventilator.receiver.LockReceiver;
+import cn.lisa.smartventilator.R;
+import cn.lisa.smartventilator.service.FloatWindowService;
+import cn.lisa.smartventilator.util.BrightnessUtil;
 import android.app.Activity;
-import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PowerManager;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.RelativeLayout;
 
-public class LockActivity extends Activity {
-
-	DevicePolicyManager policyManager;
-	PowerManager pm;
-	ComponentName componentName;
+public class LockActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		policyManager = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
-	
-		componentName = new ComponentName(this, LockReceiver.class);
-
-		if (!policyManager.isAdminActive(componentName)) {
-			Intent intent = new Intent(
-					DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-			intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
-					componentName);
-			startActivity(intent);
-		}
+		View decorView = getWindow().getDecorView();  
+		// Hide the status bar.   
+		int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION  
+	              | View.SYSTEM_UI_FLAG_FULLSCREEN;  
+		decorView.setSystemUiVisibility(uiOptions);
+		setContentView(R.layout.activity_lock);
+		
+		RelativeLayout mLayout=(RelativeLayout)findViewById(R.id.lock_layout);
+		mLayout.setOnClickListener(this);
+		
+		
+		if(BrightnessUtil.isAutoBrightness(getContentResolver()))
+			BrightnessUtil.stopAutoBrightness(this);
+		
+		BrightnessUtil.setBrightness(this, 0);		
+		
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		systemLock();
 	}
 
-	/**
-	 * 
-	 */
-	private void systemLock() {
-		if (this.policyManager.isAdminActive(this.componentName)) {
-			Window localWindow = getWindow();
-			WindowManager.LayoutParams localLayoutParams = localWindow
-					.getAttributes();
-			localLayoutParams.screenBrightness = 0f;
-			localWindow.setAttributes(localLayoutParams);
-//			this.policyManager.lockNow();
+
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.lock_layout:
+			BrightnessUtil.startAutoBrightness(this);
+			//启动桌面悬浮球
+			Intent intent2=new Intent();
+			intent2.setClass(this, FloatWindowService.class);
+			startService(intent2);
+			finish();
+			break;
+		default:
+			break;
 		}
-		finish();
 	}
-	// /**
-	// *
-	// */
-	// private void UninstallActivity(){
-	// this.policyManager.removeActiveAdmin(this.componentName);
-	// startActivity(new Intent("android.intent.action.DELETE",
-	// Uri.parse("package:cn.lisa.smartventilator")));
-	// finish();
-	// }
 }

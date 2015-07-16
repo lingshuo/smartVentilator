@@ -1,22 +1,17 @@
 package cn.lisa.smartventilator.dialog;
 
 import java.util.List;
-import java.util.Map;
-
 import cn.lisa.smartventilator.R;
-import cn.lisa.smartventilator.adapter.RadioListAdapter;
 import cn.lisa.smartventilator.adapter.VideoListAdapter;
-import cn.lisa.smartventilator.bean.Radio;
 import cn.lisa.smartventilator.bean.Video;
-import cn.lisa.smartventilator.manager.RadioManager;
 import cn.lisa.smartventilator.manager.VideoManager;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -33,6 +28,7 @@ public class VideoDialog extends Dialog implements OnItemClickListener{
 	private List<Video> videos;
 	private static int mTheme = R.style.CustomDialog;  
 	// 后台处理handler
+		@SuppressLint("HandlerLeak")
 		private Handler handler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
@@ -40,6 +36,7 @@ public class VideoDialog extends Dialog implements OnItemClickListener{
 				switch (msg.what) {
 				
 				case VideoManager.GET_VIDEO_FINISH:
+					@SuppressWarnings("unchecked")
 					List<Video> videoInfoList = (List<Video>) msg.obj;
 					if(videoInfoList.size()>0){
 						mVideoListAdapter = new VideoListAdapter(mContext,

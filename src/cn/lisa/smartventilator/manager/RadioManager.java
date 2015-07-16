@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.xmlpull.v1.XmlPullParser;
 
-import android.app.Dialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.util.Log;
 import android.util.Xml;

@@ -1,18 +1,11 @@
 package cn.lisa.smartventilator.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.lisa.smartventilator.manager.MyWindowManager;
-import android.app.ActivityManager;
 import android.app.Service;
-import android.app.ActivityManager.RunningTaskInfo;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.os.Handler;
 import android.os.IBinder;
 
@@ -46,6 +39,10 @@ public class FloatWindowService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		if(MyWindowManager.isWindowShowing()){
+			MyWindowManager.removeBigWindow(getApplicationContext());
+			MyWindowManager.removeSmallWindow(getApplicationContext());
+		}
 		// Service被终止的同时也停止定时器继续运行
 		timer.cancel();
 		timer = null;
@@ -64,53 +61,8 @@ public class FloatWindowService extends Service {
 					}
 				});
 			}
-//			// 当前界面不是桌面，且有悬浮窗显示，则移除悬浮窗。
-//			else if (!isHome() && MyWindowManager.isWindowShowing()) {
-//				handler.post(new Runnable() {
-//					@Override
-//					public void run() {
-//						MyWindowManager.removeSmallWindow(getApplicationContext());
-//						MyWindowManager.removeBigWindow(getApplicationContext());
-//					}
-//				});
-//			}
-			// 当前界面是桌面，且有悬浮窗显示，则更新内存数据。
-//			else if (MyWindowManager.isWindowShowing()) {
-//				handler.post(new Runnable() {
-//					@Override
-//					public void run() {
-//						MyWindowManager.updateUsedPercent(getApplicationContext());
-//					}
-//				});
-//			}
 		}
 
 	}
 
-	/**
-	 * 判断当前界面是否是桌面
-	 */
-	private boolean isHome() {
-		ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-		List<RunningTaskInfo> rti = mActivityManager.getRunningTasks(1);
-		return getHomes().contains(rti.get(0).topActivity.getPackageName());
-	}
-
-	/**
-	 * 获得属于桌面的应用的应用包名称
-	 * 
-	 * @return 返回包含所有包名的字符串列表
-	 */
-	private List<String> getHomes() {
-		List<String> names = new ArrayList<String>();
-		PackageManager packageManager = this.getPackageManager();
-		Intent intent = new Intent(Intent.ACTION_MAIN);
-		intent.addCategory(Intent.CATEGORY_HOME);
-		List<ResolveInfo> resolveInfo = packageManager.queryIntentActivities(intent,
-				PackageManager.MATCH_DEFAULT_ONLY);
-		for (ResolveInfo ri : resolveInfo) {
-			names.add(ri.activityInfo.packageName);
-		}
-		return names;
-	}
 }

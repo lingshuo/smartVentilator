@@ -12,6 +12,8 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.WRITE_SETTINGS"/> 
+	<uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
     <uses-sdk
         android:minSdkVersion="17"
         android:targetSdkVersion="17" />
@@ -34,7 +36,7 @@
         </activity>
         <activity 
             android:name="cn.lisa.smartventilator.activity.LockActivity"
-            android:theme="@android:style/Theme.NoDisplay"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape">
@@ -56,17 +58,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </receiver>
-		<receiver 
-            android:name="cn.lisa.smartventilator.receiver.LockReceiver"> 
-            <meta-data 
-                android:name="android.app.device_admin" 
-                android:resource="@xml/lock_screen" /> 
-   
-            <intent-filter>
-				<action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-			</intent-filter>
-        </receiver>
-        
         <service
             android:name=".service.MonitorService"
             android:enabled="true" />

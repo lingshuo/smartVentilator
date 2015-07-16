@@ -7,6 +7,7 @@ import java.io.IOException;
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.view.FloatWindowBigView;
 import cn.lisa.smartventilator.view.FloatWindowSmallView;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.PixelFormat;
@@ -53,9 +54,12 @@ public class MyWindowManager {
 	 * @param context
 	 *            必须为应用程序的Context.
 	 */
+	@SuppressLint("RtlHardcoded")
 	public static void createSmallWindow(Context context) {
 		WindowManager windowManager = getWindowManager(context);
+		@SuppressWarnings("deprecation")
 		int screenWidth = windowManager.getDefaultDisplay().getWidth();
+		@SuppressWarnings("deprecation")
 		int screenHeight = windowManager.getDefaultDisplay().getHeight();
 		if (smallWindow == null) {
 			smallWindow = new FloatWindowSmallView(context);
@@ -96,9 +100,12 @@ public class MyWindowManager {
 	 * @param context
 	 *            必须为应用程序的Context.
 	 */
+	@SuppressLint("RtlHardcoded")
 	public static void createBigWindow(Context context) {
 		WindowManager windowManager = getWindowManager(context);
+		@SuppressWarnings("deprecation")
 		int screenWidth = windowManager.getDefaultDisplay().getWidth();
+		@SuppressWarnings("deprecation")
 		int screenHeight = windowManager.getDefaultDisplay().getHeight();
 		if (bigWindow == null) {
 			bigWindow = new FloatWindowBigView(context);

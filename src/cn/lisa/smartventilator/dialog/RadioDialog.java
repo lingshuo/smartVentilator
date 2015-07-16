@@ -4,28 +4,22 @@ import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.MediaPlayer.OnBufferingUpdateListener;
 import io.vov.vitamio.MediaPlayer.OnInfoListener;
 import io.vov.vitamio.MediaPlayer.OnPreparedListener;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.adapter.RadioListAdapter;
 import cn.lisa.smartventilator.bean.Radio;
-import cn.lisa.smartventilator.fragment.MediaFragment;
 import cn.lisa.smartventilator.manager.RadioManager;
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.View.OnClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class RadioDialog extends Dialog implements OnBufferingUpdateListener, OnPreparedListener, OnInfoListener{
 	private Context mContext;
@@ -43,7 +37,9 @@ public class RadioDialog extends Dialog implements OnBufferingUpdateListener, On
 	private MediaPlayer mMediaPlayer;
 	private static int mTheme = R.style.CustomDialog;
 	// 后台处理handler
+	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
+			@SuppressWarnings("unchecked")
 			@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
@@ -89,6 +85,7 @@ public class RadioDialog extends Dialog implements OnBufferingUpdateListener, On
 		
 	}
 	
+	@SuppressLint("UseSparseArrays")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

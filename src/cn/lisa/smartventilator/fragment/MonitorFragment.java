@@ -1,5 +1,6 @@
 package cn.lisa.smartventilator.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -35,10 +36,14 @@ public class MonitorFragment extends Fragment implements OnClickListener,OnTouch
 	private TextView tv_aldehyde;
 	private TextView tv_pm2_5;
 	private RatingBar rb_smog;
+	@SuppressWarnings("unused")
 	private RatingBar rb_aldehyde;
+	@SuppressWarnings("unused")
 	private RatingBar rb_pm2_5;
 	private ImageView iv_smog;
+	@SuppressWarnings("unused")
 	private ImageView iv_aldehyde;
+	@SuppressWarnings("unused")
 	private ImageView iv_pm2_5;
 	private RelativeLayout layout_gears_control;
 	private Button mBtn1;
@@ -51,6 +56,7 @@ public class MonitorFragment extends Fragment implements OnClickListener,OnTouch
 	/***
 	 * 处理界面数据显示的handler
 	 */
+	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.obj != null)
@@ -75,6 +81,7 @@ public class MonitorFragment extends Fragment implements OnClickListener,OnTouch
 	};
 	
 	
+	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -315,6 +322,7 @@ public class MonitorFragment extends Fragment implements OnClickListener,OnTouch
 	/***
 	 * 点击开关，发送指令
 	 */
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		if(event.getAction()==MotionEvent.ACTION_DOWN){

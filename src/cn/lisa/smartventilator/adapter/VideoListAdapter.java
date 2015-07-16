@@ -1,11 +1,10 @@
 package cn.lisa.smartventilator.adapter;
 
 import java.util.List;
-
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.bean.*;
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +41,7 @@ public class VideoListAdapter extends BaseAdapter {
 		return position;
 	}
 
+	@SuppressLint({ "ViewHolder", "InflateParams" })
 	@Override
 	public View getView(int position, View convertview, ViewGroup parent) {
 		View view = infater.inflate(R.layout.media_video_item, null);

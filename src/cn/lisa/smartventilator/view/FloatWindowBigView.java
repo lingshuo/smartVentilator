@@ -3,17 +3,11 @@ package cn.lisa.smartventilator.view;
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.activity.LockActivity;
 import cn.lisa.smartventilator.manager.MyWindowManager;
-import cn.lisa.smartventilator.receiver.LockReceiver;
 import cn.lisa.smartventilator.service.FloatWindowService;
-import android.app.Activity;
-import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -52,13 +46,17 @@ public class FloatWindowBigView extends LinearLayout implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.lock:
-			MyWindowManager.removeBigWindow(context);
-			MyWindowManager.createSmallWindow(context);
 			// ËøÆÁ
+			MyWindowManager.removeBigWindow(context);
+			Intent intent = new Intent(getContext(),FloatWindowService.class);
+			context.stopService(intent);
+			
 			Intent intent1 =new Intent();
 			intent1.setClass(getContext(), LockActivity.class);
 			intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(intent1);
+			
+
 			break;
 //		case R.id.close:
 //			// µã»÷¹Ø±ÕÐü¸¡´°µÄÊ±ºò£¬ÒÆ³ýËùÓÐÐü¸¡´°£¬²¢Í£Ö¹Service

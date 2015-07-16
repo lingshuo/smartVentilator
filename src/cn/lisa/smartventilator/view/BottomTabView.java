@@ -2,6 +2,7 @@ package cn.lisa.smartventilator.view;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import cn.lisa.smartventilator.adapter.SvFragmentPagerAdapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -28,6 +29,7 @@ public class BottomTabView extends LinearLayout {
 	private ViewPager mViewPager;
 
 	/** The m listener. */
+	@SuppressWarnings("unused")
 	private ViewPager.OnPageChangeListener mListener;
 
 	/** tabµÄÁÐ±í. */
@@ -171,6 +173,7 @@ public class BottomTabView extends LinearLayout {
 	 * @param index
 	 *            the new current item
 	 */
+	@SuppressWarnings("deprecation")
 	public void setCurrentItem(int index) {
 		if (mViewPager == null) {
 			throw new IllegalStateException("ViewPager has not been bound.");

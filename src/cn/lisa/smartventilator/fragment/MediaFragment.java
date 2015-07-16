@@ -1,5 +1,6 @@
 package cn.lisa.smartventilator.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.dialog.RadioDialog;
@@ -29,6 +29,7 @@ public class MediaFragment extends Fragment implements OnClickListener{
 	private PackageManager packageManager;
 
 
+	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

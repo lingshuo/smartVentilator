@@ -1,23 +1,20 @@
 package cn.lisa.smartventilator.adapter;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.bean.*;
 import cn.lisa.smartventilator.manager.RadioManager;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class RadioListAdapter extends BaseAdapter {
@@ -25,7 +22,6 @@ public class RadioListAdapter extends BaseAdapter {
 	private ArrayList<Radio> mRadioList;
 	// 记录当前播放状态
 	private Map<Integer, Boolean> playStaus;
-	private Context context;
 	LayoutInflater infater;
 	
 	private Handler mHandler;
@@ -33,7 +29,6 @@ public class RadioListAdapter extends BaseAdapter {
 
 	public RadioListAdapter(Context context, Handler handler,
 			Map<Integer, Boolean> playStaus, ArrayList<Radio> Radios) {
-		this.context = context;
 		mHandler = handler;
 		infater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -66,6 +61,7 @@ public class RadioListAdapter extends BaseAdapter {
 		return position;
 	}
 
+	@SuppressLint({ "ViewHolder", "InflateParams" })
 	@Override
 	public View getView(int position, View convertview, ViewGroup parent) {
 		View view = infater.inflate(R.layout.media_radio_item, null);
@@ -112,7 +108,7 @@ public class RadioListAdapter extends BaseAdapter {
 		public void onClick(View v) {
 			View vp = (View) v.getParent().getParent();
 			TextView tv = (TextView) vp.findViewById(R.id.radio_name);
-			String title = tv.getText().toString();
+			tv.getText().toString();
 			// 创建Message并填充数据，通过mHandle联系Activity接收处理
 			if (v.getTag().equals(RadioManager.CLICK_BUTTON_PLAY)) {
 				v.setVisibility(View.INVISIBLE);

@@ -3,6 +3,10 @@ package cn.lisa.smartventilator.bean;
 import java.io.Serializable;
 
 public class Radio implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -899790891476280211L;
 	private int id;
 	private String name;
 	private String url;

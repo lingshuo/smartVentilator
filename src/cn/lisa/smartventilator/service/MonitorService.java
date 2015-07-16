@@ -1,6 +1,7 @@
 package cn.lisa.smartventilator.service;
 
 import java.util.Timer;
+
 import org.json.JSONObject;
 
 import cn.lisa.smartventilator.hardware.UartAgent;
@@ -99,23 +100,42 @@ public class MonitorService extends Service {
 			@Override
 			public void run() {
 				DevMonitor monitor = new DevMonitor(HostDefine.HOSTID_LTCP, DevDefine.FAKE_ID);
-				boolean ok = monitor.open(HostDefine.HOST_LTCP, HostDefine.PORT_LTCP_listen);
-				if(!ok) {
-					Log.e("monitor","monitor:open failed");
-					return;
-				}
 				while(true) {
-					String jstring = monitor.watch();
-					Log.i("monitor","devMonitor:jString="+jstring);
-					try{
-						JSONObject json = new JSONObject(jstring);
-						byte mSwitch=(byte) json.getInt(JSONDefine.KEY_switch);
-						Log.i("monitor","sw="+mSwitch);
-						VentilatorManager manager=new VentilatorManager(getBaseContext());
-						manager.sendSwitch(mSwitch);
-						manager=null;
-					}catch(Exception e){
-						Log.e("monitor","monitor:error");
+					
+					//try open
+					boolean ok = monitor.open(HostDefine.HOST_LTCP, HostDefine.PORT_LTCP_listen);
+					if(!ok) {
+						Log.e("monitor","monitor:open failed");
+						try {
+							Thread.sleep(5*1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							continue;
+						}
+						continue;
+					}
+					
+					//open successfully, monitoring...
+					while(true) {
+						String jstring = monitor.watch();
+						if(jstring==null) {
+							Log.w("monitor","devNonitor:network broken");
+							break;
+							//network down, try reconnect
+						}
+							
+						Log.i("monitor","devMonitor:jString="+jstring);
+						try{
+							JSONObject json = new JSONObject(jstring);
+							byte mSwitch=(byte) json.getInt(JSONDefine.KEY_switch);
+							Log.i("monitor","sw="+mSwitch);
+							VentilatorManager manager=new VentilatorManager(getBaseContext());
+							manager.sendSwitch(mSwitch);
+							manager=null;
+						}catch(Exception e){
+							Log.e("monitor","monitor:error");
+						}
 					}
 				}
 			}

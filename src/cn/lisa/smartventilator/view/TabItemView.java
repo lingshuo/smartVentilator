@@ -10,6 +10,7 @@ import android.widget.TextView;
 public class TabItemView extends LinearLayout {
 
 	/** The m context. */
+	@SuppressWarnings("unused")
 	private Context mContext;
 	// 当前的索引
 	/** The m index. */
@@ -151,6 +152,7 @@ public class TabItemView extends LinearLayout {
 	 * @param d
 	 *            the new tab background drawable
 	 */
+	@SuppressWarnings("deprecation")
 	public void setTabBackgroundDrawable(Drawable d) {
 		this.setBackgroundDrawable(d);
 	}

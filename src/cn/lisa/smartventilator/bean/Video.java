@@ -1,7 +1,6 @@
 package cn.lisa.smartventilator.bean;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 
 /**
  * Info of Video

@@ -1,16 +1,15 @@
 package cn.lisa.smartventilator.view;
 
 import java.lang.reflect.Field;
-
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.manager.MyWindowManager;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class FloatWindowSmallView extends LinearLayout {
 
@@ -80,6 +79,7 @@ public class FloatWindowSmallView extends LinearLayout {
 //		percentView.setText(MyWindowManager.getUsedPercentValue(context));
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		switch (event.getAction()) {
