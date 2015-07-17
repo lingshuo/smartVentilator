@@ -353,6 +353,8 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 			// 照明灯开关
 			case R.id.control_lamp:
 				Log.i("ventilator", "lamp touched");
+				//boolean val = ventilator.getState_lamp();
+
 				if (!ventilator.getState_lamp()) {
 					// 开灯
 					ventilatorManager.sendVentilatorCommand(
@@ -364,6 +366,7 @@ public class MonitorFragment extends Fragment implements OnClickListener,
 							VentilatorManager.LAMP,
 							VentilatorManager.DEVICE_OFF, ventilator);
 				}
+
 				return true;
 				// 紫外线设备开关
 			case R.id.control_ultraviolet:

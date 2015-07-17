@@ -13,7 +13,7 @@ import cn.lisa.smartventilator.utility.network.HostDefine;
 import cn.lisa.smartventilator.utility.network.JSONDefine;
 
 public class VentilatorManager {
-	Ventilator ventilator;
+	private Ventilator ventilator;
 	public final static int SHOW_DATA = 3;
 	public final static int SEND_DATA = 4;
 	public final static int DEVICE_ON = 1;
@@ -41,6 +41,7 @@ public class VentilatorManager {
 	 * 
 	 * @param jsonString
 	 */
+
 	public void setVentilator(String jsonString) {
 		try {
 			JSONObject jsonObject = new JSONObject(jsonString);
@@ -62,6 +63,7 @@ public class VentilatorManager {
 	 * 
 	 * @return
 	 */
+
 	public Ventilator getVentilator() {
 		return ventilator;
 	}
@@ -86,21 +88,22 @@ public class VentilatorManager {
 			// 关闭设备
 			switch (device) {
 			case LAMP:
-				if (ventilator.getState_lamp())
-					mSwitch = (byte) (0x80 ^ Switch);
+				//if (ventilator.getState_lamp())
+					mSwitch = (byte) (0x7F & Switch);
 				break;
 			case PLASMA:
-				if (ventilator.getState_plasma())
-					mSwitch = (byte) (0x40 ^ Switch);
+				//if (ventilator.getState_plasma())
+					mSwitch = (byte) (0xBF & Switch);
 				break;
 			case ULTRAVIOLET:
-				if (ventilator.getState_ultraviolet())
-					mSwitch = (byte) (0x20 ^ Switch);
+				//if (ventilator.getState_ultraviolet())
+					mSwitch = (byte) (0xDF & Switch);
 				break;
 			case VENTILATOR:
 				// 关闭设备
-				if (ventilator.getState_ventilator())
-					mSwitch = (byte) (ventilator.getGear_ventilator() ^ Switch);
+				//if (ventilator.getState_ventilator())
+				//	mSwitch = (byte) (ventilator.getGear_ventilator() ^ Switch);
+				mSwitch = (byte) (0xFC & Switch);
 				break;
 			default:
 				break;
@@ -109,51 +112,54 @@ public class VentilatorManager {
 			// 打开设备
 			switch (device) {
 			case LAMP:
-				if (!ventilator.getState_lamp())
+//				if (!ventilator.getState_lamp())
 					mSwitch = (byte) (0x80 | Switch);
 				break;
 			case PLASMA:
-				if (!ventilator.getState_plasma())
+//				if (!ventilator.getState_plasma())
 					mSwitch = (byte) (0x40 | Switch);
 				break;
 			case ULTRAVIOLET:
-				if (!ventilator.getState_ultraviolet())
+//				if (!ventilator.getState_ultraviolet())
 					mSwitch = (byte) (0x20 | Switch);
 				break;
 			case VENTILATOR:
+				mSwitch = (byte) ( command | (0xFC&Switch) );
 				// 打开&调节档位
-				switch (command) {
-				case VENTILATOR_1:
-					if (ventilator.getGear_ventilator() == 1)
-						;
-					if (ventilator.getGear_ventilator() == 2)
-						mSwitch = (byte) (0x03 ^ Switch);
-					if (ventilator.getGear_ventilator() == 3)
-						mSwitch = (byte) (0x02 ^ Switch);
-					break;
-				case VENTILATOR_2:
-					if (ventilator.getGear_ventilator() == 1)
-						mSwitch = (byte) (0x03 ^ Switch);
-					if (ventilator.getGear_ventilator() == 2)
-						;
-					if (ventilator.getGear_ventilator() == 3)
-						mSwitch = (byte) (0x01 ^ Switch);
-					break;
-				case VENTILATOR_3:
-					if (!ventilator.getState_ventilator())
-						mSwitch = (byte) (0x03 ^ Switch);
-					else {
-						if (ventilator.getGear_ventilator() == 1)
-							mSwitch = (byte) (0x02 ^ Switch);
-						if (ventilator.getGear_ventilator() == 2)
-							mSwitch = (byte) (0x01 ^ Switch);
-						if (ventilator.getGear_ventilator() == 3)
-							;
-					}
-					break;
-				default:
-					break;
-				}
+				//switch (command) {
+				
+				//case VENTILATOR_1:
+					//if (ventilator.getGear_ventilator() == 1)
+					//	;
+					//if (ventilator.getGear_ventilator() == 2)
+					//	mSwitch = (byte) (0x03 ^ Switch);
+					//if (ventilator.getGear_ventilator() == 3)
+					//	mSwitch = (byte) (0x02 ^ Switch);
+					//break;
+				//case VENTILATOR_2:
+					//if (ventilator.getGear_ventilator() == 1)
+					//	mSwitch = (byte) (0x03 ^ Switch);
+					//if (ventilator.getGear_ventilator() == 2)
+					//	;
+					//if (ventilator.getGear_ventilator() == 3)
+					//	mSwitch = (byte) (0x01 ^ Switch);
+					//break;
+				//case VENTILATOR_3:
+					//if (!ventilator.getState_ventilator())
+					//	mSwitch = (byte) (0x03 ^ Switch);
+					//else {
+					//	if (ventilator.getGear_ventilator() == 1)
+					//		mSwitch = (byte) (0x02 ^ Switch);
+					//	if (ventilator.getGear_ventilator() == 2)
+					//		mSwitch = (byte) (0x01 ^ Switch);
+					//	if (ventilator.getGear_ventilator() == 3)
+					//		;
+					
+					//}
+					//break;
+				//default:
+				//	break;
+				//}
 				break;
 			default:
 				break;
@@ -163,14 +169,26 @@ public class VentilatorManager {
 
 		sendSwitch(mSwitch);
 	}
-
+	/***
+	 * a new function to send data
+	 * @param device
+	 * @param command
+	 */
+	public void sendVentilatorCommand(String device, int command){
+		String mDevice=device;
+		int mCommand;
+		if(device==JSONDefine.SW_lamp){
+			
+			if(command==1);
+		}
+	}
 	/***
 	 * report data to network
 	 * 
 	 * @param ventilator
 	 */
 	public void reportData(String jsonString) {
-		setVentilator(jsonString);
+		//setVentilator(jsonString);
 
 		DevReporter reporter = new DevReporter(HostDefine.HOSTID_LDAT);
 		boolean ok = reporter.open(HostDefine.HOST_LDAT,
@@ -179,6 +197,7 @@ public class VentilatorManager {
 			Log.e("report", "setter:connnect server failed");
 			return;
 		}
+	/*
 		JSONObject json = new JSONObject();
 		try {
 			json.put(JSONDefine.KEY_switch, ventilator.getSwitch());
@@ -186,15 +205,30 @@ public class VentilatorManager {
 			json.put(JSONDefine.KEY_smog, ventilator.getSmog());
 			json.put(JSONDefine.KEY_hcho, ventilator.getAldehyde());
 			json.put(JSONDefine.KEY_hwError, ventilator.getHwError());
-			ok = reporter.report(DevDefine.FAKE_ID, json.toString());
-			Log.i("report", "report:" + json);
-			reporter.close();
-			if (!ok) {
-				Log.e("report", "setter:set failed\n");
-			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		*/
+		
+		JSONObject json;
+		try {
+			json = new JSONObject(jsonString);
+			//json.put(name, value)
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		
+		ok = reporter.report(DevDefine.FAKE_ID, json.toString());
+		Log.i("report", "report:" + json);
+		reporter.close();
+		if (!ok) {
+			Log.e("report", "setter:set failed\n");
+			return;
+		}
+		
+		reporter = null;
 	}
 
 	/***
@@ -208,5 +242,4 @@ public class VentilatorManager {
 		intent.putExtra("send", mSwitch);
 		context.sendBroadcast(intent);
 	}
-
 }

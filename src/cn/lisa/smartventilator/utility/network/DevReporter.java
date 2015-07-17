@@ -30,6 +30,13 @@ public class DevReporter {
 			speaker = null;
 		}
 	}
+	
+	public boolean isOpen() {
+		if(speaker!=null)
+			return speaker.isOpen();
+		
+		return false;
+	}
 
 	public boolean report(String idDev, String status) {
 		TMsg tmsg = new TMsg();

@@ -2,14 +2,17 @@ package cn.lisa.smartventilator.controller.service;
 
 import java.util.Timer;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.lisa.smartventilator.controller.manager.VentilatorManager;
 import cn.lisa.smartventilator.utility.hardware.UartAgent;
 import cn.lisa.smartventilator.utility.network.DevDefine;
 import cn.lisa.smartventilator.utility.network.DevMonitor;
+import cn.lisa.smartventilator.utility.network.DevReporter;
 import cn.lisa.smartventilator.utility.network.HostDefine;
 import cn.lisa.smartventilator.utility.network.JSONDefine;
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -27,12 +30,15 @@ public class MonitorService extends Service {
 
 	public static final String BROADCASTACTION = "getinfo";
 	public static final String SENDACTION = "send";
+	public static final String HEARTBERTACTION="heartbeat";
 	Timer timer;
 	public UartAgent uartagent;
 	SendReciever sendReciever;
+	private DevReporter myreporter = null;
 	/***
 	 * handle to send switch info to hardware
 	 */
+	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -52,6 +58,7 @@ public class MonitorService extends Service {
 	@Override
 	public void onCreate() {
 		initSendReceiver();
+		myreporter = new DevReporter(HostDefine.HOSTID_LDAT);	//jiangtao.Sun modify
 
 		super.onCreate();
 	}
@@ -69,6 +76,7 @@ public class MonitorService extends Service {
 		// baudrate:ttyS6, 38400, data:8,stop:1, parity:N
 		uartagent = new UartAgent("/dev/ttyS6", 38400, 8, 1, (byte) 'N', true);
 		uartagent.init();
+		
 		// thread to get info from hardware and report info to network
 		new Thread(new Runnable() {
 
@@ -85,11 +93,69 @@ public class MonitorService extends Service {
 					intent.setAction(BROADCASTACTION);
 					intent.putExtra("jsonstr", jsonString);
 					sendBroadcast(intent);
+					
+					JSONObject json;
+					try {		
+						json = new JSONObject(jsonString);
+						int hwError = json.getInt("hwError");
+						int pm2_5	= json.getInt("PM25");
+						int aldehyde= json.getInt("HCHO");
+						int smog	= json.getInt("smog");
+						int m_Switch= json.getInt("sw");
+						
+						json = new JSONObject();
+						json.put(JSONDefine.KEY_switch, m_Switch);
+						json.put(JSONDefine.KEY_pm25, pm2_5);
+						json.put(JSONDefine.KEY_smog, smog);
+						json.put(JSONDefine.KEY_hcho, aldehyde);
+						json.put(JSONDefine.KEY_hwError, hwError);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						continue;
+					}
 
-					VentilatorManager manager = new VentilatorManager(
-							getBaseContext());
-					manager.reportData(jsonString);
-					manager = null;
+					//VentilatorManager manager = new VentilatorManager(
+					//		getBaseContext());
+					//manager.reportData(jsonString);
+					//manager = null;
+					if(myreporter.isOpen()) {
+						boolean ok =myreporter.report(DevDefine.FAKE_ID, json.toString());
+						if(!ok) {
+							myreporter.close();
+						}
+					}
+				}
+			}
+		}).start();
+		
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				while (true) {
+					if(!myreporter.isOpen()) {
+						boolean ok = myreporter.open(HostDefine.HOST_LDAT,
+								HostDefine.PORT_LDAT_speak);
+						if(!ok) {
+							Log.i("report", "try connect failed");
+							try {
+								Thread.sleep(5*1000);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+								continue;
+							}
+						}
+					} else {
+						try {
+							Thread.sleep(5*1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							continue;
+						}
+					}
 				}
 			}
 		}).start();
@@ -121,7 +187,7 @@ public class MonitorService extends Service {
 					// open successfully, monitoring...
 					while (true) {
 						String jstring = monitor.watch();
-						if (jstring == null) {
+						if (jstring == null || "".equals(jstring)) {
 							Log.w("monitor", "devNonitor:network broken");
 							break;
 							// network down, try reconnect
@@ -130,12 +196,22 @@ public class MonitorService extends Service {
 						Log.i("monitor", "devMonitor:jString=" + jstring);
 						try {
 							JSONObject json = new JSONObject(jstring);
-							byte mSwitch = (byte) json
-									.getInt(JSONDefine.KEY_switch);
+							
+							String focus=json.getString(JSONDefine.KEY_focus);
+							byte mSwitch = (byte) json.getInt(JSONDefine.KEY_swValue);
+							
 							Log.i("monitor", "sw=" + mSwitch);
 							VentilatorManager manager = new VentilatorManager(
 									getBaseContext());
-							manager.sendSwitch(mSwitch);
+							if(focus==JSONDefine.SW_lamp)
+								;
+							else if(focus==JSONDefine.SW_ultra);
+							else if(focus==JSONDefine.SW_plasma);
+							else if (focus==JSONDefine.SW_fan) {
+								;
+							}
+							
+//							manager.sendSwitch(mSwitch);
 							manager = null;
 						} catch (Exception e) {
 							Log.e("monitor", "monitor:error");
@@ -144,6 +220,19 @@ public class MonitorService extends Service {
 				}
 			}
 		}).start();
+//		//Heartbeat 
+//		new Thread(new Runnable() {
+//			
+//			@Override
+//			public void run() {
+//				byte[] heartBeat=new byte[2];
+//				heartBeat[0]=0x03;
+//				heartBeat[1]=0x01;
+//				while(true){
+//					
+//				}
+//			}
+//		}).start();
 
 		return super.onStartCommand(intent, flags, startId);
 	}
