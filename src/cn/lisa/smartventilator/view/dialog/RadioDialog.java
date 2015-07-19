@@ -23,8 +23,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.ListView;
 
-public class RadioDialog extends Dialog implements OnBufferingUpdateListener,
-		OnPreparedListener, OnInfoListener {
+public class RadioDialog extends Dialog implements OnBufferingUpdateListener, OnPreparedListener, OnInfoListener {
 	private Context mContext;
 
 	private ListView mRadioList;
@@ -46,8 +45,7 @@ public class RadioDialog extends Dialog implements OnBufferingUpdateListener,
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			Radio data = (Radio) msg.getData().getSerializable(
-					RadioListAdapter.BUNDLE_KEY);
+			Radio data = (Radio) msg.getData().getSerializable(RadioListAdapter.BUNDLE_KEY);
 
 			switch (msg.what) {
 
@@ -64,8 +62,7 @@ public class RadioDialog extends Dialog implements OnBufferingUpdateListener,
 				Radio r1 = (Radio) data;
 				Log.e("sv", "stop " + r1.getUrl());
 				mPlayStatus = (Map<Integer, Boolean>) msg.obj;
-				if (mMediaPlayer.isPlaying()
-						&& currentRadioPlayItem == r1.getId() - 1) {
+				if (mMediaPlayer.isPlaying() && currentRadioPlayItem == r1.getId() - 1) {
 					mMediaPlayer.pause();
 				}
 				for (int i = 0; i < mPlayStatus.size(); i++) {
@@ -110,8 +107,7 @@ public class RadioDialog extends Dialog implements OnBufferingUpdateListener,
 		for (int i = 0; i < radios.size(); i++)
 			mPlayStatus.put(i, false);
 		// °ó¶¨adapter
-		mradioListAdapter = new RadioListAdapter(mContext, handler,
-				mPlayStatus, (ArrayList<Radio>) radios);
+		mradioListAdapter = new RadioListAdapter(mContext, handler, mPlayStatus, (ArrayList<Radio>) radios);
 		mRadioList.setAdapter(mradioListAdapter);
 	}
 

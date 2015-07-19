@@ -40,8 +40,7 @@ public class VideoDialog extends Dialog implements OnItemClickListener {
 				@SuppressWarnings("unchecked")
 				List<Video> videoInfoList = (List<Video>) msg.obj;
 				if (videoInfoList.size() > 0) {
-					mVideoListAdapter = new VideoListAdapter(mContext,
-							videoInfoList);
+					mVideoListAdapter = new VideoListAdapter(mContext, videoInfoList);
 					mVideoList.setAdapter(mVideoListAdapter);
 					mBlankLayout.setVisibility(View.GONE);
 				} else {
@@ -74,8 +73,7 @@ public class VideoDialog extends Dialog implements OnItemClickListener {
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		switch (parent.getId()) {
 		case R.id.lv_video:
 			// stopRadio();
@@ -94,12 +92,10 @@ public class VideoDialog extends Dialog implements OnItemClickListener {
 	 */
 	private void playVideo(int position) {
 		try {
-			Intent intent = VideoManager.getVideoIntent(videos.get(position)
-					.getPath());
+			Intent intent = VideoManager.getVideoIntent(videos.get(position).getPath());
 			mContext.startActivity(intent);
 		} catch (Exception e) {
-			Toast.makeText(mContext, R.string.str_media_no_player,
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, R.string.str_media_no_player, Toast.LENGTH_SHORT).show();
 		}
 
 	}

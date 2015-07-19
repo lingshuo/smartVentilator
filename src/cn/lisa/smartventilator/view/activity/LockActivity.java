@@ -1,6 +1,5 @@
 package cn.lisa.smartventilator.view.activity;
 
-
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.controller.manager.MyWindowManager;
 import cn.lisa.smartventilator.controller.service.FloatWindowService;
@@ -14,15 +13,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 
-public class LockActivity extends Activity implements OnClickListener{
+public class LockActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		View decorView = getWindow().getDecorView();
 		// Hide the status bar.
-		int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-				| View.SYSTEM_UI_FLAG_FULLSCREEN;
+		int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN;
 		decorView.setSystemUiVisibility(uiOptions);
 		setContentView(R.layout.activity_lock);
 
@@ -38,7 +36,7 @@ public class LockActivity extends Activity implements OnClickListener{
 
 	@Override
 	protected void onResume() {
-		if(MyWindowManager.isWindowShowing())
+		if (MyWindowManager.isWindowShowing())
 			MyWindowManager.removeSmallWindow(getApplicationContext());
 		Intent intent1 = new Intent();
 		intent1.setClass(this, FloatWindowService.class);
@@ -46,12 +44,12 @@ public class LockActivity extends Activity implements OnClickListener{
 		Log.i("lock", "onResume:remove");
 		super.onResume();
 	}
-	
+
 	@Override
 	protected void onRestart() {
 		super.onRestart();
 	}
-	
+
 	@Override
 	protected void onPause() {
 		// 启动桌面悬浮球
@@ -83,12 +81,12 @@ public class LockActivity extends Activity implements OnClickListener{
 			break;
 		}
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(keyCode>=0)
-			 return true;
+		if (keyCode >= 0)
+			return true;
 		return super.onKeyDown(keyCode, event);
 	}
-	
+
 }

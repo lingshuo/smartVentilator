@@ -110,10 +110,8 @@ public class MyWindowManager {
 			bigWindow = new FloatWindowBigView(context);
 			if (bigWindowParams == null) {
 				bigWindowParams = new LayoutParams();
-				bigWindowParams.x = screenWidth / 2
-						- FloatWindowBigView.viewWidth / 2;
-				bigWindowParams.y = screenHeight / 2
-						- FloatWindowBigView.viewHeight / 2;
+				bigWindowParams.x = screenWidth / 2 - FloatWindowBigView.viewWidth / 2;
+				bigWindowParams.y = screenHeight / 2 - FloatWindowBigView.viewHeight / 2;
 				bigWindowParams.type = LayoutParams.TYPE_PHONE;
 				bigWindowParams.format = PixelFormat.RGBA_8888;
 				bigWindowParams.gravity = Gravity.LEFT | Gravity.TOP;
@@ -146,8 +144,7 @@ public class MyWindowManager {
 	 */
 	public static void updateUsedPercent(Context context) {
 		if (smallWindow != null) {
-			TextView percentView = (TextView) smallWindow
-					.findViewById(R.id.percent);
+			TextView percentView = (TextView) smallWindow.findViewById(R.id.percent);
 			percentView.setText("µã»÷ËøÆÁ");
 		}
 	}
@@ -170,8 +167,7 @@ public class MyWindowManager {
 	 */
 	private static WindowManager getWindowManager(Context context) {
 		if (mWindowManager == null) {
-			mWindowManager = (WindowManager) context
-					.getSystemService(Context.WINDOW_SERVICE);
+			mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		}
 		return mWindowManager;
 	}
@@ -185,8 +181,7 @@ public class MyWindowManager {
 	 */
 	private static ActivityManager getActivityManager(Context context) {
 		if (mActivityManager == null) {
-			mActivityManager = (ActivityManager) context
-					.getSystemService(Context.ACTIVITY_SERVICE);
+			mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 		}
 		return mActivityManager;
 	}
@@ -204,14 +199,11 @@ public class MyWindowManager {
 			FileReader fr = new FileReader(dir);
 			BufferedReader br = new BufferedReader(fr, 2048);
 			String memoryLine = br.readLine();
-			String subMemoryLine = memoryLine.substring(memoryLine
-					.indexOf("MemTotal:"));
+			String subMemoryLine = memoryLine.substring(memoryLine.indexOf("MemTotal:"));
 			br.close();
-			long totalMemorySize = Integer.parseInt(subMemoryLine.replaceAll(
-					"\\D+", ""));
+			long totalMemorySize = Integer.parseInt(subMemoryLine.replaceAll("\\D+", ""));
 			long availableSize = getAvailableMemory(context) / 1024;
-			int percent = (int) ((totalMemorySize - availableSize)
-					/ (float) totalMemorySize * 100);
+			int percent = (int) ((totalMemorySize - availableSize) / (float) totalMemorySize * 100);
 			return percent + "%";
 		} catch (IOException e) {
 			e.printStackTrace();

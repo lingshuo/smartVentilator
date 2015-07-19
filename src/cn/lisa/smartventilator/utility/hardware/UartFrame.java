@@ -6,8 +6,7 @@ public class UartFrame {
 		System.loadLibrary("UartFrame");
 	}
 
-	public native boolean init(String dev, int baudrate, int databits,
-			int stopbits, byte parity);
+	public native boolean init(String dev, int baudrate, int databits, int stopbits, byte parity);
 
 	public native void destroy();
 

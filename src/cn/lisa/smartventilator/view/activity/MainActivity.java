@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.lisa.smartventilator.R;
+import cn.lisa.smartventilator.controller.entity.MachineID;
 import cn.lisa.smartventilator.controller.service.FloatWindowService;
 import cn.lisa.smartventilator.controller.service.MonitorService;
 import cn.lisa.smartventilator.view.fragment.*;
@@ -31,11 +32,17 @@ public class MainActivity extends FragmentActivity {
 	public DevicePolicyManager policyManager;
 	public ComponentName componentName;
 	public PowerManager.WakeLock mWakeLock;
-
+	public static MachineID mID;
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mID=new MachineID();
+		mID.readId();
+		if(mID.getMid().equals("die"))
+		{
+			//die
+		}
 		if (!LibsChecker.checkVitamioLibs(this))
 			return;
 		// CustomTitleBar ct = new CustomTitleBar();
@@ -74,22 +81,14 @@ public class MainActivity extends FragmentActivity {
 
 		// 注意图片的顺序
 		tabDrawables = new ArrayList<Drawable>();
-		tabDrawables.add(this.getResources().getDrawable(
-				R.drawable.monitor_normal));
-		tabDrawables.add(this.getResources().getDrawable(
-				R.drawable.monitor_pressed));
-		tabDrawables.add(this.getResources().getDrawable(
-				R.drawable.media_normal));
-		tabDrawables.add(this.getResources().getDrawable(
-				R.drawable.media_pressed));
-		tabDrawables.add(this.getResources().getDrawable(
-				R.drawable.setting_normal));
-		tabDrawables.add(this.getResources().getDrawable(
-				R.drawable.setting_pressed));
-		tabDrawables.add(this.getResources().getDrawable(
-				R.drawable.contact_normal));
-		tabDrawables.add(this.getResources().getDrawable(
-				R.drawable.contact_pressed));
+		tabDrawables.add(this.getResources().getDrawable(R.drawable.monitor_normal));
+		tabDrawables.add(this.getResources().getDrawable(R.drawable.monitor_pressed));
+		tabDrawables.add(this.getResources().getDrawable(R.drawable.media_normal));
+		tabDrawables.add(this.getResources().getDrawable(R.drawable.media_pressed));
+		tabDrawables.add(this.getResources().getDrawable(R.drawable.setting_normal));
+		tabDrawables.add(this.getResources().getDrawable(R.drawable.setting_pressed));
+		tabDrawables.add(this.getResources().getDrawable(R.drawable.contact_normal));
+		tabDrawables.add(this.getResources().getDrawable(R.drawable.contact_pressed));
 
 		// 演示增加一组
 		mBottomTabView.addItemViews(tabTexts, mFragments, tabDrawables);
@@ -108,30 +107,25 @@ public class MainActivity extends FragmentActivity {
 		createShortCut();
 		// 保持屏幕常亮
 		PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-		mWakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK,
-				"My Tag");
+		mWakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "My Tag");
 	}
+	
 
 	public void createShortCut() {
-		SharedPreferences setting = getSharedPreferences(
-				"smartventilator.preferences", 0);
+		SharedPreferences setting = getSharedPreferences("smartventilator.preferences", 0);
 		boolean firstStart = setting.getBoolean("FIRST_START", true);
 		if (firstStart) {
 			// 创建快捷方式的Intent
-			Intent shortcutintent = new Intent(
-					"com.android.launcher.action.INSTALL_SHORTCUT");
+			Intent shortcutintent = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
 			// 不允许重复创建
 			shortcutintent.putExtra("duplicate", false);
 			// 需要现实的名称
-			shortcutintent.putExtra(Intent.EXTRA_SHORTCUT_NAME,
-					getString(R.string.app_name));
+			shortcutintent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.app_name));
 			// 快捷图片
-			Parcelable icon = Intent.ShortcutIconResource.fromContext(
-					getApplicationContext(), R.drawable.ic_launcher);
+			Parcelable icon = Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.drawable.ic_launcher);
 			shortcutintent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
 			// 点击快捷图片，运行的程序主入口
-			shortcutintent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, new Intent(
-					getApplicationContext(), MainActivity.class));
+			shortcutintent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, new Intent(getApplicationContext(), MainActivity.class));
 			// 发送广播。OK
 			sendBroadcast(shortcutintent);
 			// 将第一次启动的标识设置为false

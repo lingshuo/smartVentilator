@@ -11,8 +11,7 @@ import android.view.ViewGroup;
 public class ContactFragment extends Fragment {
 	@SuppressLint("InflateParams")
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_contact, null);
 		return view;
 	}

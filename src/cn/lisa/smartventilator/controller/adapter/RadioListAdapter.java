@@ -28,11 +28,9 @@ public class RadioListAdapter extends BaseAdapter {
 	private Handler mHandler;
 	public final static String BUNDLE_KEY = "radio";
 
-	public RadioListAdapter(Context context, Handler handler,
-			Map<Integer, Boolean> playStaus, ArrayList<Radio> Radios) {
+	public RadioListAdapter(Context context, Handler handler, Map<Integer, Boolean> playStaus, ArrayList<Radio> Radios) {
 		mHandler = handler;
-		infater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		infater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.playStaus = playStaus;
 		this.mRadioList = new ArrayList<Radio>();
 		for (Radio r : Radios) {
@@ -74,13 +72,11 @@ public class RadioListAdapter extends BaseAdapter {
 		// radio_name.setTag(CLICK_BUTTON_PLAY);
 
 		ImageButton btn_play = (ImageButton) view.findViewById(R.id.btn_play);
-		btn_play.setOnClickListener(new OnItemChildClickListener(
-				RadioManager.CLICK_BUTTON_PLAY, position));
+		btn_play.setOnClickListener(new OnItemChildClickListener(RadioManager.CLICK_BUTTON_PLAY, position));
 		btn_play.setTag(RadioManager.CLICK_BUTTON_PLAY);
 
 		ImageButton btn_stop = (ImageButton) view.findViewById(R.id.btn_stop);
-		btn_stop.setOnClickListener(new OnItemChildClickListener(
-				RadioManager.CLICK_BUTTON_STOP, position));
+		btn_stop.setOnClickListener(new OnItemChildClickListener(RadioManager.CLICK_BUTTON_STOP, position));
 		btn_stop.setTag(RadioManager.CLICK_BUTTON_STOP);
 
 		if (playStaus.get(position)) {

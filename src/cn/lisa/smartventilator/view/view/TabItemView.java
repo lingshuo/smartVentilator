@@ -43,8 +43,7 @@ public class TabItemView extends LinearLayout {
 		this.mContext = context;
 		mTextView = new TextView(context);
 		mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
-		mTextView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.MATCH_PARENT));
+		mTextView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		mTextView.setFocusable(true);
 		// mTextView.setPadding(10, 0, 10, 0);
 		mTextView.setSingleLine();
@@ -115,23 +114,18 @@ public class TabItemView extends LinearLayout {
 	 * @param bottom
 	 *            the bottom
 	 */
-	public void setTabCompoundDrawables(Drawable left, Drawable top,
-			Drawable right, Drawable bottom) {
+	public void setTabCompoundDrawables(Drawable left, Drawable top, Drawable right, Drawable bottom) {
 		if (left != null) {
-			left.setBounds(0, 0, left.getIntrinsicWidth(),
-					left.getIntrinsicHeight());
+			left.setBounds(0, 0, left.getIntrinsicWidth(), left.getIntrinsicHeight());
 		}
 		if (top != null) {
-			top.setBounds(0, 0, top.getIntrinsicWidth(),
-					top.getIntrinsicHeight());
+			top.setBounds(0, 0, top.getIntrinsicWidth(), top.getIntrinsicHeight());
 		}
 		if (right != null) {
-			right.setBounds(0, 0, right.getIntrinsicWidth(),
-					right.getIntrinsicHeight());
+			right.setBounds(0, 0, right.getIntrinsicWidth(), right.getIntrinsicHeight());
 		}
 		if (bottom != null) {
-			bottom.setBounds(0, 0, bottom.getIntrinsicWidth(),
-					bottom.getIntrinsicHeight());
+			bottom.setBounds(0, 0, bottom.getIntrinsicWidth(), bottom.getIntrinsicHeight());
 		}
 		mTextView.setCompoundDrawables(left, top, right, bottom);
 	}

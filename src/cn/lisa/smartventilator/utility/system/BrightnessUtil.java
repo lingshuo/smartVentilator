@@ -44,8 +44,7 @@ public class BrightnessUtil {
 
 		try {
 
-			nowBrightnessValue = android.provider.Settings.System.getInt(
-					resolver, Settings.System.SCREEN_BRIGHTNESS);
+			nowBrightnessValue = android.provider.Settings.System.getInt(resolver, Settings.System.SCREEN_BRIGHTNESS);
 
 		}
 
@@ -107,11 +106,9 @@ public class BrightnessUtil {
 
 	public static void saveBrightness(ContentResolver resolver, int brightness) {
 
-		Uri uri = android.provider.Settings.System
-				.getUriFor("screen_brightness");
+		Uri uri = android.provider.Settings.System.getUriFor("screen_brightness");
 
-		android.provider.Settings.System.putInt(resolver, "screen_brightness",
-				brightness);
+		android.provider.Settings.System.putInt(resolver, "screen_brightness", brightness);
 
 		// resolver.registerContentObserver(uri, true, myContentObserver);
 

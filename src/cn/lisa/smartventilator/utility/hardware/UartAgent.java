@@ -27,8 +27,7 @@ public class UartAgent {
 	private byte parity;
 	private boolean block = true;
 
-	public UartAgent(String dev, int baudrate, int databits, int stopbits,
-			byte parity, boolean block) {
+	public UartAgent(String dev, int baudrate, int databits, int stopbits, byte parity, boolean block) {
 		this.dev = dev;
 		this.baudrate = baudrate;
 		this.databits = databits;
@@ -38,8 +37,7 @@ public class UartAgent {
 
 		frame = new UartFrame();
 		statusLock = new ReentrantLock();
-		status = new StringBuilder(Report.buildToJString((byte) 0, (short) 0,
-				(short) 0, (short) 0, (short) 0));
+		status = new StringBuilder(Report.buildToJString((byte) 0, (short) 0, (short) 0, (short) 0, (short) 0));
 	}
 
 	boolean setSw(byte sw) {
@@ -79,13 +77,12 @@ public class UartAgent {
 				short smog = (short) (((buf[6] << 8) & 0xFF00) | ((buf[7] << 0) & 0x00FF));
 				short hwError = (short) (((buf[8] << 8) & 0xFF00) | ((buf[9] << 0) & 0x00FF));
 
-				String info = "sw=" + sw + ";pm25=" + pm25 + ";hcho=" + hcho
-						+ ";smog=" + smog + ";hwError" + hwError;
+				String info = "sw=" + sw + ";pm25=" + pm25 + ";hcho=" + hcho + ";smog=" + smog
+						+ ";hwError" + hwError;
 				Log.i("[UartAgent]", info);
 
 				// make JSon String
-				String jStatus = Report.buildToJString(sw, smog, hcho, pm25,
-						hwError);
+				String jStatus = Report.buildToJString(sw, smog, hcho, pm25, hwError);
 				return jStatus;
 			}
 		}
@@ -118,8 +115,7 @@ public class UartAgent {
 				if (!isOpen) {
 					Log.i("[uartAgent]", "not open");
 					close();
-					isOpen = frame.init(dev, baudrate, databits, stopbits,
-							parity);
+					isOpen = frame.init(dev, baudrate, databits, stopbits, parity);
 				}
 				if (!isOpen) {
 					try {
@@ -152,14 +148,12 @@ public class UartAgent {
 							short smog = (short) (((buf[6] << 8) & 0xFF00) | ((buf[7] << 0) & 0x00FF));
 							short hwError = (short) (((buf[8] << 8) & 0xFF00) | ((buf[9] << 0) & 0x00FF));
 
-							String info = "sw=" + sw + ";pm25=" + pm25
-									+ ";hcho=" + hcho + ";smog=" + smog
-									+ ";hwError" + hwError;
+							String info = "sw=" + sw + ";pm25=" + pm25 + ";hcho=" + hcho + ";smog="
+									+ smog + ";hwError" + hwError;
 							Log.i("[UartAgent]", info);
 
 							// make JSon String
-							String jStatus = Report.buildToJString(sw, smog,
-									hcho, pm25, hwError);
+							String jStatus = Report.buildToJString(sw, smog, hcho, pm25, hwError);
 							statusLock.lock();
 							status.delete(0, status.length());
 							status.append(jStatus);
@@ -188,8 +182,7 @@ public class UartAgent {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		final UartAgent agent = new UartAgent("/dev/ttyUSB0", 115200, 8, 1,
-				(byte) 'N', true);
+		final UartAgent agent = new UartAgent("/dev/ttyUSB0", 115200, 8, 1, (byte) 'N', true);
 		agent.init();
 
 		// loopback testing

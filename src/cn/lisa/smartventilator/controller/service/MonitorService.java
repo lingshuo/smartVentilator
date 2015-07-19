@@ -30,10 +30,11 @@ public class MonitorService extends Service {
 
 	public static final String BROADCASTACTION = "getinfo";
 	public static final String SENDACTION = "send";
-	public static final String HEARTBERTACTION="heartbeat";
-	Timer timer;
+	public static final String HEARTBERTACTION = "heartbeat";
+
+	private Timer timer;
 	public UartAgent uartagent;
-	SendReciever sendReciever;
+	private SendReciever sendReciever;
 	private DevReporter myreporter = null;
 	/***
 	 * handle to send switch info to hardware
@@ -46,7 +47,6 @@ public class MonitorService extends Service {
 				byte[] buf = new byte[2];
 				buf[0] = (byte) 0x01;
 				buf[1] = (byte) msg.arg1;
-				// Log.i("switch", "handle:" + buf[1]);
 				uartagent.frame.send(buf, buf.length);
 				break;
 			default:
@@ -58,8 +58,8 @@ public class MonitorService extends Service {
 	@Override
 	public void onCreate() {
 		initSendReceiver();
-		myreporter = new DevReporter(HostDefine.HOSTID_LDAT);	//jiangtao.Sun modify
-
+		myreporter = new DevReporter(HostDefine.HOSTID_LDAT); // jiangtao.Sun
+																// modify
 		super.onCreate();
 	}
 
@@ -76,7 +76,7 @@ public class MonitorService extends Service {
 		// baudrate:ttyS6, 38400, data:8,stop:1, parity:N
 		uartagent = new UartAgent("/dev/ttyS6", 38400, 8, 1, (byte) 'N', true);
 		uartagent.init();
-		
+
 		// thread to get info from hardware and report info to network
 		new Thread(new Runnable() {
 
@@ -93,16 +93,16 @@ public class MonitorService extends Service {
 					intent.setAction(BROADCASTACTION);
 					intent.putExtra("jsonstr", jsonString);
 					sendBroadcast(intent);
-					
+
 					JSONObject json;
-					try {		
+					try {
 						json = new JSONObject(jsonString);
 						int hwError = json.getInt("hwError");
-						int pm2_5	= json.getInt("PM25");
-						int aldehyde= json.getInt("HCHO");
-						int smog	= json.getInt("smog");
-						int m_Switch= json.getInt("sw");
-						
+						int pm2_5 = json.getInt("PM25");
+						int aldehyde = json.getInt("HCHO");
+						int smog = json.getInt("smog");
+						int m_Switch = json.getInt("sw");
+
 						json = new JSONObject();
 						json.put(JSONDefine.KEY_switch, m_Switch);
 						json.put(JSONDefine.KEY_pm25, pm2_5);
@@ -114,44 +114,38 @@ public class MonitorService extends Service {
 						e.printStackTrace();
 						continue;
 					}
-
-					//VentilatorManager manager = new VentilatorManager(
-					//		getBaseContext());
-					//manager.reportData(jsonString);
-					//manager = null;
-					if(myreporter.isOpen()) {
-						boolean ok =myreporter.report(DevDefine.FAKE_ID, json.toString());
-						if(!ok) {
+					//if reporter is open, then report json to network
+					if (myreporter.isOpen()) {
+						boolean ok = myreporter.report(DevDefine.FAKE_ID, json.toString());
+						if (!ok) {
 							myreporter.close();
 						}
 					}
 				}
 			}
 		}).start();
-		
+
+		//thread to try open reporter
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				while (true) {
-					if(!myreporter.isOpen()) {
-						boolean ok = myreporter.open(HostDefine.HOST_LDAT,
-								HostDefine.PORT_LDAT_speak);
-						if(!ok) {
+					if (!myreporter.isOpen()) {
+						boolean ok = myreporter.open(HostDefine.HOST_LDAT, HostDefine.PORT_LDAT_speak);
+						if (!ok) {
 							Log.i("report", "try connect failed");
 							try {
-								Thread.sleep(5*1000);
+								Thread.sleep(5 * 1000);
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 								continue;
 							}
 						}
 					} else {
 						try {
-							Thread.sleep(5*1000);
+							Thread.sleep(5 * 1000);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 							continue;
 						}
@@ -165,13 +159,11 @@ public class MonitorService extends Service {
 
 			@Override
 			public void run() {
-				DevMonitor monitor = new DevMonitor(HostDefine.HOSTID_LTCP,
-						DevDefine.FAKE_ID);
+				DevMonitor monitor = new DevMonitor(HostDefine.HOSTID_LTCP, DevDefine.FAKE_ID);
 				while (true) {
 
 					// try open
-					boolean ok = monitor.open(HostDefine.HOST_LTCP,
-							HostDefine.PORT_LTCP_listen);
+					boolean ok = monitor.open(HostDefine.HOST_LTCP, HostDefine.PORT_LTCP_listen);
 					if (!ok) {
 						Log.e("monitor", "monitor:open failed");
 						try {
@@ -196,22 +188,23 @@ public class MonitorService extends Service {
 						Log.i("monitor", "devMonitor:jString=" + jstring);
 						try {
 							JSONObject json = new JSONObject(jstring);
-							
-							String focus=json.getString(JSONDefine.KEY_focus);
+
+							String focus = json.getString(JSONDefine.KEY_focus);
 							byte mSwitch = (byte) json.getInt(JSONDefine.KEY_swValue);
-							
+
 							Log.i("monitor", "sw=" + mSwitch);
-							VentilatorManager manager = new VentilatorManager(
-									getBaseContext());
-							if(focus==JSONDefine.SW_lamp)
+							VentilatorManager manager = new VentilatorManager(getBaseContext());
+							if (focus == JSONDefine.SW_lamp)
 								;
-							else if(focus==JSONDefine.SW_ultra);
-							else if(focus==JSONDefine.SW_plasma);
-							else if (focus==JSONDefine.SW_fan) {
+							else if (focus == JSONDefine.SW_ultra)
+								;
+							else if (focus == JSONDefine.SW_plasma)
+								;
+							else if (focus == JSONDefine.SW_fan) {
 								;
 							}
-							
-//							manager.sendSwitch(mSwitch);
+
+							// manager.sendSwitch(mSwitch);
 							manager = null;
 						} catch (Exception e) {
 							Log.e("monitor", "monitor:error");
@@ -220,19 +213,19 @@ public class MonitorService extends Service {
 				}
 			}
 		}).start();
-//		//Heartbeat 
-//		new Thread(new Runnable() {
-//			
-//			@Override
-//			public void run() {
-//				byte[] heartBeat=new byte[2];
-//				heartBeat[0]=0x03;
-//				heartBeat[1]=0x01;
-//				while(true){
-//					
-//				}
-//			}
-//		}).start();
+		// //Heartbeat
+		// new Thread(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// byte[] heartBeat=new byte[2];
+		// heartBeat[0]=0x03;
+		// heartBeat[1]=0x01;
+		// while(true){
+		//
+		// }
+		// }
+		// }).start();
 
 		return super.onStartCommand(intent, flags, startId);
 	}

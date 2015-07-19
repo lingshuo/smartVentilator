@@ -30,8 +30,7 @@ public class MediaFragment extends Fragment implements OnClickListener {
 
 	@SuppressLint("InflateParams")
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		this.context = getActivity();
 
@@ -50,14 +49,11 @@ public class MediaFragment extends Fragment implements OnClickListener {
 	 */
 	private void initview(View view) {
 		// 播放按钮
-		mYoukuPlayLayout = (RelativeLayout) view
-				.findViewById(R.id.media_play_layout);
+		mYoukuPlayLayout = (RelativeLayout) view.findViewById(R.id.media_play_layout);
 		// 视频
-		mVideoPlayLayout = (RelativeLayout) view
-				.findViewById(R.id.video_play_layout);
+		mVideoPlayLayout = (RelativeLayout) view.findViewById(R.id.video_play_layout);
 		// 广播
-		mRadioPlayLayout = (RelativeLayout) view
-				.findViewById(R.id.radio_play_layout);
+		mRadioPlayLayout = (RelativeLayout) view.findViewById(R.id.radio_play_layout);
 
 		mVideoDialog = new VideoDialog(context);
 		mRadioDialog = new RadioDialog(context);
@@ -80,8 +76,7 @@ public class MediaFragment extends Fragment implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.media_play_layout:
 			mRadioDialog.stopRadio();
-			Intent intent = packageManager
-					.getLaunchIntentForPackage("com.youku.phone");
+			Intent intent = packageManager.getLaunchIntentForPackage("com.youku.phone");
 			if (intent == null) {
 				String str = "http://dl.m.cc.youku.com/android/phone/Youku_Phone_youkuweb.apk";
 				Intent localIntent = new Intent("android.intent.action.VIEW");

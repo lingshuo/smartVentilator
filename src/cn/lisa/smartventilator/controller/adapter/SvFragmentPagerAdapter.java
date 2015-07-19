@@ -9,8 +9,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 public class SvFragmentPagerAdapter extends FragmentPagerAdapter {
 	private ArrayList<Fragment> mFragmentList = null;
 
-	public SvFragmentPagerAdapter(FragmentManager mFragmentManager,
-			ArrayList<Fragment> fragmentList) {
+	public SvFragmentPagerAdapter(FragmentManager mFragmentManager, ArrayList<Fragment> fragmentList) {
 		super(mFragmentManager);
 		mFragmentList = fragmentList;
 	}

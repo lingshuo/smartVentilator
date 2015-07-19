@@ -21,8 +21,7 @@ public class VideoListAdapter extends BaseAdapter {
 
 	public VideoListAdapter(Context context, List<Video> videos) {
 		super();
-		infater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		infater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mVideoList = videos;
 	}
 

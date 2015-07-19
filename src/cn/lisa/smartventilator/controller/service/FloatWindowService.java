@@ -57,8 +57,7 @@ public class FloatWindowService extends Service {
 				handler.post(new Runnable() {
 					@Override
 					public void run() {
-						MyWindowManager
-								.createSmallWindow(getApplicationContext());
+						MyWindowManager.createSmallWindow(getApplicationContext());
 					}
 				});
 			}

@@ -8,8 +8,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Intent myintent = context.getPackageManager()
-				.getLaunchIntentForPackage("cn.lisa.smartventilator");
+		Intent myintent = context.getPackageManager().getLaunchIntentForPackage("cn.lisa.smartventilator");
 		context.startActivity(myintent);
 	}
 

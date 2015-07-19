@@ -33,8 +33,7 @@ public class RemoteGetter {
 
 	public String getStatus(String idDev) throws JSONException {
 		TMsg tmsg = new TMsg();
-		tmsg.setHead(new THead(TMsgDefine.LMSG_MAGIC, TMsgDefine.LMSG_VERSION,
-				TMType.DATA));
+		tmsg.setHead(new THead(TMsgDefine.LMSG_MAGIC, TMsgDefine.LMSG_VERSION, TMType.DATA));
 		tmsg.setDst(new TPoint(marketID, "", idDev));
 		tmsg.setSrc(new TPoint(marketID, "", idDev));
 		tmsg.setStamp(System.currentTimeMillis());
@@ -53,15 +52,13 @@ public class RemoteGetter {
 	}
 
 	// demo main
-	public static void main(String[] args) throws InterruptedException,
-			JSONException {
+	public static void main(String[] args) throws InterruptedException, JSONException {
 		RemoteGetter getter = new RemoteGetter(HostDefine.HOSTID_LDAT);
 
 		while (true) {
 			Thread.sleep(5 * 1000);
 
-			boolean ok = getter.open(HostDefine.HOST_LDAT,
-					HostDefine.PORT_LDAT_query);
+			boolean ok = getter.open(HostDefine.HOST_LDAT, HostDefine.PORT_LDAT_query);
 			if (!ok)
 				continue;
 
@@ -74,13 +71,7 @@ public class RemoteGetter {
 				continue;
 			}
 
-			System.out.printf(
-					"status:[switch=%d,smog=%d;HCHO=%d,PM25=%d,hwError=%d]\n",
-					json.getInt(JSONDefine.KEY_switch),
-					json.getInt(JSONDefine.KEY_smog),
-					json.getInt(JSONDefine.KEY_hcho),
-					json.getInt(JSONDefine.KEY_pm25),
-					json.getInt(JSONDefine.KEY_hwError));
+			System.out.printf("status:[switch=%d,smog=%d;HCHO=%d,PM25=%d,hwError=%d]\n", json.getInt(JSONDefine.KEY_switch), json.getInt(JSONDefine.KEY_smog), json.getInt(JSONDefine.KEY_hcho), json.getInt(JSONDefine.KEY_pm25), json.getInt(JSONDefine.KEY_hwError));
 		}
 	}
 }

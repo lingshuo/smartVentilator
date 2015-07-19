@@ -30,18 +30,17 @@ public class DevReporter {
 			speaker = null;
 		}
 	}
-	
+
 	public boolean isOpen() {
-		if(speaker!=null)
+		if (speaker != null)
 			return speaker.isOpen();
-		
+
 		return false;
 	}
 
 	public boolean report(String idDev, String status) {
 		TMsg tmsg = new TMsg();
-		tmsg.setHead(new THead(TMsgDefine.LMSG_MAGIC, TMsgDefine.LMSG_VERSION,
-				TMType.DATA));
+		tmsg.setHead(new THead(TMsgDefine.LMSG_MAGIC, TMsgDefine.LMSG_VERSION, TMType.DATA));
 		tmsg.setDst(new TPoint(marketID, "", idDev));
 		tmsg.setSrc(new TPoint("", "", ""));
 		tmsg.setStamp(System.currentTimeMillis());
@@ -50,8 +49,7 @@ public class DevReporter {
 		return speaker.say(tmsg);
 	}
 
-	public static void main(String[] args) throws InterruptedException,
-			JSONException {
+	public static void main(String[] args) throws InterruptedException, JSONException {
 		DevReporter reporter = new DevReporter(HostDefine.HOSTID_LDAT);
 
 		int cnt = 0;
@@ -59,8 +57,7 @@ public class DevReporter {
 		while (true) {
 			Thread.sleep(5 * 1000);
 
-			boolean ok = reporter.open(HostDefine.HOST_LDAT,
-					HostDefine.PORT_LDAT_speak);
+			boolean ok = reporter.open(HostDefine.HOST_LDAT, HostDefine.PORT_LDAT_speak);
 			if (!ok) {
 				System.out.println("setter:connnect server failed\n");
 				continue;

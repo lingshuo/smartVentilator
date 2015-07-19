@@ -29,8 +29,7 @@ public class Ventilator {
 	private boolean error_aldehyde;
 	private boolean error_smog;
 
-	public Ventilator(int m_Switch, int pm2_5, int aldehyde, int smog,
-			int hwError) {
+	public Ventilator(int m_Switch, int pm2_5, int aldehyde, int smog, int hwError) {
 		this.hwError = hwError;
 		this.pm2_5 = pm2_5;
 		this.aldehyde = aldehyde;
@@ -142,10 +141,9 @@ public class Ventilator {
 
 	@Override
 	public String toString() {
-		return "ventilator:aldehyde:" + this.aldehyde + "/pm2.5:" + this.pm2_5
-				+ "/smog:" + this.smog + "/state_lamp:" + state_lamp
-				+ "/state_plasma:" + state_plasma + "/state_ultraviolet:"
-				+ state_ultraviolet + "/state_ventilator:" + state_ventilator
-				+ "/gear_ventilator:" + gear_ventilator;
+		return "ventilator:aldehyde:" + this.aldehyde + "/pm2.5:" + this.pm2_5 + "/smog:"
+				+ this.smog + "/state_lamp:" + state_lamp + "/state_plasma:" + state_plasma
+				+ "/state_ultraviolet:" + state_ultraviolet + "/state_ventilator:"
+				+ state_ventilator + "/gear_ventilator:" + gear_ventilator;
 	}
 }

@@ -93,10 +93,8 @@ public class BottomTabView extends LinearLayout {
 		// 手动创建的ViewPager,必须调用setId()方法设置一个id
 		mViewPager.setId(1985);
 		pagerItemList = new ArrayList<Fragment>();
-		this.addView(mViewPager, new LinearLayout.LayoutParams(
-				LayoutParams.MATCH_PARENT, 0, 1));
-		addView(mTabLayout, new LinearLayout.LayoutParams(
-				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		this.addView(mViewPager, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0, 1));
+		addView(mTabLayout, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
 		// 定义Tab栏
 		tabItemList = new ArrayList<TextView>();
@@ -107,10 +105,8 @@ public class BottomTabView extends LinearLayout {
 
 		}
 
-		FragmentManager mFragmentManager = ((FragmentActivity) this.context)
-				.getFragmentManager();
-		mFragmentPagerAdapter = new SvFragmentPagerAdapter(mFragmentManager,
-				pagerItemList);
+		FragmentManager mFragmentManager = ((FragmentActivity) this.context).getFragmentManager();
+		mFragmentPagerAdapter = new SvFragmentPagerAdapter(mFragmentManager, pagerItemList);
 		mViewPager.setAdapter(mFragmentPagerAdapter);
 		mViewPager.setOnPageChangeListener(new MyOnPageChangeListener());
 		mViewPager.setOffscreenPageLimit(3);
@@ -190,11 +186,9 @@ public class BottomTabView extends LinearLayout {
 					child.setTabBackgroundResource(tabBackgroundResource);
 				}
 				if (tabItemDrawableList.size() >= tabCount * 2) {
-					child.setTabCompoundDrawables(null,
-							tabItemDrawableList.get(index * 2 + 1), null, null);
+					child.setTabCompoundDrawables(null, tabItemDrawableList.get(index * 2 + 1), null, null);
 				} else if (tabItemDrawableList.size() >= tabCount) {
-					child.setTabCompoundDrawables(null,
-							tabItemDrawableList.get(index), null, null);
+					child.setTabCompoundDrawables(null, tabItemDrawableList.get(index), null, null);
 				}
 				mViewPager.setCurrentItem(index);
 			} else {
@@ -202,8 +196,7 @@ public class BottomTabView extends LinearLayout {
 					child.setBackgroundDrawable(null);
 				}
 				if (tabItemDrawableList.size() >= tabCount * 2) {
-					child.setTabCompoundDrawables(null,
-							tabItemDrawableList.get(i * 2), null, null);
+					child.setTabCompoundDrawables(null, tabItemDrawableList.get(i * 2), null, null);
 				}
 				child.setTabTextColor(tabTextColor);
 			}
@@ -329,8 +322,7 @@ public class BottomTabView extends LinearLayout {
 		tabView.init(index, text);
 		tabItemList.add(tabView.getTextView());
 		tabView.setOnClickListener(mTabClickListener);
-		mTabLayout.addView(tabView, new LayoutParams(0,
-				LayoutParams.WRAP_CONTENT, 1));
+		mTabLayout.addView(tabView, new LayoutParams(0, LayoutParams.WRAP_CONTENT, 1));
 	}
 
 	/**
@@ -342,8 +334,7 @@ public class BottomTabView extends LinearLayout {
 		final int count = mFragmentPagerAdapter.getCount();
 		for (int i = 0; i < count; i++) {
 			if (tabItemDrawableList.size() >= count * 2) {
-				addTab(tabItemTextList.get(i), i,
-						tabItemDrawableList.get(i * 2));
+				addTab(tabItemTextList.get(i), i, tabItemDrawableList.get(i * 2));
 			} else if (tabItemDrawableList.size() >= count) {
 				addTab(tabItemTextList.get(i), i, tabItemDrawableList.get(i));
 			} else {
@@ -384,8 +375,7 @@ public class BottomTabView extends LinearLayout {
 	 * @param drawables
 	 *            the drawables
 	 */
-	public void addItemViews(List<String> tabTexts, List<Fragment> fragments,
-			List<Drawable> drawables) {
+	public void addItemViews(List<String> tabTexts, List<Fragment> fragments, List<Drawable> drawables) {
 
 		tabItemTextList.addAll(tabTexts);
 		pagerItemList.addAll(fragments);
@@ -421,8 +411,7 @@ public class BottomTabView extends LinearLayout {
 	 * @param drawablePressed
 	 *            the drawable pressed
 	 */
-	public void addItemView(String tabText, Fragment fragment,
-			Drawable drawableNormal, Drawable drawablePressed) {
+	public void addItemView(String tabText, Fragment fragment, Drawable drawableNormal, Drawable drawablePressed) {
 		tabItemTextList.add(tabText);
 		pagerItemList.add(fragment);
 		tabItemDrawableList.add(drawableNormal);
