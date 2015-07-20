@@ -3,12 +3,26 @@ package cn.lisa.smartventilator.utility.hardware;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.util.Log;
-import cn.lisa.SmartCmd.Report;
+import cn.lisa.smartventilator.utility.network.JSONDefine;
 
 public class UartAgent {
 	public static final byte cmd_SetSwitch = 0x01;
 	public static final byte cmd_ReportAll = 0x02;
+
+	public static final byte sw_LAMP = 0x01;
+	public static final byte sw_PLASMA = 0x02;
+	public static final byte sw_ULTRA = 0x03;
+	public static final byte sw_FAN = 0x04;
+
+	public static final byte val_OFF = 0x00;
+	public static final byte val_ON = 0x01;
+	public static final byte val_LEVEL1 = 0x01;
+	public static final byte val_LEVEL2 = 0x02;
+	public static final byte val_LEVEL3 = 0x03;
 
 	private static final int BUF_SIZE = 1024;
 
@@ -37,14 +51,15 @@ public class UartAgent {
 
 		frame = new UartFrame();
 		statusLock = new ReentrantLock();
-		status = new StringBuilder(Report.buildToJString((byte) 0, (short) 0, (short) 0, (short) 0, (short) 0));
+		status = new StringBuilder("");
 	}
 
-	boolean setSw(byte sw) {
+	public boolean setSw(byte sw, byte val) {
 
-		byte[] cmdSet = new byte[2];
+		byte[] cmdSet = new byte[3];
 		cmdSet[0] = cmd_SetSwitch;
 		cmdSet[1] = sw;
+		cmdSet[2] = val;
 
 		int bytes = frame.send(cmdSet, cmdSet.length);
 		if (bytes > 0)
@@ -52,6 +67,19 @@ public class UartAgent {
 
 		return false;
 	}
+
+	// boolean setSw(byte sw) {
+	//
+	// byte[] cmdSet = new byte[2];
+	// cmdSet[0] = cmd_SetSwitch;
+	// cmdSet[1] = sw;
+	//
+	// int bytes = frame.send(cmdSet, cmdSet.length);
+	// if (bytes > 0)
+	// return true;
+	//
+	// return false;
+	// }
 
 	public String getStatusUnblock() {
 
@@ -72,18 +100,31 @@ public class UartAgent {
 			switch (cmd) {
 			case cmd_ReportAll:
 				byte sw = buf[1];
-				short pm25 = (short) (((buf[2] << 8) & 0xFF00) | ((buf[3] << 0) & 0x00FF));
-				short hcho = (short) (((buf[4] << 8) & 0xFF00) | ((buf[5] << 0) & 0x00FF));
-				short smog = (short) (((buf[6] << 8) & 0xFF00) | ((buf[7] << 0) & 0x00FF));
-				short hwError = (short) (((buf[8] << 8) & 0xFF00) | ((buf[9] << 0) & 0x00FF));
+				int pm25 = (int) (((buf[2] << 8) & 0x0000FF00) | ((buf[3] << 0) & 0x000000FF));
+				int hcho = (int) (((buf[4] << 8) & 0x0000FF00) | ((buf[5] << 0) & 0x000000FF));
+				int smog = (int) (((buf[6] << 8) & 0x0000FF00) | ((buf[7] << 0) & 0x000000FF));
+				int hwError = (int) (((buf[8] << 8) & 0x0000FF00) | ((buf[9] << 0) & 0x000000FF));
 
 				String info = "sw=" + sw + ";pm25=" + pm25 + ";hcho=" + hcho + ";smog=" + smog
 						+ ";hwError" + hwError;
 				Log.i("[UartAgent]", info);
 
+				JSONObject json = new JSONObject();
+				try {
+					json.put(JSONDefine.KEY_switch, sw);
+					json.put(JSONDefine.KEY_pm25, pm25);
+					json.put(JSONDefine.KEY_smog, smog);
+					json.put(JSONDefine.KEY_hcho, hcho);
+					json.put(JSONDefine.KEY_hwError, hwError);
+
+				} catch (JSONException e) {
+					Log.e("[UartAgent]", e.getLocalizedMessage());
+					return json.toString();
+				}
+
 				// make JSon String
-				String jStatus = Report.buildToJString(sw, smog, hcho, pm25, hwError);
-				return jStatus;
+				return json.toString();
+
 			}
 		}
 
@@ -153,12 +194,25 @@ public class UartAgent {
 							Log.i("[UartAgent]", info);
 
 							// make JSon String
-							String jStatus = Report.buildToJString(sw, smog, hcho, pm25, hwError);
+							// String jStatus = Report.buildToJString(sw, smog,
+							// hcho, pm25, hwError);
+							JSONObject json = new JSONObject();
+							try {
+								json.put(JSONDefine.KEY_switch, sw);
+								json.put(JSONDefine.KEY_pm25, pm25);
+								json.put(JSONDefine.KEY_smog, smog);
+								json.put(JSONDefine.KEY_hcho, hcho);
+								json.put(JSONDefine.KEY_hwError, hwError);
+
+							} catch (JSONException e) {
+								Log.e("[UartAgent]", e.getLocalizedMessage());
+								continue;
+							}
+
 							statusLock.lock();
 							status.delete(0, status.length());
-							status.append(jStatus);
+							status.append(json);
 							statusLock.unlock();
-							jStatus = null;
 
 							break;
 						}

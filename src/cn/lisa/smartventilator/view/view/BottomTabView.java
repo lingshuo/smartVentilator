@@ -94,7 +94,8 @@ public class BottomTabView extends LinearLayout {
 		mViewPager.setId(1985);
 		pagerItemList = new ArrayList<Fragment>();
 		this.addView(mViewPager, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0, 1));
-		addView(mTabLayout, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		addView(mTabLayout, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT));
 
 		// ∂®“ÂTab¿∏
 		tabItemList = new ArrayList<TextView>();
@@ -186,7 +187,8 @@ public class BottomTabView extends LinearLayout {
 					child.setTabBackgroundResource(tabBackgroundResource);
 				}
 				if (tabItemDrawableList.size() >= tabCount * 2) {
-					child.setTabCompoundDrawables(null, tabItemDrawableList.get(index * 2 + 1), null, null);
+					child.setTabCompoundDrawables(null, tabItemDrawableList.get(index * 2 + 1),
+							null, null);
 				} else if (tabItemDrawableList.size() >= tabCount) {
 					child.setTabCompoundDrawables(null, tabItemDrawableList.get(index), null, null);
 				}

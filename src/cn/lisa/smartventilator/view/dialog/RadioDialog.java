@@ -107,7 +107,8 @@ public class RadioDialog extends Dialog implements OnBufferingUpdateListener, On
 		for (int i = 0; i < radios.size(); i++)
 			mPlayStatus.put(i, false);
 		// °ó¶¨adapter
-		mradioListAdapter = new RadioListAdapter(mContext, handler, mPlayStatus, (ArrayList<Radio>) radios);
+		mradioListAdapter = new RadioListAdapter(mContext, handler, mPlayStatus,
+				(ArrayList<Radio>) radios);
 		mRadioList.setAdapter(mradioListAdapter);
 	}
 

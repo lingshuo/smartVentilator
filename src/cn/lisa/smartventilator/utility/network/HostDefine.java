@@ -1,8 +1,8 @@
 package cn.lisa.smartventilator.utility.network;
 
 public class HostDefine {
-	public static final String HOST_LTCP = "192.168.3.85";
-	public static final String HOST_LDAT = "192.168.3.85";
+	public static final String HOST_LTCP = "120.25.240.122";
+	public static final String HOST_LDAT = "120.25.240.122";
 
 	public static final String HOSTID_LTCP = "001";
 	public static final String HOSTID_LDAT = "003";

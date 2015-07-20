@@ -1,12 +1,12 @@
 package cn.lisa.smartventilator.view.fragment;
 
 import cn.lisa.smartventilator.R;
-import cn.lisa.smartventilator.view.activity.MainActivity;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +18,9 @@ import android.widget.TextView;
 
 public class SettingFragment extends Fragment implements OnClickListener {
 
-	@SuppressWarnings("unused")
 	private Context context;
 	public DevicePolicyManager policyManager;
 	public ComponentName componentName;
-	@SuppressWarnings("unused")
 	private TextView tv_deviceId;
 	@SuppressWarnings("unused")
 	private TextView tv_username;
@@ -38,10 +36,11 @@ public class SettingFragment extends Fragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		context = getActivity();
-
+		SharedPreferences sp = context.getSharedPreferences("smartventilator.preferences", 0);
+		String mid = sp.getString("mID", "");
 		View view = inflater.inflate(R.layout.fragment_setting, null);
 		tv_deviceId = (TextView) view.findViewById(R.id.tv_device_id);
-		tv_deviceId.setText(((MainActivity)getActivity()).mID.getMid());
+		tv_deviceId.setText(mid);
 		tv_username = (TextView) view.findViewById(R.id.tv_device_username);
 		tv_password = (TextView) view.findViewById(R.id.tv_device_password);
 

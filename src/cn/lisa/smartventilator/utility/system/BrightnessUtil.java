@@ -44,7 +44,8 @@ public class BrightnessUtil {
 
 		try {
 
-			nowBrightnessValue = android.provider.Settings.System.getInt(resolver, Settings.System.SCREEN_BRIGHTNESS);
+			nowBrightnessValue = android.provider.Settings.System.getInt(resolver,
+					Settings.System.SCREEN_BRIGHTNESS);
 
 		}
 

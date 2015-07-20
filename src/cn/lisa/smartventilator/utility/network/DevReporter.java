@@ -1,5 +1,8 @@
 package cn.lisa.smartventilator.utility.network;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,27 +18,49 @@ public class DevReporter {
 	LDATSpeaker speaker = null;
 	String marketID = "";
 
-	public DevReporter(String marketID) {
-		this.marketID = marketID;
+	private Lock lock = new ReentrantLock();
+	boolean opened = false;
+
+	private void setOpened(boolean open) {
+		lock.lock();
+		this.opened = open;
+		lock.unlock();
 	}
 
-	public boolean open(String host, int port) {
+	private boolean getOpened() {
+		lock.lock();
+		boolean open = this.opened;
+		lock.unlock();
+
+		return open;
+	}
+
+	public DevReporter(String marketID, String host, int port) {
+		this.marketID = marketID;
 		this.speaker = new LDATSpeaker(host, port);
-		return speaker.open();
+
+		setOpened(false);
+	}
+
+	public boolean open() {
+		setOpened(false);
+		boolean ok = speaker.open();
+		if (ok) {
+			setOpened(true);
+		}
+
+		return ok;
 	}
 
 	public void close() {
 		if (speaker != null) {
 			speaker.close();
-			speaker = null;
+			setOpened(false);
 		}
 	}
 
 	public boolean isOpen() {
-		if (speaker != null)
-			return speaker.isOpen();
-
-		return false;
+		return getOpened();
 	}
 
 	public boolean report(String idDev, String status) {
@@ -50,14 +75,15 @@ public class DevReporter {
 	}
 
 	public static void main(String[] args) throws InterruptedException, JSONException {
-		DevReporter reporter = new DevReporter(HostDefine.HOSTID_LDAT);
+		DevReporter reporter = new DevReporter(HostDefine.HOSTID_LDAT, HostDefine.HOST_LDAT,
+				HostDefine.PORT_LDAT_speak);
 
 		int cnt = 0;
 
 		while (true) {
 			Thread.sleep(5 * 1000);
 
-			boolean ok = reporter.open(HostDefine.HOST_LDAT, HostDefine.PORT_LDAT_speak);
+			boolean ok = reporter.open();
 			if (!ok) {
 				System.out.println("setter:connnect server failed\n");
 				continue;
@@ -77,6 +103,8 @@ public class DevReporter {
 			if (!ok) {
 				System.out.println("setter:set failed\n");
 			}
+
+			System.out.println("DevReporter:" + json.toString());
 
 			cnt = (byte) ((cnt + 1) % 256);
 		}

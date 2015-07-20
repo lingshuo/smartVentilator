@@ -26,6 +26,7 @@ import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.controller.entity.Ventilator;
 import cn.lisa.smartventilator.controller.manager.VentilatorManager;
 import cn.lisa.smartventilator.controller.service.MonitorService;
+import cn.lisa.smartventilator.utility.network.JSONDefine;
 
 public class MonitorFragment extends Fragment implements OnClickListener, OnTouchListener {
 	private ToggleButton tb_ventilator;
@@ -113,7 +114,8 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 		tb_ultraviolet = (ToggleButton) view.findViewById(R.id.control_ultraviolet);
 
 		// 档位
-		layout_gears_control = (RelativeLayout) view.findViewById(R.id.control_ventilator_gears_btns);
+		layout_gears_control = (RelativeLayout) view
+				.findViewById(R.id.control_ventilator_gears_btns);
 
 		// 三个档位的按钮
 		mBtn1 = (Button) view.findViewById(R.id.control_ventilator_gears_btn_1);
@@ -311,15 +313,21 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 		switch (v.getId()) {
 		// 1档
 		case R.id.control_ventilator_gears_btn_1:
-			ventilatorManager.sendVentilatorCommand(VentilatorManager.VENTILATOR, VentilatorManager.VENTILATOR_1, ventilator);
+			ventilatorManager.sendVentilatorCommand(JSONDefine.SW_fan, JSONDefine.VAL_swLevel1);
+			// ventilatorManager.sendVentilatorCommand(VentilatorManager.VENTILATOR,
+			// VentilatorManager.VENTILATOR_1, ventilator);
 			break;
 		// 2档
 		case R.id.control_ventilator_gears_btn_2:
-			ventilatorManager.sendVentilatorCommand(VentilatorManager.VENTILATOR, VentilatorManager.VENTILATOR_2, ventilator);
+			ventilatorManager.sendVentilatorCommand(JSONDefine.SW_fan, JSONDefine.VAL_swLevel2);
+			// ventilatorManager.sendVentilatorCommand(VentilatorManager.VENTILATOR,
+			// VentilatorManager.VENTILATOR_2, ventilator);
 			break;
 		// 3档
 		case R.id.control_ventilator_gears_btn_3:
-			ventilatorManager.sendVentilatorCommand(VentilatorManager.VENTILATOR, VentilatorManager.VENTILATOR_3, ventilator);
+			ventilatorManager.sendVentilatorCommand(JSONDefine.SW_fan, JSONDefine.VAL_swLevel3);
+			// ventilatorManager.sendVentilatorCommand(VentilatorManager.VENTILATOR,
+			// VentilatorManager.VENTILATOR_3, ventilator);
 			break;
 		default:
 			break;
@@ -342,10 +350,16 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 
 				if (!ventilator.getState_lamp()) {
 					// 开灯
-					ventilatorManager.sendVentilatorCommand(VentilatorManager.LAMP, VentilatorManager.DEVICE_ON, ventilator);
+					ventilatorManager
+							.sendVentilatorCommand(JSONDefine.SW_lamp, JSONDefine.VAL_swON);
+					// ventilatorManager.sendVentilatorCommand(VentilatorManager.LAMP,
+					// VentilatorManager.DEVICE_ON, ventilator);
 				} else {
 					// 关灯
-					ventilatorManager.sendVentilatorCommand(VentilatorManager.LAMP, VentilatorManager.DEVICE_OFF, ventilator);
+					ventilatorManager.sendVentilatorCommand(JSONDefine.SW_lamp,
+							JSONDefine.VAL_swOFF);
+					// ventilatorManager.sendVentilatorCommand(VentilatorManager.LAMP,
+					// VentilatorManager.DEVICE_OFF, ventilator);
 				}
 
 				return true;
@@ -354,10 +368,16 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 				Log.i("ventilator", "ultraviolet touched");
 				if (!ventilator.getState_ultraviolet()) {
 					// 开
-					ventilatorManager.sendVentilatorCommand(VentilatorManager.ULTRAVIOLET, VentilatorManager.DEVICE_ON, ventilator);
+					ventilatorManager.sendVentilatorCommand(JSONDefine.SW_ultra,
+							JSONDefine.VAL_swON);
+					// ventilatorManager.sendVentilatorCommand(VentilatorManager.ULTRAVIOLET,
+					// VentilatorManager.DEVICE_ON, ventilator);
 				} else {
 					// 关
-					ventilatorManager.sendVentilatorCommand(VentilatorManager.ULTRAVIOLET, VentilatorManager.DEVICE_OFF, ventilator);
+					ventilatorManager.sendVentilatorCommand(JSONDefine.SW_ultra,
+							JSONDefine.VAL_swOFF);
+					// ventilatorManager.sendVentilatorCommand(VentilatorManager.ULTRAVIOLET,
+					// VentilatorManager.DEVICE_OFF, ventilator);
 				}
 				return true;
 				// 等离子设备开关
@@ -365,10 +385,16 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 				Log.i("ventilator", "plasma touched");
 				if (!ventilator.getState_plasma()) {
 					// 开
-					ventilatorManager.sendVentilatorCommand(VentilatorManager.PLASMA, VentilatorManager.DEVICE_ON, ventilator);
+					ventilatorManager.sendVentilatorCommand(JSONDefine.SW_plasma,
+							JSONDefine.VAL_swON);
+					// ventilatorManager.sendVentilatorCommand(VentilatorManager.PLASMA,
+					// VentilatorManager.DEVICE_ON, ventilator);
 				} else {
 					// 关
-					ventilatorManager.sendVentilatorCommand(VentilatorManager.PLASMA, VentilatorManager.DEVICE_OFF, ventilator);
+					ventilatorManager.sendVentilatorCommand(JSONDefine.SW_plasma,
+							JSONDefine.VAL_swOFF);
+					// ventilatorManager.sendVentilatorCommand(VentilatorManager.PLASMA,
+					// VentilatorManager.DEVICE_OFF, ventilator);
 				}
 				return true;
 				// 风机开关
@@ -376,11 +402,17 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 				Log.i("ventilator", "ventilator touched");
 				if (!ventilator.getState_ventilator()) {
 					// 打开
-					ventilatorManager.sendVentilatorCommand(VentilatorManager.VENTILATOR, VentilatorManager.VENTILATOR_3, ventilator);
+					ventilatorManager.sendVentilatorCommand(JSONDefine.SW_fan,
+							JSONDefine.VAL_swLevel1);
+					// ventilatorManager.sendVentilatorCommand(VentilatorManager.VENTILATOR,
+					// VentilatorManager.VENTILATOR_1, ventilator);
 					layout_gears_control.setVisibility(View.VISIBLE);
 				} else {
 					// 关
-					ventilatorManager.sendVentilatorCommand(VentilatorManager.VENTILATOR, VentilatorManager.DEVICE_OFF, ventilator);
+					ventilatorManager
+							.sendVentilatorCommand(JSONDefine.SW_fan, JSONDefine.VAL_swOFF);
+					// ventilatorManager.sendVentilatorCommand(VentilatorManager.VENTILATOR,
+					// VentilatorManager.DEVICE_OFF, ventilator);
 					layout_gears_control.setVisibility(View.GONE);
 				}
 				return true;

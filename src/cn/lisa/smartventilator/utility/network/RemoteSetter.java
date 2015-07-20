@@ -1,5 +1,8 @@
 package cn.lisa.smartventilator.utility.network;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,23 +15,53 @@ import cn.LCloud.Common.TMsg.TMsgDefine;
 import cn.LCloud.Common.TMsg.TPoint;
 
 public class RemoteSetter {
+
 	LTCPSpeaker speaker = null;
 	String marketID = "";
 
-	public RemoteSetter(String marketID) {
-		this.marketID = marketID;
+	private Lock lock = new ReentrantLock();
+	boolean opened = false;
+
+	private void setOpened(boolean open) {
+		lock.lock();
+		this.opened = open;
+		lock.unlock();
 	}
 
-	public boolean open(String host, int port) {
-		this.speaker = new LTCPSpeaker(new LHostDesc(host, port), new TPoint("", "", ""), "okLicense");
-		return speaker.open();
+	private boolean getOpened() {
+		lock.lock();
+		boolean open = this.opened;
+		lock.unlock();
+
+		return open;
+	}
+
+	public RemoteSetter(String marketID, String host, int port) {
+		this.marketID = marketID;
+
+		this.speaker = new LTCPSpeaker(new LHostDesc(host, port), new TPoint("", "", ""),
+				"okLicense");
+	}
+
+	public boolean open() {
+		setOpened(false);
+		boolean ok = speaker.open();
+		if (ok) {
+			setOpened(true);
+		}
+
+		return ok;
 	}
 
 	public void close() {
 		if (speaker != null) {
 			speaker.close();
-			speaker = null;
+			setOpened(false);
 		}
+	}
+
+	public boolean isOpen() {
+		return getOpened();
 	}
 
 	public boolean setStatus(String idDev, String sw) {
@@ -43,14 +76,15 @@ public class RemoteSetter {
 	}
 
 	public static void main(String[] args) throws InterruptedException, JSONException {
-		RemoteSetter setter = new RemoteSetter(HostDefine.HOSTID_LTCP);
+		RemoteSetter setter = new RemoteSetter(HostDefine.HOSTID_LTCP, HostDefine.HOST_LTCP,
+				HostDefine.PORT_LTCP_speak);
 
 		int cnt = 0;
 
 		while (true) {
 			Thread.sleep(5 * 1000);
 
-			boolean ok = setter.open(HostDefine.HOST_LTCP, HostDefine.PORT_LTCP_speak);
+			boolean ok = setter.open();
 			if (!ok) {
 				System.out.println("setter:connnect server failed\n");
 				continue;

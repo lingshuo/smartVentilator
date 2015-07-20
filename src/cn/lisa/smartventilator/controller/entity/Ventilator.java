@@ -7,16 +7,16 @@ public class Ventilator {
 
 	private final byte RPT_all = 0x02;
 
-	private byte Switch;// 开关状态
+	private byte Switch; // 开关状态
 
 	// 数据
 	private int pm2_5;
 	private int aldehyde;
 	private int smog;
 
-	private int hwError;// 故障信息
+	private int hwError; // 故障信息
 
-	private int gear_ventilator;// 风机档位
+	private int gear_ventilator; // 风机档位
 
 	// 状态
 	private boolean state_ventilator;

@@ -72,11 +72,13 @@ public class RadioListAdapter extends BaseAdapter {
 		// radio_name.setTag(CLICK_BUTTON_PLAY);
 
 		ImageButton btn_play = (ImageButton) view.findViewById(R.id.btn_play);
-		btn_play.setOnClickListener(new OnItemChildClickListener(RadioManager.CLICK_BUTTON_PLAY, position));
+		btn_play.setOnClickListener(new OnItemChildClickListener(RadioManager.CLICK_BUTTON_PLAY,
+				position));
 		btn_play.setTag(RadioManager.CLICK_BUTTON_PLAY);
 
 		ImageButton btn_stop = (ImageButton) view.findViewById(R.id.btn_stop);
-		btn_stop.setOnClickListener(new OnItemChildClickListener(RadioManager.CLICK_BUTTON_STOP, position));
+		btn_stop.setOnClickListener(new OnItemChildClickListener(RadioManager.CLICK_BUTTON_STOP,
+				position));
 		btn_stop.setTag(RadioManager.CLICK_BUTTON_STOP);
 
 		if (playStaus.get(position)) {

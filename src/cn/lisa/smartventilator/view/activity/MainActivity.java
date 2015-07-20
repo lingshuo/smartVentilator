@@ -33,16 +33,22 @@ public class MainActivity extends FragmentActivity {
 	public ComponentName componentName;
 	public PowerManager.WakeLock mWakeLock;
 	public static MachineID mID;
+
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mID=new MachineID();
+		mID = new MachineID();
 		mID.readId();
-		if(mID.getMid().equals("die"))
-		{
-			//die
+		if (mID.getMid().equals("die")) {
+			// die
 		}
+		SharedPreferences sp = getSharedPreferences("smartventilator.preferences", 0);
+		Editor editor = sp.edit();
+		editor.putString("mID", mID.getMid());
+		// 提交设置
+		editor.commit();
+
 		if (!LibsChecker.checkVitamioLibs(this))
 			return;
 		// CustomTitleBar ct = new CustomTitleBar();
@@ -109,7 +115,6 @@ public class MainActivity extends FragmentActivity {
 		PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
 		mWakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "My Tag");
 	}
-	
 
 	public void createShortCut() {
 		SharedPreferences setting = getSharedPreferences("smartventilator.preferences", 0);
@@ -122,10 +127,12 @@ public class MainActivity extends FragmentActivity {
 			// 需要现实的名称
 			shortcutintent.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.app_name));
 			// 快捷图片
-			Parcelable icon = Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.drawable.ic_launcher);
+			Parcelable icon = Intent.ShortcutIconResource.fromContext(getApplicationContext(),
+					R.drawable.ic_launcher);
 			shortcutintent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
 			// 点击快捷图片，运行的程序主入口
-			shortcutintent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, new Intent(getApplicationContext(), MainActivity.class));
+			shortcutintent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, new Intent(
+					getApplicationContext(), MainActivity.class));
 			// 发送广播。OK
 			sendBroadcast(shortcutintent);
 			// 将第一次启动的标识设置为false

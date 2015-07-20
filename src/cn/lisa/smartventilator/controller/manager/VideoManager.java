@@ -48,7 +48,8 @@ public class VideoManager {
 		for (int i = 0; i < files.length; i++) {
 			Video video = new Video();
 			video.setName(VideoManager.getFileName(files[i].getPath()));
-			video.setThumb(VideoManager.getVideoThumbnail(files[i].getPath(), 100, 50, MediaStore.Images.Thumbnails.MICRO_KIND));
+			video.setThumb(VideoManager.getVideoThumbnail(files[i].getPath(), 100, 50,
+					MediaStore.Images.Thumbnails.MICRO_KIND));
 			video.setPath(files[i].getPath());
 			videoList.add(video);
 		}
@@ -75,7 +76,8 @@ public class VideoManager {
 		bitmap = ThumbnailUtils.createVideoThumbnail(videoPath, kind);
 		// Log.i("sv","w"+bitmap.getWidth());
 		// Log.i("sv","h"+bitmap.getHeight());
-		bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+		bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height,
+				ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
 		return bitmap;
 	}
 
@@ -98,7 +100,8 @@ public class VideoManager {
 			strend = "wmv";
 		}
 
-		ComponentName name = new ComponentName("com.android.gallery3d", "com.android.gallery3d.app.MovieActivity");
+		ComponentName name = new ComponentName("com.android.gallery3d",
+				"com.android.gallery3d.app.MovieActivity");
 		intent.setDataAndType(Uri.parse(videoPath.trim()), "video/" + strend);
 		intent.setComponent(name);
 		return intent;

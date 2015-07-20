@@ -2,12 +2,10 @@ package cn.lisa.smartventilator.controller.service;
 
 import java.util.Timer;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.lisa.smartventilator.controller.manager.VentilatorManager;
 import cn.lisa.smartventilator.utility.hardware.UartAgent;
-import cn.lisa.smartventilator.utility.network.DevDefine;
 import cn.lisa.smartventilator.utility.network.DevMonitor;
 import cn.lisa.smartventilator.utility.network.DevReporter;
 import cn.lisa.smartventilator.utility.network.HostDefine;
@@ -18,6 +16,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -36,6 +36,8 @@ public class MonitorService extends Service {
 	public UartAgent uartagent;
 	private SendReciever sendReciever;
 	private DevReporter myreporter = null;
+	private DevMonitor mymonitor = null;
+	private String mid;
 	/***
 	 * handle to send switch info to hardware
 	 */
@@ -44,10 +46,17 @@ public class MonitorService extends Service {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case VentilatorManager.SEND_DATA:
-				byte[] buf = new byte[2];
-				buf[0] = (byte) 0x01;
-				buf[1] = (byte) msg.arg1;
-				uartagent.frame.send(buf, buf.length);
+				byte sw = (byte) msg.arg1;
+				byte val = (byte) msg.arg2;
+
+				boolean success = uartagent.setSw(sw, val);
+				Log.i("switch", "send:sw:" + sw + "/val:" + val + "/" + success);
+
+				// byte sw1=msg.getData().getByte("sw");
+				// byte[] buf = new byte[2];
+				// buf[0] = (byte) 0x01;
+				// buf[1] = (byte) sw1;
+				// uartagent.frame.send(buf, buf.length);
 				break;
 			default:
 				break;
@@ -58,8 +67,13 @@ public class MonitorService extends Service {
 	@Override
 	public void onCreate() {
 		initSendReceiver();
-		myreporter = new DevReporter(HostDefine.HOSTID_LDAT); // jiangtao.Sun
-																// modify
+		Context context = getApplicationContext();
+		SharedPreferences sp = context.getSharedPreferences("smartventilator.preferences", 0);
+		mid = sp.getString("mID", "");
+		myreporter = new DevReporter(HostDefine.HOSTID_LDAT, HostDefine.HOST_LDAT,
+				HostDefine.PORT_LDAT_speak);
+		mymonitor = new DevMonitor(HostDefine.HOSTID_LTCP, mid, HostDefine.HOST_LTCP,
+				HostDefine.PORT_LTCP_listen);
 		super.onCreate();
 	}
 
@@ -94,29 +108,9 @@ public class MonitorService extends Service {
 					intent.putExtra("jsonstr", jsonString);
 					sendBroadcast(intent);
 
-					JSONObject json;
-					try {
-						json = new JSONObject(jsonString);
-						int hwError = json.getInt("hwError");
-						int pm2_5 = json.getInt("PM25");
-						int aldehyde = json.getInt("HCHO");
-						int smog = json.getInt("smog");
-						int m_Switch = json.getInt("sw");
-
-						json = new JSONObject();
-						json.put(JSONDefine.KEY_switch, m_Switch);
-						json.put(JSONDefine.KEY_pm25, pm2_5);
-						json.put(JSONDefine.KEY_smog, smog);
-						json.put(JSONDefine.KEY_hcho, aldehyde);
-						json.put(JSONDefine.KEY_hwError, hwError);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						continue;
-					}
-					//if reporter is open, then report json to network
+					// if reporter is open, then report json to network
 					if (myreporter.isOpen()) {
-						boolean ok = myreporter.report(DevDefine.FAKE_ID, json.toString());
+						boolean ok = myreporter.report(mid, jsonString.toString());
 						if (!ok) {
 							myreporter.close();
 						}
@@ -125,14 +119,14 @@ public class MonitorService extends Service {
 			}
 		}).start();
 
-		//thread to try open reporter
+		// thread to try open reporter
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				while (true) {
 					if (!myreporter.isOpen()) {
-						boolean ok = myreporter.open(HostDefine.HOST_LDAT, HostDefine.PORT_LDAT_speak);
+						boolean ok = myreporter.open();
 						if (!ok) {
 							Log.i("report", "try connect failed");
 							try {
@@ -159,17 +153,16 @@ public class MonitorService extends Service {
 
 			@Override
 			public void run() {
-				DevMonitor monitor = new DevMonitor(HostDefine.HOSTID_LTCP, DevDefine.FAKE_ID);
+
 				while (true) {
 
 					// try open
-					boolean ok = monitor.open(HostDefine.HOST_LTCP, HostDefine.PORT_LTCP_listen);
+					boolean ok = mymonitor.open();
 					if (!ok) {
 						Log.e("monitor", "monitor:open failed");
 						try {
 							Thread.sleep(5 * 1000);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 							continue;
 						}
@@ -178,7 +171,7 @@ public class MonitorService extends Service {
 
 					// open successfully, monitoring...
 					while (true) {
-						String jstring = monitor.watch();
+						String jstring = mymonitor.watch();
 						if (jstring == null || "".equals(jstring)) {
 							Log.w("monitor", "devNonitor:network broken");
 							break;
@@ -187,25 +180,25 @@ public class MonitorService extends Service {
 
 						Log.i("monitor", "devMonitor:jString=" + jstring);
 						try {
+							// JSONObject json = new JSONObject(jstring);
+							// byte mSwitch = (byte)
+							// json.getInt(JSONDefine.KEY_switch);
+							// Log.i("monitor", "sw=" + mSwitch);
+							// VentilatorManager manager = new
+							// VentilatorManager(getBaseContext());
+							// manager.sendSwitch(mSwitch);
+							// manager = null;
+
 							JSONObject json = new JSONObject(jstring);
 
-							String focus = json.getString(JSONDefine.KEY_focus);
-							byte mSwitch = (byte) json.getInt(JSONDefine.KEY_swValue);
+							String device = json.getString(JSONDefine.KEY_focus);
+							byte command = (byte) json.getInt(JSONDefine.KEY_swValue);
 
-							Log.i("monitor", "sw=" + mSwitch);
+							Log.i("monitor", "sw=" + command);
 							VentilatorManager manager = new VentilatorManager(getBaseContext());
-							if (focus == JSONDefine.SW_lamp)
-								;
-							else if (focus == JSONDefine.SW_ultra)
-								;
-							else if (focus == JSONDefine.SW_plasma)
-								;
-							else if (focus == JSONDefine.SW_fan) {
-								;
-							}
-
-							// manager.sendSwitch(mSwitch);
+							manager.sendVentilatorCommand(device, command);
 							manager = null;
+
 						} catch (Exception e) {
 							Log.e("monitor", "monitor:error");
 						}
@@ -213,19 +206,28 @@ public class MonitorService extends Service {
 				}
 			}
 		}).start();
-		// //Heartbeat
-		// new Thread(new Runnable() {
-		//
-		// @Override
-		// public void run() {
-		// byte[] heartBeat=new byte[2];
-		// heartBeat[0]=0x03;
-		// heartBeat[1]=0x01;
-		// while(true){
-		//
-		// }
-		// }
-		// }).start();
+
+		// Heartbeat
+//		new Thread(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				byte[] heartBeat = new byte[2];
+//				heartBeat[0] = 0x03;
+//				heartBeat[1] = 0x01;
+//				while (true) {
+//					int value=uartagent.frame.send(heartBeat, heartBeat.length);
+//					Log.i("heartbeat", "send heartbeat"+value);
+//					
+//					try {
+//						Thread.sleep(1 * 1000);
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//						continue;
+//					}
+//				}
+//			}
+//		}).start();
 
 		return super.onStartCommand(intent, flags, startId);
 	}
@@ -256,7 +258,11 @@ public class MonitorService extends Service {
 
 			Message msg = handler.obtainMessage();
 			msg.what = VentilatorManager.SEND_DATA;
-			msg.arg1 = intent.getExtras().getByte("send");
+			msg.arg1 = intent.getExtras().getByte("sw");
+			msg.arg2 = intent.getExtras().getByte("val");
+			// Bundle b=new Bundle();
+			// b.putByte("sw", intent.getExtras().getByte("send"));
+			// msg.setData(b);
 			// Log.i("switch", "receive:"+msg.arg1);
 			handler.sendMessage(msg);
 		}

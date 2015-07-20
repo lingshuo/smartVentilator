@@ -43,7 +43,8 @@ public class TabItemView extends LinearLayout {
 		this.mContext = context;
 		mTextView = new TextView(context);
 		mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
-		mTextView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		mTextView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT));
 		mTextView.setFocusable(true);
 		// mTextView.setPadding(10, 0, 10, 0);
 		mTextView.setSingleLine();

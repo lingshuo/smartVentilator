@@ -7,24 +7,21 @@ import android.content.Intent;
 import android.util.Log;
 import cn.lisa.smartventilator.controller.entity.Ventilator;
 import cn.lisa.smartventilator.controller.service.MonitorService;
-import cn.lisa.smartventilator.utility.network.DevDefine;
-import cn.lisa.smartventilator.utility.network.DevReporter;
-import cn.lisa.smartventilator.utility.network.HostDefine;
 import cn.lisa.smartventilator.utility.network.JSONDefine;
 
 public class VentilatorManager {
 	private Ventilator ventilator;
 	public final static int SHOW_DATA = 3;
 	public final static int SEND_DATA = 4;
-	public final static int DEVICE_ON = 1;
-	public final static int DEVICE_OFF = 0;
-	public final static int LAMP = 1;
-	public final static int ULTRAVIOLET = 2;
-	public final static int PLASMA = 3;
-	public final static int VENTILATOR = 10;
-	public final static int VENTILATOR_1 = 0x01;
-	public final static int VENTILATOR_2 = 0x02;
-	public final static int VENTILATOR_3 = 0x03;
+	public final static byte DEVICE_ON = 1;
+	public final static byte DEVICE_OFF = 0;
+	public final static byte LAMP = 0x01;
+	public final static byte PLASMA = 0x02;
+	public final static byte ULTRAVIOLET = 0x03;
+	public final static byte VENTILATOR = 0x04;
+	public final static byte VENTILATOR_1 = 0x01;
+	public final static byte VENTILATOR_2 = 0x02;
+	public final static byte VENTILATOR_3 = 0x03;
 	private Context context;
 
 	/***
@@ -44,12 +41,12 @@ public class VentilatorManager {
 
 	public void setVentilator(String jsonString) {
 		try {
-			JSONObject jsonObject = new JSONObject(jsonString);
-			int hwError = jsonObject.getInt("hwError");
-			int pm2_5 = jsonObject.getInt("PM25");
-			int aldehyde = jsonObject.getInt("HCHO");
-			int smog = jsonObject.getInt("smog");
-			int m_Switch = jsonObject.getInt("sw");
+			JSONObject json = new JSONObject(jsonString);
+			int hwError = json.getInt(JSONDefine.KEY_hwError);
+			int pm2_5 = json.getInt(JSONDefine.KEY_pm25);
+			int aldehyde = json.getInt(JSONDefine.KEY_hcho);
+			int smog = json.getInt(JSONDefine.KEY_smog);
+			int m_Switch = json.getInt(JSONDefine.KEY_switch);
 
 			this.ventilator = new Ventilator(m_Switch, pm2_5, aldehyde, smog, hwError);
 		} catch (JSONException e) {
@@ -128,64 +125,48 @@ public class VentilatorManager {
 	 * a new function to send data
 	 * 
 	 * @param device
+	 *            which device to be changed
 	 * @param command
+	 *            which command it will receive
 	 */
 	public void sendVentilatorCommand(String device, int command) {
-		String mDevice = device;
-		int mCommand;
-		if (device == JSONDefine.SW_lamp) {
-
-			if (command == 1)
-				;
-		}
-	}
-
-	/***
-	 * report data to network
-	 * 
-	 * @param ventilator
-	 */
-	public void reportData(String jsonString) {
-		// setVentilator(jsonString);
-
-		DevReporter reporter = new DevReporter(HostDefine.HOSTID_LDAT);
-		boolean ok = reporter.open(HostDefine.HOST_LDAT, HostDefine.PORT_LDAT_speak);
-		if (!ok) {
-			Log.e("report", "setter:connnect server failed");
+		if (command == JSONDefine.VAL_swOFF) {
+			// close device
+			if (JSONDefine.SW_lamp.equals(device)) {
+				sendSwitch(LAMP, DEVICE_OFF);
+			} else if (JSONDefine.SW_plasma.equals(device)) {
+				sendSwitch(PLASMA, DEVICE_OFF);
+			} else if (JSONDefine.SW_ultra.equals(device)) {
+				sendSwitch(ULTRAVIOLET, DEVICE_OFF);
+			} else if (JSONDefine.SW_fan.equals(device)) {
+				sendSwitch(VENTILATOR, DEVICE_OFF);
+			}
+		} else if (command != JSONDefine.VAL_swOFF && !JSONDefine.SW_fan.equals(device)) {
+			// open device
+			if (JSONDefine.SW_lamp.equals(device)) {
+				sendSwitch(LAMP, DEVICE_ON);
+			} else if (JSONDefine.SW_plasma.equals(device)) {
+				sendSwitch(PLASMA, DEVICE_ON);
+			} else if (JSONDefine.SW_ultra.equals(device)) {
+				sendSwitch(ULTRAVIOLET, DEVICE_ON);
+			}
+		} else if (command != JSONDefine.VAL_swOFF && JSONDefine.SW_fan.equals(device)) {
+			switch (command) {
+			case JSONDefine.VAL_swLevel1:
+				sendSwitch(VENTILATOR, VENTILATOR_1);
+				break;
+			case JSONDefine.VAL_swLevel2:
+				sendSwitch(VENTILATOR, VENTILATOR_2);
+				break;
+			case JSONDefine.VAL_swLevel3:
+				sendSwitch(VENTILATOR, VENTILATOR_3);
+				break;
+			default:
+				break;
+			}
+		} else {
 			return;
 		}
-		/*
-		 * JSONObject json = new JSONObject();
-		 * try {
-		 * json.put(JSONDefine.KEY_switch, ventilator.getSwitch());
-		 * json.put(JSONDefine.KEY_pm25, ventilator.getPm2_5());
-		 * json.put(JSONDefine.KEY_smog, ventilator.getSmog());
-		 * json.put(JSONDefine.KEY_hcho, ventilator.getAldehyde());
-		 * json.put(JSONDefine.KEY_hwError, ventilator.getHwError());
-		 * } catch (JSONException e) {
-		 * e.printStackTrace();
-		 * }
-		 */
-
-		JSONObject json;
-		try {
-			json = new JSONObject(jsonString);
-			// json.put(name, value)
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return;
-		}
-
-		ok = reporter.report(DevDefine.FAKE_ID, json.toString());
-		Log.i("report", "report:" + json);
-		reporter.close();
-		if (!ok) {
-			Log.e("report", "setter:set failed\n");
-			return;
-		}
-
-		reporter = null;
 	}
 
 	/***
@@ -197,6 +178,20 @@ public class VentilatorManager {
 		Intent intent = new Intent();
 		intent.setAction(MonitorService.SENDACTION);
 		intent.putExtra("send", mSwitch);
+		context.sendBroadcast(intent);
+	}
+
+	/**
+	 * new function to send switch
+	 * 
+	 * @param sw
+	 * @param val
+	 */
+	public void sendSwitch(byte sw, byte val) {
+		Intent intent = new Intent();
+		intent.setAction(MonitorService.SENDACTION);
+		intent.putExtra("sw", sw);
+		intent.putExtra("val", val);
 		context.sendBroadcast(intent);
 	}
 }
