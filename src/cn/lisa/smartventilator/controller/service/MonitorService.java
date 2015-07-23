@@ -1,10 +1,12 @@
 package cn.lisa.smartventilator.controller.service;
 
 import java.util.Timer;
+import java.util.TimerTask;
 
 import org.json.JSONObject;
 
 import cn.lisa.smartventilator.controller.manager.VentilatorManager;
+import cn.lisa.smartventilator.debug.Debug;
 import cn.lisa.smartventilator.utility.hardware.UartAgent;
 import cn.lisa.smartventilator.utility.network.DevMonitor;
 import cn.lisa.smartventilator.utility.network.DevReporter;
@@ -37,6 +39,10 @@ public class MonitorService extends Service {
 	private DevReporter myreporter = null;
 	private DevMonitor mymonitor = null;
 	private String mid;
+	private byte[] heartBeat = new byte[2];
+	private Thread reportDataThread;
+	private Thread tryConnectThread;
+	private Thread networkMonitorThread;
 	/***
 	 * handle to send switch info to hardware
 	 */
@@ -49,13 +55,10 @@ public class MonitorService extends Service {
 				byte val = (byte) msg.arg2;
 
 				boolean success = uartagent.setSw(sw, val);
-				Log.i("switch", "send:sw:" + sw + "/val:" + val + "/" + success);
 
-				// byte sw1=msg.getData().getByte("sw");
-				// byte[] buf = new byte[2];
-				// buf[0] = (byte) 0x01;
-				// buf[1] = (byte) sw1;
-				// uartagent.frame.send(buf, buf.length);
+				Debug.info(Debug.DEBUG_SWITCH, "switch", "send:sw", sw + "/val:" + val + "/"
+						+ success);
+
 				break;
 			default:
 				break;
@@ -69,36 +72,33 @@ public class MonitorService extends Service {
 		Context context = getApplicationContext();
 		SharedPreferences sp = context.getSharedPreferences("smartventilator.preferences", 0);
 		mid = sp.getString("mID", "");
-		myreporter = new DevReporter(HostDefine.HOSTID_LDAT, HostDefine.HOST_LDAT,
-				HostDefine.PORT_LDAT_speak);
-		mymonitor = new DevMonitor(HostDefine.HOSTID_LTCP, mid, HostDefine.HOST_LTCP,
-				HostDefine.PORT_LTCP_listen);
-		super.onCreate();
-	}
-
-	@Override
-	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
 		// baudrate:115200, data:8,stop:1, parity:N
 		// uartagent=new UartAgent("/dev/ttyO1", 115200, 8, 1, (byte)'N', true);
 		// baudrate:ttyS6, 38400, data:8,stop:1, parity:N
 		uartagent = new UartAgent("/dev/ttyS6", 38400, 8, 1, (byte) 'N', true);
 		uartagent.init();
+		myreporter = new DevReporter(HostDefine.HOSTID_LDAT, HostDefine.HOST_LDAT,
+				HostDefine.PORT_LDAT_speak);
+		mymonitor = new DevMonitor(HostDefine.HOSTID_LTCP, mid, HostDefine.HOST_LTCP,
+				HostDefine.PORT_LTCP_listen);
+		heartBeat[0] = 0x03;
+		heartBeat[1] = 0x01;
+		initThread();
+		super.onCreate();
+	}
 
+	private void initThread() {
 		// thread to get info from hardware and report info to network
-		new Thread(new Runnable() {
+		this.reportDataThread=new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 
 				while (true) {
 					String jsonString = uartagent.getStatusBlock();
-					Log.i("sv", "load_data:" + jsonString);
+
+					Debug.info(Debug.DEBUG_SERVICE_SV, "sv", "load_data", jsonString);
+
 					if (jsonString == null || "".equals(jsonString))
 						continue;
 
@@ -106,20 +106,23 @@ public class MonitorService extends Service {
 					intent.setAction(BROADCASTACTION);
 					intent.putExtra("jsonstr", jsonString);
 					sendBroadcast(intent);
-
+					Debug.info(Debug.DEBUG_SERVICE_SV, "sv", "", "intent sent");
+					
 					// if reporter is open, then report json to network
 					if (myreporter.isOpen()) {
 						boolean ok = myreporter.report(mid, jsonString.toString());
 						if (!ok) {
 							myreporter.close();
+						} else {
+							Debug.info(Debug.DEBUG_SERVICE_SV, "sv", "", "network report");
 						}
 					}
 				}
 			}
-		}).start();
+		});
 
 		// thread to try open reporter
-		new Thread(new Runnable() {
+		this.tryConnectThread=new Thread(new Runnable() {
 
 			@Override
 			public void run() {
@@ -127,7 +130,7 @@ public class MonitorService extends Service {
 					if (!myreporter.isOpen()) {
 						boolean ok = myreporter.open();
 						if (!ok) {
-							Log.i("report", "try connect failed");
+							Log.e("report", "try connect failed");
 							try {
 								Thread.sleep(5 * 1000);
 							} catch (InterruptedException e) {
@@ -145,10 +148,10 @@ public class MonitorService extends Service {
 					}
 				}
 			}
-		}).start();
+		});
 
-		// Thread to send switch to network
-		new Thread(new Runnable() {
+		// Thread to get monitor from network and send switch
+		this.networkMonitorThread=new Thread(new Runnable() {
 
 			@Override
 			public void run() {
@@ -156,44 +159,46 @@ public class MonitorService extends Service {
 				while (true) {
 
 					// try open
-					boolean ok = mymonitor.open();
-					if (!ok) {
-						Log.e("monitor", "monitor:open failed");
-						try {
-							Thread.sleep(5 * 1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
+					boolean ok=false;
+					if(!mymonitor.isOpen()) {
+						ok = mymonitor.open();
+						Debug.info(Debug.DEBUG_SERVICE_MONITOR, "monitor", "","open:"+
+								ok);
+						if (!ok) {
+							Log.e("monitor", "monitor:open failed");
+							try {
+								Debug.info(Debug.DEBUG_SERVICE_MONITOR, "monitor", "","sleep");
+								Thread.sleep(5 * 1000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+								continue;
+							}
 							continue;
 						}
-						continue;
 					}
-
+					
 					// open successfully, monitoring...
 					while (true) {
+						Debug.info(Debug.DEBUG_SERVICE_MONITOR, "monitor", "","before watch");
 						String jstring = mymonitor.watch();
+						Debug.info(Debug.DEBUG_SERVICE_MONITOR, "monitor", "","after watch");
 						if (jstring == null || "".equals(jstring)) {
 							Log.w("monitor", "devNonitor:network broken");
+							mymonitor.close();
 							break;
 							// network down, try reconnect
 						}
 
-						Log.i("monitor", "devMonitor:jString=" + jstring);
+						Debug.info(Debug.DEBUG_SERVICE_MONITOR, "monitor", "devMonitor:jString",
+								jstring);
 						try {
-							// JSONObject json = new JSONObject(jstring);
-							// byte mSwitch = (byte)
-							// json.getInt(JSONDefine.KEY_switch);
-							// Log.i("monitor", "sw=" + mSwitch);
-							// VentilatorManager manager = new
-							// VentilatorManager(getBaseContext());
-							// manager.sendSwitch(mSwitch);
-							// manager = null;
 
 							JSONObject json = new JSONObject(jstring);
 
 							String device = json.getString(JSONDefine.KEY_focus);
 							byte command = (byte) json.getInt(JSONDefine.KEY_swValue);
 
-							Log.i("monitor", "sw=" + command);
+							Debug.info(Debug.DEBUG_SERVICE_MONITOR, "monitor", "sw=", command);
 							VentilatorManager manager = new VentilatorManager(getBaseContext());
 							manager.sendVentilatorCommand(device, command);
 							manager = null;
@@ -204,29 +209,66 @@ public class MonitorService extends Service {
 					}
 				}
 			}
-		}).start();
+		});
 
+		// new Thread(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// byte[] heartBeat = new byte[2];
+		// heartBeat[0] = 0x03;
+		// heartBeat[1] = 0x01;
+		// while (true) {
+		// int value=uartagent.frame.send(heartBeat, heartBeat.length);
+		//
+		// Debug.info(Debug.DEBUG, "heartbeat", "send heartbeat", value);
+		// try {
+		// Thread.sleep(1*1000);
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// continue;
+		// }
+		// }
+		// }
+		// }).start();
+	}
+
+	@Override
+	public IBinder onBind(Intent intent) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		if (timer != null) {
+			timer.cancel();
+		}
+		
+		if(reportDataThread==null||tryConnectThread==null||networkMonitorThread==null)
+			initThread();
+		
+		if(!reportDataThread.isAlive())
+			reportDataThread.start();
+		
+		if(!tryConnectThread.isAlive())
+			tryConnectThread.start();
+		
+		if(!networkMonitorThread.isAlive())
+			networkMonitorThread.start();
+
+		
 		// Heartbeat
-//		new Thread(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				byte[] heartBeat = new byte[2];
-//				heartBeat[0] = 0x03;
-//				heartBeat[1] = 0x01;
-//				while (true) {
-//					int value=uartagent.frame.send(heartBeat, heartBeat.length);
-//					Log.i("heartbeat", "send heartbeat"+value);
-//					
-//					try {
-//						Thread.sleep(1 * 1000);
-//					} catch (InterruptedException e) {
-//						e.printStackTrace();
-//						continue;
-//					}
-//				}
-//			}
-//		}).start();
+		timer = new Timer();
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				int value = uartagent.frame.send(heartBeat, heartBeat.length);
+				Debug.info(Debug.DEBUG_SERVICE_HEARTBEAT, "heartbeat", "send heartbeat", value);
+			}
+
+		}, 1 * 1000, 1 * 1000);
 
 		return super.onStartCommand(intent, flags, startId);
 	}
@@ -259,68 +301,9 @@ public class MonitorService extends Service {
 			msg.what = VentilatorManager.SEND_DATA;
 			msg.arg1 = intent.getExtras().getByte("sw");
 			msg.arg2 = intent.getExtras().getByte("val");
-			// Bundle b=new Bundle();
-			// b.putByte("sw", intent.getExtras().getByte("send"));
-			// msg.setData(b);
-			// Log.i("switch", "receive:"+msg.arg1);
+			
 			handler.sendMessage(msg);
 		}
 
 	}
-
-	// public String getVentilator() {
-	// String srsString = "";
-	// try
-	// {
-	// srsString = getJsonStringGet( "http://lingshuo.net.cn" );
-	// }
-	// catch (Exception e)
-	// {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// Log.i( "sv",e.getMessage() );
-	// }
-	//
-	// return srsString;
-	// }
-	//
-	// public String getJsonStringGet(String uri) throws Exception
-	// {
-	// String result = null;
-	// URL url = new URL( uri );
-	// HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-	// conn.setConnectTimeout( 6 * 1000 );// 设置连接超时
-	// Log.i( "sv", conn.getResponseCode() + conn.getResponseMessage() );
-	// if (conn.getResponseCode() == 200)
-	// {
-	// Log.i( "sv", "成功" );
-	// InputStream is = conn.getInputStream();// 得到网络返回的输入流
-	// result = readData( is, "UTF-8" );
-	// }
-	// else
-	// {
-	// Log.i( "sv", "失败" );
-	// result = "";
-	// }
-	// conn.disconnect();
-	// return result;
-	//
-	// }
-	//
-	//
-	// private String readData(InputStream inSream, String charsetName) throws
-	// Exception
-	// {
-	// ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-	// byte[] buffer = new byte[1024];
-	// int len = -1;
-	// while ((len = inSream.read( buffer )) != -1)
-	// {
-	// outStream.write( buffer, 0, len );
-	// }
-	// byte[] data = outStream.toByteArray();
-	// outStream.close();
-	// inSream.close();
-	// return new String( data, charsetName );
-	// }
 }

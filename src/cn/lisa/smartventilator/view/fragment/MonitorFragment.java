@@ -26,6 +26,7 @@ import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.controller.entity.Ventilator;
 import cn.lisa.smartventilator.controller.manager.VentilatorManager;
 import cn.lisa.smartventilator.controller.service.MonitorService;
+import cn.lisa.smartventilator.debug.Debug;
 import cn.lisa.smartventilator.utility.network.JSONDefine;
 
 public class MonitorFragment extends Fragment implements OnClickListener, OnTouchListener {
@@ -37,14 +38,10 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 	private TextView tv_aldehyde;
 	private TextView tv_pm2_5;
 	private RatingBar rb_smog;
-	@SuppressWarnings("unused")
 	private RatingBar rb_aldehyde;
-	@SuppressWarnings("unused")
 	private RatingBar rb_pm2_5;
 	private ImageView iv_smog;
-	@SuppressWarnings("unused")
 	private ImageView iv_aldehyde;
-	@SuppressWarnings("unused")
 	private ImageView iv_pm2_5;
 	private RelativeLayout layout_gears_control;
 	private Button mBtn1;
@@ -65,7 +62,7 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 				case VentilatorManager.SHOW_DATA:
 					ventilator = (Ventilator) msg.obj;
 					if (ventilator != null) {
-						Log.i("ventilator", ventilator.toString());
+						Debug.info(Debug.DEBUG_VENTILATOR, "ventilator", "", ventilator.toString());
 						initdata(ventilator);
 					}
 					break;
@@ -88,7 +85,6 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 		view = initView(view);
 		this.context = getActivity();
 		ventilatorManager = new VentilatorManager(context);
-		initReceiver();
 		initListener();
 		return view;
 	}
@@ -173,22 +169,22 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 		switch (smog) {
 		case 0:
 			tv_smog.setText(R.string.stat_low);
-			rb_smog.setRating(1f);
+			rb_smog.setRating(4f);
 			iv_smog.setBackgroundResource(R.drawable.monitor_bar_1);
 			break;
 		case 1:
 			tv_smog.setText(R.string.stat_normal);
-			rb_smog.setRating(2f);
+			rb_smog.setRating(3f);
 			iv_smog.setBackgroundResource(R.drawable.monitor_bar_2);
 			break;
 		case 2:
 			tv_smog.setText(R.string.stat_high);
-			rb_smog.setRating(3f);
+			rb_smog.setRating(2f);
 			iv_smog.setBackgroundResource(R.drawable.monitor_bar_3);
 			break;
 		case 3:
 			tv_smog.setText(R.string.stat_very_high);
-			rb_smog.setRating(4f);
+			rb_smog.setRating(1f);
 			iv_smog.setBackgroundResource(R.drawable.monitor_bar_4);
 			break;
 		default:
@@ -202,31 +198,24 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 	 * @param pm2_5
 	 */
 	private void initPm2_5(int pm2_5) {
-		tv_pm2_5.setText(String.valueOf(pm2_5));
-		// switch (pm2_5) {
-		// case 0:
-		// tv_pm2_5.setText(R.string.stat_low);
-		// rb_pm2_5.setRating(1f);
-		// iv_pm2_5.setImageResource(R.drawable.monitor_bar_1);
-		// break;
-		// case 1:
-		// tv_pm2_5.setText(R.string.stat_normal);
-		// rb_pm2_5.setRating(2f);
-		// iv_pm2_5.setImageResource(R.drawable.monitor_bar_2);
-		// break;
-		// case 2:
-		// tv_pm2_5.setText(R.string.stat_high);
-		// rb_pm2_5.setRating(3f);
-		// iv_pm2_5.setImageResource(R.drawable.monitor_bar_3);
-		// break;
-		// case 3:
-		// tv_pm2_5.setText(R.string.stat_very_high);
-		// rb_pm2_5.setRating(4f);
-		// iv_pm2_5.setImageResource(R.drawable.monitor_bar_4);
-		// break;
-		// default:
-		// break;
-		// }
+		pm2_5=pm2_5/10;
+		if (pm2_5 >= 0 && pm2_5 <= 100) {
+			tv_pm2_5.setText(R.string.stat_low);
+			rb_pm2_5.setRating(4f);
+			iv_pm2_5.setBackgroundResource(R.drawable.monitor_bar_1);
+		} else if (pm2_5 > 100 && pm2_5 <= 200) {
+			tv_pm2_5.setText(R.string.stat_normal);
+			rb_pm2_5.setRating(3f);
+			iv_pm2_5.setBackgroundResource(R.drawable.monitor_bar_2);
+		} else if (pm2_5 > 200 && pm2_5 <= 300) {
+			tv_pm2_5.setText(R.string.stat_high);
+			rb_pm2_5.setRating(2f);
+			iv_pm2_5.setBackgroundResource(R.drawable.monitor_bar_3);
+		} else if (pm2_5 > 300) {
+			tv_pm2_5.setText(R.string.stat_very_high);
+			rb_pm2_5.setRating(1f);
+			iv_pm2_5.setBackgroundResource(R.drawable.monitor_bar_4);
+		}
 	}
 
 	/***
@@ -235,31 +224,24 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 	 * @param aldehyde
 	 */
 	private void initAldehyde(int aldehyde) {
-		tv_aldehyde.setText(String.valueOf(aldehyde));
-		// switch (aldehyde) {
-		// case 0:
-		// tv_aldehyde.setText(R.string.stat_low);
-		// rb_aldehyde.setRating(1f);
-		// iv_aldehyde.setImageResource(R.drawable.monitor_bar_1);
-		// break;
-		// case 1:
-		// tv_aldehyde.setText(R.string.stat_normal);
-		// rb_aldehyde.setRating(2f);
-		// iv_aldehyde.setImageResource(R.drawable.monitor_bar_2);
-		// break;
-		// case 2:
-		// tv_aldehyde.setText(R.string.stat_high);
-		// rb_aldehyde.setRating(3f);
-		// iv_aldehyde.setImageResource(R.drawable.monitor_bar_3);
-		// break;
-		// case 3:
-		// tv_aldehyde.setText(R.string.stat_very_high);
-		// rb_aldehyde.setRating(4f);
-		// iv_aldehyde.setImageResource(R.drawable.monitor_bar_4);
-		// break;
-		// default:
-		// break;
-		// }
+		double value = aldehyde * 1.34 / 1000;
+		if (value >= 0 && value <= 0.1) {
+			tv_aldehyde.setText(R.string.stat_low);
+			rb_aldehyde.setRating(4f);
+			iv_aldehyde.setBackgroundResource(R.drawable.monitor_bar_1);
+		} else if (value > 0.1 && value <= 0.3) {
+			tv_aldehyde.setText(R.string.stat_normal);
+			rb_aldehyde.setRating(3f);
+			iv_aldehyde.setBackgroundResource(R.drawable.monitor_bar_2);
+		} else if (value > 0.3 && value <= 0.5) {
+			tv_aldehyde.setText(R.string.stat_high);
+			rb_aldehyde.setRating(2f);
+			iv_aldehyde.setBackgroundResource(R.drawable.monitor_bar_3);
+		} else if (value > 0.5) {
+			tv_aldehyde.setText(R.string.stat_very_high);
+			rb_aldehyde.setRating(1f);
+			iv_aldehyde.setBackgroundResource(R.drawable.monitor_bar_4);
+		}
 	}
 
 	/**
@@ -347,7 +329,7 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 			// 照明灯开关
 			case R.id.control_lamp:
 				Log.i("ventilator", "lamp touched");
-
+				Debug.info(Debug.DEBUG_VENTILATOR, "ventilator", "", "lamp touched");
 				if (!ventilator.getState_lamp()) {
 					// 开灯
 					ventilatorManager
@@ -365,7 +347,7 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 				return true;
 				// 紫外线设备开关
 			case R.id.control_ultraviolet:
-				Log.i("ventilator", "ultraviolet touched");
+				Debug.info(Debug.DEBUG_VENTILATOR, "ventilator", "", "ultraviolet touched");
 				if (!ventilator.getState_ultraviolet()) {
 					// 开
 					ventilatorManager.sendVentilatorCommand(JSONDefine.SW_ultra,
@@ -382,7 +364,7 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 				return true;
 				// 等离子设备开关
 			case R.id.control_plasma:
-				Log.i("ventilator", "plasma touched");
+				Debug.info(Debug.DEBUG_VENTILATOR, "ventilator", "", "plasma touched");
 				if (!ventilator.getState_plasma()) {
 					// 开
 					ventilatorManager.sendVentilatorCommand(JSONDefine.SW_plasma,
@@ -399,7 +381,7 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 				return true;
 				// 风机开关
 			case R.id.control_ventilator:
-				Log.i("ventilator", "ventilator touched");
+				Debug.info(Debug.DEBUG_VENTILATOR, "ventilator", "", "ventilator touched");
 				if (!ventilator.getState_ventilator()) {
 					// 打开
 					ventilatorManager.sendVentilatorCommand(JSONDefine.SW_fan,
@@ -425,6 +407,11 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 
 	@Override
 	public void onDestroy() {
+		try {
+			context.unregisterReceiver(broadcastMain);
+		} catch (Exception e) {
+			Log.e("ventilator", e.getLocalizedMessage());
+		}
 		super.onDestroy();
 	}
 
@@ -438,7 +425,7 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 		try {
 			initReceiver();
 		} catch (Exception e) {
-			Log.i("ventilator", e.getLocalizedMessage());
+			Log.e("ventilator", e.getLocalizedMessage());
 		}
 		super.onResume();
 	}
@@ -448,7 +435,7 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 		try {
 			context.unregisterReceiver(broadcastMain);
 		} catch (Exception e) {
-			Log.i("ventilator", e.getLocalizedMessage());
+			Log.e("ventilator", e.getLocalizedMessage());
 		}
 		super.onStop();
 	}

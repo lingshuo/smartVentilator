@@ -4,8 +4,10 @@ import java.util.List;
 
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.controller.entity.*;
+import cn.lisa.smartventilator.controller.manager.VideoManager;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +20,20 @@ public class VideoListAdapter extends BaseAdapter {
 	private List<Video> mVideoList;
 
 	LayoutInflater infater;
+	
+	Handler mHandler;
 
-	public VideoListAdapter(Context context, List<Video> videos) {
+	public VideoListAdapter(Context context, List<Video> videos,Handler handler) {
 		super();
 		infater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mVideoList = videos;
+		mHandler=handler;
 	}
-
+	
+	public void refresh(List<Video> videos){
+		mVideoList=videos;
+	}
+	
 	@Override
 	public int getCount() {
 		return mVideoList.size();

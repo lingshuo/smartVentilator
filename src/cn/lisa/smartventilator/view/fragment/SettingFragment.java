@@ -28,7 +28,8 @@ public class SettingFragment extends Fragment implements OnClickListener {
 	private TextView tv_password;
 	private EditText et_username;
 	private EditText et_password;
-
+	private TextView tv_version;
+	
 	private Button btn_cancel;
 	private Button btn_confirm;
 
@@ -38,6 +39,7 @@ public class SettingFragment extends Fragment implements OnClickListener {
 		context = getActivity();
 		SharedPreferences sp = context.getSharedPreferences("smartventilator.preferences", 0);
 		String mid = sp.getString("mID", "");
+		String version=sp.getString("version", "");
 		View view = inflater.inflate(R.layout.fragment_setting, null);
 		tv_deviceId = (TextView) view.findViewById(R.id.tv_device_id);
 		tv_deviceId.setText(mid);
@@ -50,6 +52,9 @@ public class SettingFragment extends Fragment implements OnClickListener {
 		btn_cancel = (Button) view.findViewById(R.id.btn_cancel);
 		btn_confirm = (Button) view.findViewById(R.id.btn_confirm);
 
+		tv_version=(TextView)view.findViewById(R.id.version);
+	
+		tv_version.setText(version);
 		btn_cancel.setOnClickListener(this);
 		btn_confirm.setOnClickListener(this);
 

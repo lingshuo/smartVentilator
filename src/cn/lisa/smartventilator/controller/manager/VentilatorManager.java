@@ -4,9 +4,9 @@ import org.json.*;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import cn.lisa.smartventilator.controller.entity.Ventilator;
 import cn.lisa.smartventilator.controller.service.MonitorService;
+import cn.lisa.smartventilator.debug.Debug;
 import cn.lisa.smartventilator.utility.network.JSONDefine;
 
 public class VentilatorManager {
@@ -77,7 +77,7 @@ public class VentilatorManager {
 	public void sendVentilatorCommand(int device, int command, Ventilator ventilator) {
 
 		byte Switch = ventilator.getSwitch();
-		Log.i("switch", "old:" + Switch);
+		Debug.info(Debug.DEBUG_SWITCH, "switch", "old", Switch);
 		byte mSwitch = Switch;
 		if (command == DEVICE_OFF) {
 			// πÿ±’…Ë±∏
@@ -116,8 +116,7 @@ public class VentilatorManager {
 				break;
 			}
 		}
-		Log.i("switch", "new:" + mSwitch);
-
+		Debug.info(Debug.DEBUG_SWITCH, "switch", "new", mSwitch);
 		sendSwitch(mSwitch);
 	}
 

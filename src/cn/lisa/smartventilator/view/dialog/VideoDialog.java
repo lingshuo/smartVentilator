@@ -16,6 +16,7 @@ import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ public class VideoDialog extends Dialog implements OnItemClickListener {
 
 	private ListView mVideoList;
 	private RelativeLayout mBlankLayout;
+	private Button mRefreshBtn;
 	private Context mContext;
 	private VideoListAdapter mVideoListAdapter = null;
 	private List<Video> videos;
@@ -40,8 +42,7 @@ public class VideoDialog extends Dialog implements OnItemClickListener {
 				@SuppressWarnings("unchecked")
 				List<Video> videoInfoList = (List<Video>) msg.obj;
 				if (videoInfoList.size() > 0) {
-					mVideoListAdapter = new VideoListAdapter(mContext, videoInfoList);
-					mVideoList.setAdapter(mVideoListAdapter);
+					mVideoListAdapter.refresh(videoInfoList);
 					mBlankLayout.setVisibility(View.GONE);
 				} else {
 					mVideoList.setVisibility(View.GONE);
@@ -67,10 +68,29 @@ public class VideoDialog extends Dialog implements OnItemClickListener {
 		setContentView(R.layout.dialog_video);
 		mVideoList = (ListView) findViewById(R.id.lv_video);
 		mBlankLayout = (RelativeLayout) findViewById(R.id.video_blank_layout);
+		mRefreshBtn=(Button)findViewById(R.id.btn_video_refresh);
 		mVideoList.setOnItemClickListener(this);
+		
+		mBlankLayout.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				videos =VideoManager.getVideoList(handler);
+			}
+		});
+		mRefreshBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				videos =VideoManager.getVideoList(handler);
+			}
+		});
 		// 获取视频列表
 		videos = VideoManager.getVideoList(handler);
+		mVideoListAdapter = new VideoListAdapter(mContext,videos,handler);			
+		mVideoList.setAdapter(mVideoListAdapter);
 	}
+	
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

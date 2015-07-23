@@ -1,12 +1,12 @@
 package cn.lisa.smartventilator.utility.network;
 
 /*
- * "result": ï¼ˆboolï¼?,
- * "switch": ï¼ˆintï¼?,
- * "smog": ï¼ˆintï¼?,
- * "HCHO": ï¼ˆintï¼?,
- * "PM25": ï¼ˆintï¼?,
- * "hwError": ï¼ˆintï¼?
+ * "result":
+ * "switch":
+ * "smog":
+ * "HCHO":
+ * "PM25":
+ * "hwError":
  */
 public class JSONDefine {
 	// for get switch&sensor value

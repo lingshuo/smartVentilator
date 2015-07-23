@@ -29,17 +29,18 @@
 	<string name="str_control_plasma">等离子设备</string>
 	<string name="str_control_plasma_on">等离子设备开</string>
 	<string name="str_control_plasma_off">等离子设备关</string>
-	<string name="stat_low">很低</string>
-	<string name="stat_normal">较低</string>
-	<string name="stat_high">较高</string>
-	<string name="stat_very_high">很高</string>
+	<string name="stat_low">优</string>
+	<string name="stat_normal">良</string>
+	<string name="stat_high">中</string>
+	<string name="stat_very_high">差</string>
 	<string name="stat_loading">加载中</string>
 	<!-- string in the media page -->
 	<string name="str_media_youku">优酷</string>
 	<string name="str_media_video_list">本地视频</string>
-	<string name="str_media_video_null">没有本地视频</string>
+	<string name="str_media_video_null">没有本地视频,点击刷新试试</string>
 	<string name="str_media_radio_list">网络广播</string>
 	<string name="str_media_no_player">没有视频播放器</string>
+	<string name="str_media_video_refresh">刷新</string>
 	<!-- string in the device page -->
 	<string name="str_device_id_label">ID号:</string>
 	<string name="str_device_username">用户名:</string>

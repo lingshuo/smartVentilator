@@ -46,13 +46,13 @@ public class MainActivity extends FragmentActivity {
 		SharedPreferences sp = getSharedPreferences("smartventilator.preferences", 0);
 		Editor editor = sp.edit();
 		editor.putString("mID", mID.getMid());
+		editor.putString("version", "1.0.1");
 		// Ã·Ωª…Ë÷√
 		editor.commit();
 
 		if (!LibsChecker.checkVitamioLibs(this))
 			return;
-		// CustomTitleBar ct = new CustomTitleBar();
-		// ct.getTitleBar(this, "");
+
 		setContentView(R.layout.activity_main);
 
 		mBottomTabView = (BottomTabView) findViewById(R.id.mBottomTabView);

@@ -3,11 +3,11 @@ package cn.lisa.smartventilator.view.activity;
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.controller.manager.MyWindowManager;
 import cn.lisa.smartventilator.controller.service.FloatWindowService;
+import cn.lisa.smartventilator.debug.Debug;
 import cn.lisa.smartventilator.utility.system.BrightnessUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,7 +41,7 @@ public class LockActivity extends Activity implements OnClickListener {
 		Intent intent1 = new Intent();
 		intent1.setClass(this, FloatWindowService.class);
 		stopService(intent1);
-		Log.i("lock", "onResume:remove");
+		Debug.info(Debug.DEBUG_LOCK, "lock","","onResume:remove");
 		super.onResume();
 	}
 
@@ -56,7 +56,7 @@ public class LockActivity extends Activity implements OnClickListener {
 		Intent intent2 = new Intent();
 		intent2.setClass(this, FloatWindowService.class);
 		startService(intent2);
-		Log.i("lock", "onPause:show");
+		Debug.info(Debug.DEBUG_LOCK, "lock","","onPause:show");
 		super.onPause();
 	}
 
@@ -74,7 +74,7 @@ public class LockActivity extends Activity implements OnClickListener {
 			Intent intent2 = new Intent();
 			intent2.setClass(this, FloatWindowService.class);
 			startService(intent2);
-			Log.i("lock", "click:show");
+			Debug.info(Debug.DEBUG_LOCK, "lock","","click:show");
 			finish();
 			break;
 		default:

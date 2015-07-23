@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
+import cn.lisa.smartventilator.debug.Debug;
 import cn.lisa.smartventilator.utility.network.JSONDefine;
 
 public class UartAgent {
@@ -94,7 +95,9 @@ public class UartAgent {
 		byte[] buf = new byte[BUF_SIZE];
 
 		int bytes = frame.recv(buf, BUF_SIZE);
-		Log.i("[uartAgent]", "read bytes " + bytes);
+		
+		Debug.info(Debug.DEBUG_UART, "[uartAgent]", "read bytes", bytes);
+		
 		if (bytes > 0) {
 			byte cmd = buf[0];
 			switch (cmd) {
@@ -107,8 +110,9 @@ public class UartAgent {
 
 				String info = "sw=" + sw + ";pm25=" + pm25 + ";hcho=" + hcho + ";smog=" + smog
 						+ ";hwError" + hwError;
-				Log.i("[UartAgent]", info);
-
+				
+				Debug.info(Debug.DEBUG_UART, "[uartAgent]", "", info);
+				
 				JSONObject json = new JSONObject();
 				try {
 					json.put(JSONDefine.KEY_switch, sw);
@@ -153,8 +157,8 @@ public class UartAgent {
 
 			while (true) {
 				// if not open, open the UART
-				if (!isOpen) {
-					Log.i("[uartAgent]", "not open");
+				if (!isOpen) {					
+					Debug.info(Debug.DEBUG_UART, "[uartAgent]",  "","not open");
 					close();
 					isOpen = frame.init(dev, baudrate, databits, stopbits, parity);
 				}
@@ -167,8 +171,7 @@ public class UartAgent {
 
 					continue;
 				}
-				Log.i("[uartAgent]", "open " + dev + "OK");
-
+				Debug.info(Debug.DEBUG_UART, "[uartAgent]","open",dev + "OK");
 				// try read frame, it everything OK, I will never goback
 				while (isOpen) {
 					try {
@@ -191,11 +194,8 @@ public class UartAgent {
 
 							String info = "sw=" + sw + ";pm25=" + pm25 + ";hcho=" + hcho + ";smog="
 									+ smog + ";hwError" + hwError;
-							Log.i("[UartAgent]", info);
-
+							Debug.info(Debug.DEBUG_UART, "[uartAgent]","",info);
 							// make JSon String
-							// String jStatus = Report.buildToJString(sw, smog,
-							// hcho, pm25, hwError);
 							JSONObject json = new JSONObject();
 							try {
 								json.put(JSONDefine.KEY_switch, sw);
@@ -223,7 +223,7 @@ public class UartAgent {
 						continue;
 					} else {
 						// close the UART, try reopen it
-						Log.i("[uartAgent]", "read failed");
+						Log.e("[uartAgent]", "read failed");
 						close();
 						break;
 					}

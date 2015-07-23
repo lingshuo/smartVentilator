@@ -1,6 +1,6 @@
 package cn.lisa.smartventilator.controller.entity;
 
-import android.util.Log;
+import cn.lisa.smartventilator.debug.Debug;
 
 import com.example.writeid.RomID;
 
@@ -8,6 +8,7 @@ public class MachineID {
 	public static final int ID_BYTES = 4;
 	public static final int LC_BYTES = 16;
 	public static final int TOTAL_BYTES = 20;
+	
 	private String mid;
 	private byte[] mlic = new byte[LC_BYTES];
 
@@ -21,7 +22,7 @@ public class MachineID {
 		byte[] machLice = new byte[MachineID.LC_BYTES];
 		int err = romID.getID(machID);
 		if (err != 0) {
-			Log.i("id", "get err=" + err);
+			Debug.info(Debug.DEBUG_MID, "id", "get err", err);
 			this.mid = null;
 			this.mlic = null;
 		}

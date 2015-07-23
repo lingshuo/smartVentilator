@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.lisa.smartventilator.controller.entity.Video;
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.util.Log;
 
 /***
  * 视频相关的功能类
@@ -23,36 +25,61 @@ import android.provider.MediaStore;
 public class VideoManager {
 	public final static int GET_VIDEO_FINISH = 0;
 	// 视频路径
+	@SuppressLint("SdCardPath")
 	private final static String cur_path = "/sdcard/smartVentilator/";
-
+	private final static String ext_path="/mnt/extsd/";
 	/**
 	 * 获取视频列表
 	 * 
-	 * @param handler
+	 * @param mHandler
 	 *            处理视频列表的handler
 	 * @return
 	 */
 	public static List<Video> getVideoList(Handler handler) {
-		File file = new File(cur_path);
-		if (!file.exists()) {
+		
+		File ext_file=new File(ext_path);
+	
+		File cur_file = new File(cur_path);
+		if (!cur_file.exists()) {
 			try {
-				file.mkdirs();
-				file = new File(cur_path);
+				cur_file.mkdirs();
+				cur_file = new File(cur_path);
 			} catch (Exception e) {
+				Log.e("video", "cur_path direrror");
 				return null;
 			}
 		}
-		File[] files = null;
-		files = file.listFiles();
 		List<Video> videoList = new ArrayList<Video>();
-		for (int i = 0; i < files.length; i++) {
-			Video video = new Video();
-			video.setName(VideoManager.getFileName(files[i].getPath()));
-			video.setThumb(VideoManager.getVideoThumbnail(files[i].getPath(), 100, 50,
-					MediaStore.Images.Thumbnails.MICRO_KIND));
-			video.setPath(files[i].getPath());
-			videoList.add(video);
+		
+		File[] ext_files = null;
+		ext_files = ext_file.listFiles();
+		if(ext_files!=null){
+			for (int i = 0; i < ext_files.length; i++) {
+				if(ext_files[i].isFile()){
+					Video video = new Video();
+					video.setName(VideoManager.getFileName(ext_files[i].getPath()));
+					video.setThumb(VideoManager.getVideoThumbnail(ext_files[i].getPath(), 100, 50,
+							MediaStore.Images.Thumbnails.MICRO_KIND));
+					video.setPath(ext_files[i].getPath());
+					videoList.add(video);
+				}
+			}
 		}
+		
+		File[] cur_files = null;
+		cur_files = cur_file.listFiles();
+
+		for (int i = 0; i < cur_files.length; i++) {
+			if(cur_files[i].isFile()){
+				Video video = new Video();
+				video.setName(VideoManager.getFileName(cur_files[i].getPath()));
+				video.setThumb(VideoManager.getVideoThumbnail(cur_files[i].getPath(), 100, 50,
+						MediaStore.Images.Thumbnails.MICRO_KIND));
+				video.setPath(cur_files[i].getPath());
+				videoList.add(video);
+			}
+		}
+		
 		Message msg = new Message();
 		msg.what = GET_VIDEO_FINISH;
 		msg.obj = videoList;
@@ -74,8 +101,6 @@ public class VideoManager {
 		Bitmap bitmap = null;
 		// 获取视频的缩略图
 		bitmap = ThumbnailUtils.createVideoThumbnail(videoPath, kind);
-		// Log.i("sv","w"+bitmap.getWidth());
-		// Log.i("sv","h"+bitmap.getHeight());
 		bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height,
 				ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
 		return bitmap;
@@ -87,16 +112,17 @@ public class VideoManager {
 	 * @param videoPath
 	 * @return
 	 */
+	@SuppressLint("DefaultLocale")
 	public static Intent getVideoIntent(String videoPath) {
 		Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
 		String strend = "";
-		if (videoPath.toLowerCase().endsWith(".mp4")) {
+		if (videoPath.toLowerCase().endsWith(".mp4")){
 			strend = "mp4";
-		} else if (videoPath.toLowerCase().endsWith(".3gp")) {
+		} else if (videoPath.toLowerCase().endsWith(".3gp")){
 			strend = "3gp";
-		} else if (videoPath.toLowerCase().endsWith(".mov")) {
+		} else if (videoPath.toLowerCase().endsWith(".mov")){
 			strend = "mov";
-		} else if (videoPath.toLowerCase().endsWith(".wmv")) {
+		} else if (videoPath.toLowerCase().endsWith(".wmv")){
 			strend = "wmv";
 		}
 
