@@ -4,7 +4,6 @@ import java.util.List;
 
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.controller.entity.*;
-import cn.lisa.smartventilator.controller.manager.VideoManager;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
