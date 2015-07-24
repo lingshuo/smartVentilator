@@ -15,7 +15,7 @@ public class Debug {
 //	public static boolean DEBUG_VENTILATOR=true;
 	
 	
-	public static boolean DEBUG_ALL=true;
+	public static boolean DEBUG_ALL=false;
 	public static boolean DEBUG_MID=false;
 	public static boolean DEBUG_SWITCH=false;
 	public static boolean DEBUG_MANAGER=false;
