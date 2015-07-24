@@ -185,6 +185,12 @@ public class MonitorService extends Service {
 						if (jstring == null || "".equals(jstring)) {
 							Log.w("monitor", "devNonitor:network broken");
 							mymonitor.close();
+							try {
+								Thread.sleep(5*1000);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							break;
 							// network down, try reconnect
 						}
