@@ -9,11 +9,13 @@ import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.controller.entity.MachineID;
 import cn.lisa.smartventilator.controller.service.FloatWindowService;
 import cn.lisa.smartventilator.controller.service.MonitorService;
+import cn.lisa.smartventilator.controller.service.UpdateService;
 import cn.lisa.smartventilator.view.fragment.*;
 import cn.lisa.smartventilator.view.view.BottomTabView;
 import android.app.Fragment;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -33,7 +35,7 @@ public class MainActivity extends FragmentActivity {
 	public ComponentName componentName;
 	public PowerManager.WakeLock mWakeLock;
 	public static MachineID mID;
-
+	private static Context context;
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class MainActivity extends FragmentActivity {
 		editor.putString("version", "1.0.1");
 		// 提交设置
 		editor.commit();
-
+		context=MainActivity.this;
 		if (!LibsChecker.checkVitamioLibs(this))
 			return;
 
@@ -109,6 +111,7 @@ public class MainActivity extends FragmentActivity {
 		Intent intent2 = new Intent();
 		intent2.setClass(this, FloatWindowService.class);
 		startService(intent2);
+		
 		// 发送快捷方式
 		createShortCut();
 		// 保持屏幕常亮
@@ -156,10 +159,18 @@ public class MainActivity extends FragmentActivity {
 			ex.printStackTrace();
 		}
 	}
+	
+	public static Context getMyActivityContext(){
+		return context;
+	}
 
 	@Override
 	protected void onResume() {
 		mWakeLock.acquire();
+		//更新
+		Intent intent3=new Intent();
+		intent3.setClass(this, UpdateService.class);
+		startService(intent3);
 		super.onResume();
 	}
 

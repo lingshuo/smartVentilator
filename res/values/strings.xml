@@ -4,10 +4,10 @@
     <string name="app_name">智能烟机</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-	<string name="fw_lock">点击锁屏</string>
-	<string name="fw_lock_btn">锁屏</string>
-	<string name="fw_close">关闭悬浮框</string>
-	<string name="fw_back">返回</string>
+    <string name="fw_lock">点击锁屏</string>
+    <string name="fw_lock_btn">锁屏</string>
+    <string name="fw_close">关闭悬浮框</string>
+    <string name="fw_back">返回</string>
     <!-- string in moniter page -->
     <string name="str_monitor_smog">烟雾浓度</string>
     <string name="str_monitor_level">浓度指数：</string>
@@ -17,38 +17,52 @@
     <string name="str_control_ventilator_on">风机开</string>
     <string name="str_control_ventilator_off">风机关</string>
     <string name="str_control_ventilator_gears">档位选择</string>
-	<string name="str_control_ventilator_1">1档</string>
-	<string name="str_control_ventilator_2">2档</string>
-	<string name="str_control_ventilator_3">3档</string>
-	<string name="str_control_lamp">照明灯</string>
-	<string name="str_control_lamp_on">灯亮</string>
-	<string name="str_control_lamp_off">灯灭</string>
-	<string name="str_control_ultraviolet">紫外线设备</string>
-	<string name="str_control_ultraviolet_on">紫外线设备开</string>
-	<string name="str_control_ultraviolet_off">紫外线设备关</string>
-	<string name="str_control_plasma">等离子设备</string>
-	<string name="str_control_plasma_on">等离子设备开</string>
-	<string name="str_control_plasma_off">等离子设备关</string>
-	<string name="stat_low">优</string>
-	<string name="stat_normal">良</string>
-	<string name="stat_high">中</string>
-	<string name="stat_very_high">差</string>
-	<string name="stat_loading">加载中</string>
-	<!-- string in the media page -->
-	<string name="str_media_youku">优酷</string>
-	<string name="str_media_video_list">本地视频</string>
-	<string name="str_media_video_null">没有本地视频,点击刷新试试</string>
-	<string name="str_media_radio_list">网络广播</string>
-	<string name="str_media_no_player">没有视频播放器</string>
-	<string name="str_media_video_refresh">刷新</string>
-	<!-- string in the device page -->
-	<string name="str_device_id_label">ID号:</string>
-	<string name="str_device_username">用户名:</string>
-	<string name="str_device_password">密码:</string>
-	<string name="str_device_username_hint">新用户名：</string>
-	<string name="str_device_password_hint">新密码：</string>
-	<string name="str_device_cancel">取消</string>
-	<string name="str_device_confirm">确认</string>
-	<!-- contact me -->
-	<string name="str_contact">联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们联系我们</string>
+    <string name="str_control_ventilator_1">1档</string>
+    <string name="str_control_ventilator_2">2档</string>
+    <string name="str_control_ventilator_3">3档</string>
+    <string name="str_control_lamp">照明灯</string>
+    <string name="str_control_lamp_on">灯亮</string>
+    <string name="str_control_lamp_off">灯灭</string>
+    <string name="str_control_ultraviolet">紫外线设备</string>
+    <string name="str_control_ultraviolet_on">紫外线设备开</string>
+    <string name="str_control_ultraviolet_off">紫外线设备关</string>
+    <string name="str_control_plasma">等离子设备</string>
+    <string name="str_control_plasma_on">等离子设备开</string>
+    <string name="str_control_plasma_off">等离子设备关</string>
+    <string name="stat_low">优</string>
+    <string name="stat_normal">良</string>
+    <string name="stat_high">中</string>
+    <string name="stat_very_high">差</string>
+    <string name="stat_loading">加载中</string>
+    <!-- string in the media page -->
+    <string name="str_media_youku">优酷</string>
+    <string name="str_media_video_list">本地视频</string>
+    <string name="str_media_video_null">没有本地视频,点击刷新试试</string>
+    <string name="str_media_radio_list">网络广播</string>
+    <string name="str_media_no_player">没有视频播放器</string>
+    <string name="str_media_video_refresh">刷新</string>
+    <!-- string in the device page -->
+    <string name="str_device_id_label">ID号:</string>
+    <string name="str_device_username">用户名:</string>
+    <string name="str_device_password">密码:</string>
+    <string name="str_device_username_hint">新用户名：</string>
+    <string name="str_device_password_hint">新密码：</string>
+    <string name="str_device_cancel">取消</string>
+    <string name="str_device_confirm">确认</string>
+    <!-- contact me -->
+    <string name="str_contact">联系我们</string>
+    
+    <string name="str_update">有更新</string>
+    <string name="dialog_update_title">更新</string>
+    <string name="dialog_update_msg">发现新版本，版本号：</string>
+    <string name="dialog_update_msg2">，是否立即更新</string>
+    <string name="dialog_update_btnupdate">更新</string>
+    <string name="dialog_update_btnnext">下次再说</string>
+    <string name="dialog_downloading_msg">正在下载更新。。。</string>
+    <string name="dialog_alert_title">警告</string>
+    <string name="dialog_downfailed_btndown">重新下载</string>
+    <string name="dialog_downfailed_btnnext">以后再说</string>
+    <string name="dialog_error_title">错误</string>
+    <string name="dialog_downfailed_msg">下载更新失败，是否重试？</string>
+
 </resources>
