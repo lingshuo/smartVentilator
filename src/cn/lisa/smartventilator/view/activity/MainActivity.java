@@ -9,7 +9,6 @@ import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.controller.entity.MachineID;
 import cn.lisa.smartventilator.controller.service.FloatWindowService;
 import cn.lisa.smartventilator.controller.service.MonitorService;
-import cn.lisa.smartventilator.controller.service.UpdateService;
 import cn.lisa.smartventilator.view.fragment.*;
 import cn.lisa.smartventilator.view.view.BottomTabView;
 import android.app.Fragment;
@@ -167,10 +166,6 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		mWakeLock.acquire();
-		//¸üÐÂ
-		Intent intent3=new Intent();
-		intent3.setClass(this, UpdateService.class);
-		startService(intent3);
 		super.onResume();
 	}
 
