@@ -50,7 +50,7 @@ public class MonitorFragment extends Fragment implements OnClickListener, OnTouc
 	private BroadcastMain broadcastMain;
 	private Context context;
 	public static VentilatorManager ventilatorManager;
-	private Ventilator ventilator;
+	private Ventilator ventilator=new Ventilator(0, 0, 0, 0, 0);
 	/***
 	 * 处理界面数据显示的handler
 	 */

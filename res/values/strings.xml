@@ -37,7 +37,7 @@
     <!-- string in the media page -->
     <string name="str_media_youku">优酷</string>
     <string name="str_media_video_list">本地视频</string>
-    <string name="str_media_video_null">没有本地视频,点击刷新试试</string>
+    <string name="str_media_video_null">没有本地视频</string>
     <string name="str_media_radio_list">网络广播</string>
     <string name="str_media_no_player">没有视频播放器</string>
     <string name="str_media_video_refresh">刷新</string>

@@ -110,12 +110,14 @@ public class MonitorService extends Service {
 					
 					// if reporter is open, then report json to network
 					if (myreporter.isOpen()) {
-						boolean ok = myreporter.report(mid, jsonString.toString());
-						if (!ok) {
-							myreporter.close();
-						} else {
-							Debug.info(Debug.DEBUG_SERVICE_SV, "sv", "", "network report");
-						}
+//						for(int i=0;i<100;i++){
+							boolean ok = myreporter.report(mid, jsonString.toString());
+							if (!ok) {
+								myreporter.close();
+							} else {
+								Debug.info(Debug.DEBUG_SERVICE_SV, "sv", "", "network report");
+							}
+//						}
 					}
 				}
 			}
