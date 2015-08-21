@@ -35,6 +35,7 @@ public class MainActivity extends FragmentActivity {
 	public PowerManager.WakeLock mWakeLock;
 	public static MachineID mID;
 	private static Context context;
+	public static int mCount=-1;
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,17 +65,19 @@ public class MainActivity extends FragmentActivity {
 		MediaFragment page2 = new MediaFragment();
 		SettingFragment page3 = new SettingFragment();
 		ContactFragment page4 = new ContactFragment();
-
+		ClockFragment page5=new ClockFragment();
 		List<Fragment> mFragments = new ArrayList<Fragment>();
 		mFragments.add(page1);
 		mFragments.add(page2);
 		mFragments.add(page3);
+		mFragments.add(page5);
 		mFragments.add(page4);
 
 		List<String> tabTexts = new ArrayList<String>();
 		tabTexts.add("监控");
 		tabTexts.add("媒体");
 		tabTexts.add("设置");
+		tabTexts.add("定时");
 		tabTexts.add("联系我们");
 
 		// 设置样式
@@ -94,6 +97,8 @@ public class MainActivity extends FragmentActivity {
 		tabDrawables.add(this.getResources().getDrawable(R.drawable.media_pressed));
 		tabDrawables.add(this.getResources().getDrawable(R.drawable.setting_normal));
 		tabDrawables.add(this.getResources().getDrawable(R.drawable.setting_pressed));
+		tabDrawables.add(this.getResources().getDrawable(R.drawable.clock_normal));
+		tabDrawables.add(this.getResources().getDrawable(R.drawable.clock_pressed));
 		tabDrawables.add(this.getResources().getDrawable(R.drawable.contact_normal));
 		tabDrawables.add(this.getResources().getDrawable(R.drawable.contact_pressed));
 
@@ -109,8 +114,7 @@ public class MainActivity extends FragmentActivity {
 		// 启动桌面悬浮球
 		Intent intent2 = new Intent();
 		intent2.setClass(this, FloatWindowService.class);
-		startService(intent2);
-		
+		startService(intent2);		
 		// 发送快捷方式
 		createShortCut();
 		// 保持屏幕常亮
