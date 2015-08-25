@@ -7,8 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
+import cn.LCloud.Web.JSONDefine;
 import cn.lisa.smartventilator.debug.Debug;
-import cn.lisa.smartventilator.utility.network.JSONDefine;
 
 public class UartAgent {
 	public static final byte cmd_SetSwitch = 0x01;

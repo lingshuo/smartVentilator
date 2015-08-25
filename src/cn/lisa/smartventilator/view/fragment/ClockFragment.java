@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 public class ClockFragment extends Fragment {
 
@@ -50,7 +51,7 @@ public class ClockFragment extends Fragment {
 	LinearLayout hoursoflinear;
 	int mlCount = -1;
 	TextView tvTime, hours;
-	private SlipButton ringtixing;
+	private ToggleButton ringtixing;
 	boolean ring = true;
 	static boolean screen = true;
 	private Intent intent;
@@ -68,9 +69,9 @@ public class ClockFragment extends Fragment {
 				}
 
 				int totalSec = 0;
-				int yushu = 0;
+//				int yushu = 0;
 				totalSec = (int) (MainActivity.mCount / 10);
-				yushu = (int) (MainActivity.mCount % 10);
+//				yushu = (int) (MainActivity.mCount % 10);
 				int min = (totalSec / 60);
 				if (min >= 60) {
 					hoursoflinear.setVisibility(View.VISIBLE);
@@ -81,9 +82,9 @@ public class ClockFragment extends Fragment {
 				}
 				int sec = (totalSec % 60);
 				try {
-					tvTime.setText(String.format("%1$02d:%2$02d.%3$d", min, sec, yushu));
+					tvTime.setText(String.format("%1$02d:%2$02d", min, sec));
 				} catch (Exception e) {
-					tvTime.setText("" + min + ":" + sec + "." + yushu);
+					tvTime.setText("" + min + ":" + sec);
 					e.printStackTrace();
 				}
 				break;
@@ -109,7 +110,7 @@ public class ClockFragment extends Fragment {
 		listjishi = (RelativeLayout) view.findViewById(R.id.daojishirelativ);
 
 		btnselecttime = (Button) view.findViewById(R.id.daojishistartbutton);
-		ringtixing = (SlipButton) view.findViewById(R.id.ringtixing);
+		ringtixing = (ToggleButton) view.findViewById(R.id.ringtixing);
 
 		ringtixing.setChecked(true);
 
@@ -210,7 +211,7 @@ public class ClockFragment extends Fragment {
 				timepickerlin.setVisibility(View.VISIBLE);
 				MainActivity.mCount = -1;
 				btnselecttime.setText("¿ªÊ¼");
-				tvTime.setText("00:00.0");
+				tvTime.setText("00:00");
 				hoursoflinear.setVisibility(View.INVISIBLE);
 				SaveRun.setisdaojishi(false);
 				alarmManager.cancel(pendingIntent);

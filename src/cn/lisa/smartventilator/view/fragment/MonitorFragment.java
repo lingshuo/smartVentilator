@@ -22,12 +22,12 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+import cn.LCloud.Web.JSONDefine;
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.controller.entity.Ventilator;
 import cn.lisa.smartventilator.controller.manager.VentilatorManager;
 import cn.lisa.smartventilator.controller.service.MonitorService;
 import cn.lisa.smartventilator.debug.Debug;
-import cn.lisa.smartventilator.utility.network.JSONDefine;
 
 public class MonitorFragment extends Fragment implements OnClickListener, OnTouchListener {
 	private ToggleButton tb_ventilator;

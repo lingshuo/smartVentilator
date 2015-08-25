@@ -58,14 +58,14 @@ public class WheelView extends View {
 	private static final int MIN_DELTA_FOR_SCROLLING = 1;
 
 	/** Current value & label text color */
-	private static final int VALUE_TEXT_COLOR = 0xF0000000;   //中间那排选中的颜色
+	private static final int VALUE_TEXT_COLOR = 0xF0002496;   //中间那排选中的颜色
 
 	/** Items text color */
 	private static final int ITEMS_TEXT_COLOR = 0xFF909090;    //其他的未选中的颜色
 
 	/** Top and bottom shadows colors */
-	private static final int[] SHADOWS_COLORS = new int[] { 0xFFa8a8a8,   //上下边颜色
-			0x00AAAAAA, 0x00AAAAAA };     //上下边内部颜色
+	private static final int[] SHADOWS_COLORS = new int[] { 0xFFD9EDFD,   //上下边颜色
+			0x00C7E5FC, 0x00C7E5FC };     //上下边内部颜色
 
 	/** Additional items height (is added to standard text item height) */
 	private static final int ADDITIONAL_ITEM_HEIGHT = 20;    //每行高度
@@ -86,7 +86,7 @@ public class WheelView extends View {
 	private static final int PADDING = 30;
 
 	/** Default count of visible items */
-	private static final int DEF_VISIBLE_ITEMS = 7;   //可预见个数
+	private static final int DEF_VISIBLE_ITEMS = 5;   //可预见个数
 
 	// Wheel Values
 	private WheelAdapter adapter = null;
@@ -695,8 +695,8 @@ public class WheelView extends View {
 		}
 	};
 
-	private final int MESSAGE_SCROLL = 0;
-	private final int MESSAGE_JUSTIFY = 1;
+	private final int MESSAGE_SCROLL = 110;
+	private final int MESSAGE_JUSTIFY = 111;
 
 	private void setNextMessage(int message) {
 		clearMessages();
