@@ -72,7 +72,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/daojishihoursoflinear"
                 android:text="00:00"
-                android:textSize="180sp"
+                android:textSize="170sp"
                 android:textStyle="bold"
                 android:textColor="@color/black" />
 

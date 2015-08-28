@@ -1,21 +1,21 @@
 package cn.lisa.smartventilator.view.fragment;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import cn.lisa.smartventilator.controller.entity.SaveRun;
+import cn.lisa.smartventilator.controller.service.MonitorService;
 import cn.lisa.smartventilator.utility.system.ScreenInfo;
 import cn.lisa.smartventilator.view.activity.ClockActivity;
 import cn.lisa.smartventilator.view.activity.MainActivity;
-import cn.lisa.smartventilator.view.view.SlipButton;
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.view.view.Wheel;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -41,13 +41,7 @@ public class ClockFragment extends Fragment {
 	LinearLayout timepickerlin;
 	Button btnselecttime, daojishijicubutton;
 	RelativeLayout listjishi;
-	private Timer timer = null;
-	private TimerTask task = null;
-	private Message msg = null;
 	Animation rotateAnimation, secondrotateAnimation, hourrotateAnimation;
-	float predegree = 0;
-	float secondpredegree = 0;
-	float hourpredegree = 0;
 	LinearLayout hoursoflinear;
 	int mlCount = -1;
 	TextView tvTime, hours;
@@ -57,21 +51,25 @@ public class ClockFragment extends Fragment {
 	private Intent intent;
 	private PendingIntent pendingIntent;
 	private AlarmManager alarmManager;
+	private SendReciever sendReciever;
+	public static final String SHOWCOUNTACTION="showcount";
+	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case 100:
-				MainActivity.mCount--;
-				Log.i("MainActivity.mCount", "MainActivity.mCount:" + MainActivity.mCount);
+			case 333:
+//				MainActivity.mCount--;
 				if (MainActivity.mCount <= 0) {
 					enddaojishi();
 				}
+				if(MainActivity.mCount>0){
+					listjishi.setVisibility(View.VISIBLE);
+					timepickerlin.setVisibility(View.GONE);
+				}
 
 				int totalSec = 0;
-//				int yushu = 0;
-				totalSec = (int) (MainActivity.mCount / 10);
-//				yushu = (int) (MainActivity.mCount % 10);
+				totalSec = (int) (MainActivity.mCount);
 				int min = (totalSec / 60);
 				if (min >= 60) {
 					hoursoflinear.setVisibility(View.VISIBLE);
@@ -87,6 +85,10 @@ public class ClockFragment extends Fragment {
 					tvTime.setText("" + min + ":" + sec);
 					e.printStackTrace();
 				}
+				if(MainActivity.mCount>0){
+					listjishi.setVisibility(View.VISIBLE);
+					timepickerlin.setVisibility(View.GONE);
+				}
 				break;
 			default:
 				break;
@@ -95,6 +97,8 @@ public class ClockFragment extends Fragment {
 		}
 	};
 
+
+	@SuppressLint("InflateParams")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -105,6 +109,7 @@ public class ClockFragment extends Fragment {
 		return view;
 	}
 
+	@SuppressLint("InflateParams")
 	private void initView(View view, LayoutInflater inflater) {
 		timepickerlin = (LinearLayout) view.findViewById(R.id.timepickerlin);
 		listjishi = (RelativeLayout) view.findViewById(R.id.daojishirelativ);
@@ -113,7 +118,11 @@ public class ClockFragment extends Fragment {
 		ringtixing = (ToggleButton) view.findViewById(R.id.ringtixing);
 
 		ringtixing.setChecked(true);
-
+		
+		sendReciever = new SendReciever();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(SHOWCOUNTACTION);
+		context.registerReceiver(sendReciever, filter);
 
 		ringtixing.setOnClickListener(new OnClickListener() {
 			@Override
@@ -153,17 +162,15 @@ public class ClockFragment extends Fragment {
 
 	public void enddaojishi() {
 		try {
-			task.cancel();
-			task = null;
-			timer.cancel();
-			timer.purge();
-			timer = null;
-			handler.removeMessages(msg.what);
+			handler.removeMessages(333);
 			listjishi.setVisibility(View.GONE);
 			timepickerlin.setVisibility(View.VISIBLE);
 			MainActivity.mCount = -1;
 			btnselecttime.setText("¿ªÊ¼");
 			SaveRun.setisdaojishi(false);
+			Intent intent=new Intent();
+			intent.setAction(MonitorService.STOPCOUNTACTION);
+			context.sendBroadcast(intent);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -174,39 +181,18 @@ public class ClockFragment extends Fragment {
 		intent = new Intent(context, ClockActivity.class);
 		pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 		alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		
 		Log.i("Alarm", "onStart:" + MainActivity.mCount);
 		if (MainActivity.mCount > 0) {
 			SaveRun.setisdaojishi(true);
 			btnselecttime.setText("ÔÝÍ£");
 			listjishi.setVisibility(View.VISIBLE);
 			timepickerlin.setVisibility(View.GONE);
-			if (null == task) {
-				task = new TimerTask() {
-					@Override
-					public void run() {
-						if (null == msg) {
-							msg = new Message();
-						} else {
-							msg = Message.obtain();
-						}
-						msg.what = 100;
-						handler.sendMessage(msg);
-					}
-				};
-			}
-			timer = new Timer(true);
-			timer.schedule(task, 100, 100);
-			alarmManager.cancel(pendingIntent);
-			alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()
-					+ MainActivity.mCount * 100, pendingIntent);
 		}
-
+		//stop
 		daojishijicubutton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				predegree = 0;
-				secondpredegree = 0;
-				hourpredegree = 0;
 				listjishi.setVisibility(View.GONE);
 				timepickerlin.setVisibility(View.VISIBLE);
 				MainActivity.mCount = -1;
@@ -215,65 +201,41 @@ public class ClockFragment extends Fragment {
 				hoursoflinear.setVisibility(View.INVISIBLE);
 				SaveRun.setisdaojishi(false);
 				alarmManager.cancel(pendingIntent);
-				try {
-					if (task != null) {
-						task.cancel();
-						task = null;
-						timer.cancel();
-						timer.purge();
-						timer = null;
-						handler.removeMessages(msg.what);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				Intent intent=new Intent();
+				intent.setAction(MonitorService.STOPCOUNTACTION);
+				context.sendBroadcast(intent);
 			}
 		});
-
+		//start and pause
 		btnselecttime.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				if (null == timer) {
+				if (MonitorService.state!=MonitorService.STARTCOUNTACTION) {
 					int h = wheel.getwv_year();
 					int m = wheel.getwv_month();
 					int s = wheel.getwv_day();
 					if (MainActivity.mCount == -1 || MainActivity.mCount == 0) {
-						MainActivity.mCount = h * 36000 + m * 600 + s * 10;
+						MainActivity.mCount = h * 3600 + m * 60 + s * 1;
 					}
 					if (MainActivity.mCount > 0) {
 						SaveRun.setisdaojishi(true);
 						btnselecttime.setText("ÔÝÍ£");
-						listjishi.setVisibility(View.VISIBLE);
-						timepickerlin.setVisibility(View.GONE);
-						if (null == task) {
-							task = new TimerTask() {
-								@Override
-								public void run() {
-									if (null == msg) {
-										msg = new Message();
-									} else {
-										msg = Message.obtain();
-									}
-									msg.what = 100;
-									handler.sendMessage(msg);
-								}
-							};
-						}
-						timer = new Timer(true);
-						timer.schedule(task, 100, 100);
+						alarmManager.cancel(pendingIntent);
 						alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()
-								+ MainActivity.mCount * 100, pendingIntent);
+								+ MainActivity.mCount * 1000, pendingIntent);
+						Intent intent=new Intent();
+						intent.setAction(MonitorService.STARTCOUNTACTION);
+						context.sendBroadcast(intent);
+						
 					}
 				} else {
 					try {
 						SaveRun.setisdaojishi(false);
 						btnselecttime.setText("¼ÌÐø");
-						task.cancel();
-						task = null;
-						timer.cancel();
-						timer.purge();
-						timer = null;
-						handler.removeMessages(msg.what);
+						alarmManager.cancel(pendingIntent);
+						Intent intent=new Intent();
+						intent.setAction(MonitorService.PAUSECOUNTACTION);
+						context.sendBroadcast(intent);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -289,19 +251,28 @@ public class ClockFragment extends Fragment {
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		Log.i("Alarm", "save");
+		super.onSaveInstanceState(outState);
+	}
+	@Override
 	public void onDestroy() {
+		try {
+			context.unregisterReceiver(sendReciever);
+		} catch (Exception e) {
+			Log.i("service", e.getLocalizedMessage());
+		}
 		if (alarmManager != null && pendingIntent != null) {
 			alarmManager.cancel(pendingIntent);
 		}
-		if (task != null) {
-			task.cancel();
-			task = null;
-		}
-		if (timer != null) {
-			timer.cancel();
-			timer.purge();
-			timer = null;
-		}
 		super.onDestroy();
 	}
+	
+	public class SendReciever extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			handler.sendEmptyMessage(333);
+		}}
 }

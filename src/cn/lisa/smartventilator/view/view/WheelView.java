@@ -21,9 +21,9 @@ package cn.lisa.smartventilator.view.view;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.controller.adapter.WheelAdapter;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -58,7 +58,7 @@ public class WheelView extends View {
 	private static final int MIN_DELTA_FOR_SCROLLING = 1;
 
 	/** Current value & label text color */
-	private static final int VALUE_TEXT_COLOR = 0xF0002496;   //中间那排选中的颜色
+	private static final int VALUE_TEXT_COLOR = 0xFF002496;   //中间那排选中的颜色
 
 	/** Items text color */
 	private static final int ITEMS_TEXT_COLOR = 0xFF909090;    //其他的未选中的颜色
@@ -305,7 +305,7 @@ public class WheelView extends View {
 			valuePaint = new TextPaint(Paint.ANTI_ALIAS_FLAG
 					| Paint.FAKE_BOLD_TEXT_FLAG | Paint.DITHER_FLAG);
 			valuePaint.setTextSize(TEXT_SIZE);
-			valuePaint.setShadowLayer(0.1f, 0, 0.1f, 0xFFC0C0C0);
+			valuePaint.setShadowLayer(0.1f, 0, 0.1f, 0xFF002496);
 		}
 
 		if (centerDrawable == null) {
@@ -411,6 +411,7 @@ public class WheelView extends View {
 		return getHeight() / visibleItems;
 	}
 
+	@SuppressLint("FloatMath")
 	private int calculateLayoutWidth(int widthSize, int mode) {
 		initResourcesIfNecessary();
 
@@ -602,6 +603,7 @@ public class WheelView extends View {
 		canvas.restore();
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	private void drawCenterRect(Canvas canvas) {
 		int center = getHeight() / 2;
 		int offset = getItemHeight() / 2;
@@ -610,6 +612,7 @@ public class WheelView extends View {
 		centerDrawable.draw(canvas);
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		WheelAdapter adapter = getAdapter();
@@ -706,12 +709,14 @@ public class WheelView extends View {
 	/**
 	 * Clears messages from queue
 	 */
+	@SuppressLint("HandlerLeak")
 	private void clearMessages() {
 		animationHandler.removeMessages(MESSAGE_SCROLL);
 		animationHandler.removeMessages(MESSAGE_JUSTIFY);
 	}
 
 	// animation handler
+	@SuppressLint("HandlerLeak")
 	private Handler animationHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			scroller.computeScrollOffset();

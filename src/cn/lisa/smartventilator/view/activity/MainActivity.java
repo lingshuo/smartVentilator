@@ -9,6 +9,7 @@ import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.controller.entity.MachineID;
 import cn.lisa.smartventilator.controller.service.FloatWindowService;
 import cn.lisa.smartventilator.controller.service.MonitorService;
+import cn.lisa.smartventilator.controller.service.UpdateService;
 import cn.lisa.smartventilator.view.fragment.*;
 import cn.lisa.smartventilator.view.view.BottomTabView;
 import android.app.Fragment;
@@ -18,6 +19,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -25,6 +28,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.PowerManager;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 public class MainActivity extends FragmentActivity {
 
@@ -33,6 +37,8 @@ public class MainActivity extends FragmentActivity {
 	public DevicePolicyManager policyManager;
 	public ComponentName componentName;
 	public PowerManager.WakeLock mWakeLock;
+	private String curVersion;
+	private int curVersionCode;
 	public static MachineID mID;
 	private static Context context;
 	public static int mCount=-1;
@@ -45,12 +51,24 @@ public class MainActivity extends FragmentActivity {
 		if (mID.getMid().equals("die")) {
 			// die
 		}
+		
+		//get current version
+		try {
+			PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+			curVersion = pInfo.versionName;
+			curVersionCode = pInfo.versionCode;
+		} catch (NameNotFoundException e) {
+			Log.e("update", e.getMessage());
+		}
+		
 		SharedPreferences sp = getSharedPreferences("smartventilator.preferences", 0);
 		Editor editor = sp.edit();
 		editor.putString("mID", mID.getMid());
-		editor.putString("version", "1.0.1");
+		editor.putString("version", curVersion);
+		editor.putInt("versionCode", curVersionCode);
 		// Ã·Ωª…Ë÷√
 		editor.commit();
+		
 		context=MainActivity.this;
 		if (!LibsChecker.checkVitamioLibs(this))
 			return;
@@ -170,6 +188,9 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		mWakeLock.acquire();
+		Intent intent3=new Intent();
+		intent3.setClass(this, UpdateService.class);
+		startService(intent3);
 		super.onResume();
 	}
 

@@ -12,6 +12,8 @@ import cn.LCloud.Web.JSONDefine;
 import cn.lisa.smartventilator.controller.manager.VentilatorManager;
 import cn.lisa.smartventilator.debug.Debug;
 import cn.lisa.smartventilator.utility.hardware.UartAgent;
+import cn.lisa.smartventilator.view.activity.MainActivity;
+import cn.lisa.smartventilator.view.fragment.ClockFragment;
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -32,7 +34,10 @@ public class MonitorService extends Service {
 	public static final String BROADCASTACTION = "getinfo";
 	public static final String SENDACTION = "send";
 	public static final String HEARTBERTACTION = "heartbeat";
-
+	public static final String STARTCOUNTACTION="count";
+	public static final String STOPCOUNTACTION="stopcount";
+	public static final String PAUSECOUNTACTION="pausecount";
+	public static String state="";
 	private Timer timer;
 	public UartAgent uartagent;
 	private SendReciever sendReciever;
@@ -43,6 +48,13 @@ public class MonitorService extends Service {
 	private Thread reportDataThread;
 	private Thread tryConnectThread;
 	private Thread networkMonitorThread;
+	Timer timer1 = new Timer(true);
+	TimerTask task = new TimerTask() {
+		@Override
+		public void run() {
+			handler.sendEmptyMessage(222);
+		}
+	};
 	/***
 	 * handle to send switch info to hardware
 	 */
@@ -60,11 +72,29 @@ public class MonitorService extends Service {
 						+ success);
 
 				break;
+			case 222:
+				if(!state.equals("")){
+					if(state.equals(STARTCOUNTACTION)){
+						if(MainActivity.mCount>0){
+							MainActivity.mCount--;
+							Log.i("Service:mCount", "Service:mCount:" + MainActivity.mCount);
+							Intent intent=new Intent(ClockFragment.SHOWCOUNTACTION);
+							sendBroadcast(intent);
+						}
+					}else if(state.equals(STOPCOUNTACTION)){
+						MainActivity.mCount=0;
+						Log.i("Service:mCount", "Stop:mCount:" + MainActivity.mCount);
+					}else{
+						Log.i("Service:mCount", "HOLD:mCount:" + MainActivity.mCount);
+					}
+				}
+				break;
 			default:
 				break;
 			}
 		};
 	};
+
 
 	@Override
 	public void onCreate() {
@@ -273,6 +303,7 @@ public class MonitorService extends Service {
 			@Override
 			public void run() {
 				int value = uartagent.frame.send(heartBeat, heartBeat.length);
+				handler.sendEmptyMessage(222);
 				Debug.info(Debug.DEBUG_SERVICE_HEARTBEAT, "heartbeat", "send heartbeat", value);
 			}
 
@@ -283,7 +314,11 @@ public class MonitorService extends Service {
 
 	private void initSendReceiver() {
 		sendReciever = new SendReciever();
-		IntentFilter filter = new IntentFilter(SENDACTION);
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(SENDACTION);
+		filter.addAction(STARTCOUNTACTION);
+		filter.addAction(PAUSECOUNTACTION);
+		filter.addAction(STOPCOUNTACTION);
 		registerReceiver(sendReciever, filter);
 	}
 
@@ -303,14 +338,25 @@ public class MonitorService extends Service {
 	public class SendReciever extends BroadcastReceiver {
 
 		@Override
-		public void onReceive(Context context, Intent intent) {
+		public void onReceive(Context context, Intent intent) {			
 
-			Message msg = handler.obtainMessage();
-			msg.what = VentilatorManager.SEND_DATA;
-			msg.arg1 = intent.getExtras().getByte("sw");
-			msg.arg2 = intent.getExtras().getByte("val");
+			if(intent.getAction().equals(SENDACTION)){
+				Message msg = handler.obtainMessage();
+				msg.what = VentilatorManager.SEND_DATA;
+				msg.arg1 = intent.getExtras().getByte("sw");
+				msg.arg2 = intent.getExtras().getByte("val");
+				handler.sendMessage(msg);
+			}
+			if(intent.getAction().equals(STARTCOUNTACTION)){
+				state=STARTCOUNTACTION;
+			}
+			if(intent.getAction().equals(STOPCOUNTACTION)){
+				state=STOPCOUNTACTION;
+			}
+			if(intent.getAction().equals(PAUSECOUNTACTION)){
+				state=PAUSECOUNTACTION;
+			}
 			
-			handler.sendMessage(msg);
 		}
 
 	}
