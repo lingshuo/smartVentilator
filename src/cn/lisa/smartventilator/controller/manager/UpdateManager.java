@@ -7,8 +7,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.StringTokenizer;
-
 import org.json.JSONObject;
 
 import cn.lisa.smartventilator.utility.system.NetHelper;
@@ -85,6 +83,8 @@ public class UpdateManager {
 			curVersion = pInfo.versionName;
 			curVersionCode = pInfo.versionCode;
 		} catch (NameNotFoundException e) {
+			Log.e("update", e.getMessage());
+		} catch(Exception e){
 			Log.e("update", e.getMessage());
 		}
 
