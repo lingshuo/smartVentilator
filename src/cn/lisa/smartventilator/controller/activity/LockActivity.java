@@ -1,4 +1,4 @@
-package cn.lisa.smartventilator.view.activity;
+package cn.lisa.smartventilator.controller.activity;
 
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.controller.manager.MyWindowManager;
@@ -52,7 +52,7 @@ public class LockActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onPause() {
-		// 启动桌面悬浮球
+		// 启动桌面悬浮�?
 		Intent intent2 = new Intent();
 		intent2.setClass(this, FloatWindowService.class);
 		startService(intent2);
@@ -70,7 +70,7 @@ public class LockActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.lock_layout:
 			BrightnessUtil.startAutoBrightness(this);
-			// 启动桌面悬浮球
+			// 启动桌面悬浮�?
 			Intent intent2 = new Intent();
 			intent2.setClass(this, FloatWindowService.class);
 			startService(intent2);

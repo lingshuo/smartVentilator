@@ -37,10 +37,8 @@ public class UpdateManager {
 	private Boolean hasNewVersion;
 	private Boolean canceled;
 
-	//存放更新APK文件的路径
-	public static String UPDATE_DOWNURL = "http://lingshuo.net.cn/smartVentilator.apk";
 	//存放更新APK文件相应的版本说明路径
-	public static final String UPDATE_CHECKURL = "http://lingshuo.net.cn";
+	public static final String UPDATE_CHECKURL = "http://update.yanji.lisatech.cn:8080/newest.jsp";
 	public static final String UPDATE_APKNAME = "update_test.apk";
 	//public static final String UPDATE_VERJSON = "ver.txt";
 	public static final String UPDATE_SAVENAME = "smartVentilator.apk";
@@ -85,7 +83,7 @@ public class UpdateManager {
 		} catch (NameNotFoundException e) {
 			Log.e("update", e.getMessage());
 		} catch(Exception e){
-			Log.e("update", e.getMessage());
+			;
 		}
 
 	}
@@ -103,7 +101,7 @@ public class UpdateManager {
 				Log.i("@@@@@", ">>>>>>>>>>>>>>>>>>>>>>>>>>>getServerVerCode() ");
 				try {
 
-					String verpage = NetHelper.getJsonStringGet("http://shuxiutong.com/Uploading08/newest.jsp");
+					String verpage = NetHelper.getJsonStringGet(UPDATE_CHECKURL);
 					Log.i("@@@@", verpage
 							+ "**************************************************");
 					String verjson=verpage.substring(verpage.indexOf('{'), verpage.indexOf('}'));

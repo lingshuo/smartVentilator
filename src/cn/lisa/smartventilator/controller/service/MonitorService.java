@@ -12,7 +12,7 @@ import cn.LCloud.Web.JSONDefine;
 import cn.lisa.smartventilator.controller.manager.VentilatorManager;
 import cn.lisa.smartventilator.debug.Debug;
 import cn.lisa.smartventilator.utility.hardware.UartAgent;
-import cn.lisa.smartventilator.view.activity.MainActivity;
+import cn.lisa.smartventilator.controller.activity.MainActivity;
 import cn.lisa.smartventilator.view.fragment.ClockFragment;
 import android.annotation.SuppressLint;
 import android.app.Service;

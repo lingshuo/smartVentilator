@@ -1,5 +1,7 @@
 package cn.lisa.smartventilator.controller.service;
 
+import io.vov.vitamio.utils.Log;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -7,9 +9,10 @@ import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.controller.manager.UpdateManager;
 import cn.lisa.smartventilator.debug.Debug;
 import cn.lisa.smartventilator.utility.system.DialogHelper;
-import cn.lisa.smartventilator.view.activity.MainActivity;
+import cn.lisa.smartventilator.controller.activity.MainActivity;
 import android.app.ProgressDialog;
 import android.app.Service;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,10 +26,11 @@ public class UpdateService extends Service {
 	private SharedPreferences setting;
 	private Editor editor;
 	private Timer timer;
-
+	private Context mActivityContext=null;
 	@Override
 	public void onCreate() {
-		updateMan = new UpdateManager(MainActivity.getMyActivityContext(), appUpdateCb);
+		mActivityContext=MainActivity.getMyActivityContext();
+		updateMan = new UpdateManager(mActivityContext, appUpdateCb);
 		setting = getSharedPreferences("smartventilator.preferences", 0);
 		editor = setting.edit();
 		editor.putBoolean("hasupdate", false);
@@ -73,13 +77,17 @@ public class UpdateService extends Service {
 		}
 
 		public void downloadCompleted(Boolean success, CharSequence errorMsg) {
+			if(mActivityContext==null){
+				Log.e("upadte", "null");
+				return;
+			}
 			if (updateProgressDialog != null && updateProgressDialog.isShowing()) {
 				updateProgressDialog.dismiss();
 			}
 			if (success) {
 				updateMan.update();
 			} else {
-				DialogHelper.Confirm(MainActivity.getMyActivityContext(),
+				DialogHelper.Confirm(mActivityContext,
 						R.string.dialog_error_title, R.string.dialog_downfailed_msg,
 						R.string.dialog_downfailed_btndown, new DialogInterface.OnClickListener() {
 
@@ -105,6 +113,10 @@ public class UpdateService extends Service {
 		}
 
 		public void checkUpdateCompleted(Boolean hasUpdate, CharSequence updateInfo) {
+			if(mActivityContext==null){
+				Log.e("upadte", "null");
+				return;
+			}
 			if(setting.getBoolean("hasupdate", false)!=hasUpdate){
 				editor.putBoolean("hasupdate", hasUpdate);
 				// Ã·Ωª…Ë÷√
@@ -112,7 +124,7 @@ public class UpdateService extends Service {
 			}
 			if (hasUpdate) {				
 				DialogHelper.Confirm(
-						MainActivity.getMyActivityContext(),
+						mActivityContext,
 						getText(R.string.dialog_update_title),
 						getText(R.string.dialog_update_msg).toString() + updateInfo
 								+ getText(R.string.dialog_update_msg2).toString(),
@@ -129,6 +141,8 @@ public class UpdateService extends Service {
 										.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 								updateProgressDialog.setMax(100);
 								updateProgressDialog.setProgress(0);
+								updateProgressDialog.setCanceledOnTouchOutside(false);
+								updateProgressDialog.setCancelable(false);
 								updateProgressDialog.show();
 
 								updateMan.downloadPackage();

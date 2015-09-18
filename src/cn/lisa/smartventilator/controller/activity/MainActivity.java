@@ -1,4 +1,4 @@
-package cn.lisa.smartventilator.view.activity;
+package cn.lisa.smartventilator.controller.activity;
 
 import io.vov.vitamio.LibsChecker;
 
@@ -125,14 +125,14 @@ public class MainActivity extends FragmentActivity {
 
 		mBottomTabView.setTabPadding(2, 2, 2, 2);
 
-		// 启动监控服务
-		Intent intent1 = new Intent();
-		intent1.setClass(this, MonitorService.class);
-		startService(intent1);
-		// 启动桌面悬浮球
-		Intent intent2 = new Intent();
-		intent2.setClass(this, FloatWindowService.class);
-		startService(intent2);		
+//		// 启动监控服务
+//		Intent intent1 = new Intent();
+//		intent1.setClass(this, MonitorService.class);
+//		startService(intent1);
+//		// 启动桌面悬浮球
+//		Intent intent2 = new Intent();
+//		intent2.setClass(this, FloatWindowService.class);
+//		startService(intent2);		
 		// 发送快捷方式
 		createShortCut();
 		// 保持屏幕常亮
@@ -188,6 +188,15 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		mWakeLock.acquire();
+		// 启动监控服务
+		Intent intent1 = new Intent();
+		intent1.setClass(this, MonitorService.class);
+		startService(intent1);
+		// 启动桌面悬浮球
+		Intent intent2 = new Intent();
+		intent2.setClass(this, FloatWindowService.class);
+		startService(intent2);
+		// 检查更新
 		Intent intent3=new Intent();
 		intent3.setClass(this, UpdateService.class);
 		startService(intent3);
