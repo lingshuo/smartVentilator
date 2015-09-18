@@ -25,10 +25,15 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.Parcelable;
 import android.os.PowerManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 public class MainActivity extends FragmentActivity {
 
@@ -132,12 +137,15 @@ public class MainActivity extends FragmentActivity {
 //		// 启动桌面悬浮球
 //		Intent intent2 = new Intent();
 //		intent2.setClass(this, FloatWindowService.class);
-//		startService(intent2);		
+//		startService(intent2);
+		
 		// 发送快捷方式
 		createShortCut();
 		// 保持屏幕常亮
 		PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-		mWakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "My Tag");
+		mWakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "My Tag");	
+		//登录检测
+		loginCheck();
 	}
 
 	public void createShortCut() {
@@ -165,6 +173,21 @@ public class MainActivity extends FragmentActivity {
 			// 提交设置
 			editor.commit();
 		}
+	}
+	
+	//登录检测
+	private void loginCheck(){
+		SharedPreferences sp = getSharedPreferences("smartventilator.preferences", 0);
+		Intent intent=getIntent();
+		if(!intent.getBooleanExtra("login", false)&&!sp.getBoolean("login", false)){//尚未登录
+			intent.setClass(this, LoginActivity.class);
+			startActivity(intent);
+		}
+					
+		if(intent.getBooleanExtra("login", false)&&!sp.getBoolean("rememberUser", false)){//登陆时没有选择记住密码
+			sp.edit().putBoolean("login", false).commit();
+		}
+		
 	}
 
 	@Override
@@ -216,4 +239,42 @@ public class MainActivity extends FragmentActivity {
 		stopService(intent);
 		super.onDestroy();
 	}
+	
+	// 隐藏输入法
+    // 获取点击事件
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        // TODO Auto-generated method stub
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View view = getCurrentFocus();
+            if (isHideInput(view, ev)) {
+                HideSoftInput(view.getWindowToken());
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+    // 判定是否需要隐藏
+    private boolean isHideInput(View v, MotionEvent ev) {
+        if (v != null && (v instanceof EditText)) {
+            int[] l = { 0, 0 };
+            v.getLocationInWindow(l);
+            int left = l[0], top = l[1], bottom = top + v.getHeight(), right = left
+                    + v.getWidth();
+            if (ev.getX() > left && ev.getX() < right && ev.getY() > top
+                    && ev.getY() < bottom) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+    // 隐藏软键盘
+    private void HideSoftInput(IBinder token) {
+        if (token != null) {
+            InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            manager.hideSoftInputFromWindow(token,
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
 }

@@ -56,6 +56,15 @@
             android:hardwareAccelerated="false">
             
         </activity>
+        <activity 
+            android:name="cn.lisa.smartventilator.controller.activity.LoginActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape"
+            android:hardwareAccelerated="false">
+            
+        </activity>
         <!-- Don't forgot InitActivity -->
         <activity
             android:name="io.vov.vitamio.activity.InitActivity"

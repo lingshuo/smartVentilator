@@ -155,7 +155,7 @@
             android:orientation="horizontal" >
 
             <Button
-                android:id="@+id/btn_cancel"
+                android:id="@+id/btn_confirm"
                 android:layout_width="92dp"
                 android:layout_height="54dp"
                 android:background="@android:color/transparent"
@@ -167,7 +167,7 @@
 			    android:layout_height="match_parent"
 			    android:background="@drawable/btn_line"/>
             <Button
-                android:id="@+id/btn_confirm"
+                android:id="@+id/btn_cancel"
                 android:layout_width="92dp"
                 android:layout_height="54dp"
                 android:background="@android:color/transparent"
