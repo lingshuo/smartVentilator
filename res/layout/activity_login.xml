@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_setting" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="150dp"
+        android:gravity="center"
+        android:text="用户登录"
+        android:textColor="@color/setting_id_font"
+        android:textSize="50sp" />
+
+    <LinearLayout
+        android:id="@+id/login_input_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="40dp"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/login_editText_username"
+            android:layout_width="414dp"
+            android:layout_height="54dp"
+            android:background="@drawable/setting_tv_bg_dark"
+            android:ems="10"
+            android:gravity="center_vertical|start"
+            android:hint="用户名"
+            android:inputType="text"
+            android:paddingStart="26dp"
+            android:singleLine="false"
+            android:textColor="@color/setting_tv_font"
+            android:textColorHint="@color/setting_tv_font"
+            android:textSize="25sp" >
+        </EditText>
+
+        <EditText
+            android:id="@+id/login_editText_password"
+            android:layout_width="414dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="26dp"
+            android:background="@drawable/setting_tv_bg_dark"
+            android:ems="10"
+            android:gravity="center_vertical|start"
+            android:hint="密码"
+            android:inputType="textPassword"
+            android:paddingStart="26dp"
+            android:singleLine="false"
+            android:textColor="@color/setting_tv_font"
+            android:textColorHint="@color/setting_tv_font"
+            android:textSize="25sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/login_rememeber_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/login_input_layout"
+        android:orientation="horizontal" >
+
+        <CheckBox
+            android:id="@+id/login_checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="记住密码"
+            android:textColor="@color/setting_tv_font"
+            android:textSize="25sp" />
+         
+     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/login_btn_layout"
+        android:layout_width="400dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/login_rememeber_layout"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/bg_big"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/login_btn_confirm"
+            android:layout_width="192dp"
+            android:layout_height="54dp"
+            android:background="@android:color/transparent"
+            android:text="@string/str_device_confirm"
+            android:textColor="@color/setting_tv_font"
+            android:textSize="25sp" />
+
+        <LinearLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/btn_line" />
+
+        <Button
+            android:id="@+id/login_btn_cancel"
+            android:layout_width="192dp"
+            android:layout_height="54dp"
+            android:background="@android:color/transparent"
+            android:text="@string/str_device_cancel"
+            android:textColor="@color/setting_tv_font"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+</RelativeLayout>

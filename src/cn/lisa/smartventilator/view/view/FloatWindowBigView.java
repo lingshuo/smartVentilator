@@ -3,7 +3,7 @@ package cn.lisa.smartventilator.view.view;
 import cn.lisa.smartventilator.R;
 import cn.lisa.smartventilator.controller.manager.MyWindowManager;
 import cn.lisa.smartventilator.controller.service.FloatWindowService;
-import cn.lisa.smartventilator.view.activity.LockActivity;
+import cn.lisa.smartventilator.controller.activity.LockActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;

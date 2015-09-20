@@ -1,7 +1,11 @@
 #ifndef	__DEBUG__
 #define	__DEBUG__
 
+<<<<<<< HEAD
 #define DEBUG_ON	0
+=======
+#define DEBUG_ON	1
+>>>>>>> branch 'master' of https://github.com/lingshuo/smartVentilator.git
 
 #if DEBUG_ON
 

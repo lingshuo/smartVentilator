@@ -1,4 +1,4 @@
-package cn.lisa.smartventilator.view.activity;
+package cn.lisa.smartventilator.controller.activity;
 
 import cn.lisa.smartventilator.R;
 import android.annotation.SuppressLint;
@@ -21,6 +21,7 @@ public class ClockActivity extends Activity implements SoundPool.OnLoadCompleteL
 	protected Message msg;
 	private static final int SOUND=100000;
 	
+	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler(){
 		public void handleMessage(Message msg){
     		switch( msg.what){
