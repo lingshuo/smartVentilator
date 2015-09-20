@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_monitor"
+    android:baselineAligned="true"
+    android:orientation="vertical" >
+	<TextView 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center_horizontal"
+	    android:gravity="center_horizontal"
+	    android:layout_marginTop="35dp"
+	    android:layout_marginBottom="35dp"
+	    android:textSize="40sp"
+	    android:textColor="@color/clock_tv_font"
+	    android:text="倒计时提醒"/>
+
+   	<RelativeLayout
+        android:id="@+id/mclock_layout"
+        android:layout_width="773dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal" >
+
+        <LinearLayout
+            android:id="@+id/timepickerlin"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/daojishibuttonlinear"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+        </LinearLayout>
+		<RelativeLayout
+            android:id="@+id/daojishirelativ"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_above="@+id/daojishibuttonlinear"
+        	android:visibility="gone">
+        	
+            <LinearLayout
+                android:id="@+id/daojishihoursoflinear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="invisible" >
+
+                <TextView
+                    android:id="@+id/daojishihours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="80sp"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="小时"
+                    android:textSize="80sp"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+            
+            <TextView
+                android:id="@+id/daojishitvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/daojishihoursoflinear"
+                android:text="00:00"
+                android:textSize="170sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/daojishibuttonlinear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="26dp"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/clock_btn_bg" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="76dp"
+                    android:text="铃声提醒"
+                    android:textSize="30sp"
+                    android:textColor="@color/clock_tv_font"/>
+
+                <ToggleButton
+                    android:id="@+id/ringtixing"
+                    android:layout_width="85dp"
+                    android:layout_height="43dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginEnd="21dp"
+                    android:layout_centerVertical="true"
+                    android:textOn=""
+                    android:textOff=""
+                    android:checked="false"
+                    android:background="@drawable/ringbtn"/>
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/daojishistartbutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:textSize="30sp"
+                    android:background="@drawable/clock_btn"
+                    android:textColor="@color/clock_tv_font"
+                    android:text="开始" />
+				<LinearLayout 
+				    android:layout_width="1dp"
+				    android:layout_height="match_parent"
+				    android:background="@color/clock_btn_div"/>
+                <Button
+                    android:id="@+id/daojishijicubutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:textSize="30sp"
+                    android:background="@drawable/clock_btn"
+                    android:textColor="@color/clock_tv_font"
+                    android:text="取消" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+
+</LinearLayout>

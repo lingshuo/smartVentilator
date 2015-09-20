@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cn.lisa.smartventilator"
+    android:versionCode="100002"
+    android:versionName="1.2" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.VIBRATE"/>
+	<uses-permission android:name="android.permission.WRITE_SETTINGS"/> 
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	<uses-permission android:name="android.permission.DEVICE_POWER" />
+	<uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
+	<uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+    <uses-sdk
+        android:minSdkVersion="17"
+        android:targetSdkVersion="17" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="cn.lisa.smartventilator.view.activity.MainActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="landscape" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity 
+            android:name="cn.lisa.smartventilator.view.activity.LockActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape">
+            
+        </activity>
+        <activity 
+            android:name="cn.lisa.smartventilator.view.activity.ClockActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape"
+            android:hardwareAccelerated="false">
+            
+        </activity>
+        <!-- Don't forgot InitActivity -->
+        <activity
+            android:name="io.vov.vitamio.activity.InitActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <receiver android:name="cn.lisa.smartventilator.controller.receiver.BootBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" >
+                </action>
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </receiver>
+        <receiver 
+            android:name="cn.lisa.smartventilator.controller.receiver.AlarmReceiver"
+            android:process=":remote"/>
+        <service
+            android:name="cn.lisa.smartventilator.controller.service.MonitorService"
+            android:enabled="true" />
+        <service
+            android:name="cn.lisa.smartventilator.controller.service.FloatWindowService"
+            android:enabled="true" />
+        <service 
+            android:name="cn.lisa.smartventilator.controller.service.UpdateService"
+            android:enabled="true"/>
+    </application>
+
+</manifest>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="600dp"
+    android:layout_height="400dp"
+    android:background="#ffff"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/dialog_video_title"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#fff">
+        <TextView
+            android:id="@+id/tv_video_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:text="@string/str_media_video_list"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+        <Button 
+            android:id="@+id/btn_video_refresh"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
+            android:visibility="invisible"
+            android:text="@string/str_media_video_refresh"/>
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lv_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/white"
+        android:dividerHeight="10dp" >
+    </ListView>
+
+    <RelativeLayout
+        android:id="@+id/video_blank_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/str_media_video_null"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+</LinearLayout>

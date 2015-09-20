@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_media"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:id="@+id/media_play_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/media_play_button"
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            android:layout_marginTop="66dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/youku" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/media_play_button"
+            android:layout_below="@+id/media_play_button"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="60dp"
+            android:text="@string/str_media_youku"
+            android:textColor="@color/media_tv"
+            android:textSize="36sp" />
+
+    </RelativeLayout>
+
+	<RelativeLayout
+        android:id="@+id/radio_play_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1" >
+
+		<ImageView
+		    android:id="@+id/radio_play_button"
+		    android:layout_width="320dp"
+		    android:layout_height="320dp"
+		    android:layout_alignParentTop="true"
+		    android:layout_centerHorizontal="true"
+		    android:layout_marginTop="66dp"
+		    android:background="@drawable/radio" />
+
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignStart="@+id/radio_play_button"
+		    android:layout_below="@+id/radio_play_button"
+		    android:layout_centerHorizontal="true"
+		    android:layout_marginStart="100dp"
+		    android:layout_marginTop="60dp"
+		    android:text="@string/str_media_radio_list"
+		    android:textColor="@color/media_tv"
+		    android:textSize="36sp" />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/video_play_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1" >
+		
+		<ImageView
+            android:id="@+id/video_play_button"
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            android:layout_marginTop="66dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/video" />
+
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignStart="@+id/video_play_button"
+		    android:layout_below="@+id/video_play_button"
+		    android:layout_marginStart="100dp"
+		    android:layout_marginTop="60dp"
+		    android:text="@string/str_media_video_list"
+		    android:textColor="@color/media_tv"
+		    android:textSize="36sp" />
+
+    </RelativeLayout>
+</LinearLayout>
